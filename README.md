@@ -1,210 +1,236 @@
 # Design Styles Lib
 
-Biblioteca navegável de **47 estilos de web design**, cada um com uma demo funcional
-renderizada no navegador — não um print. Tudo vive num único arquivo autocontido:
-`index.html`, sem build, sem dependência, sem imagem externa.
-
-Abra o arquivo no navegador. É só isso.
+Ferramenta para **descobrir, estudar, comparar e reutilizar** 47 estilos de web design.
+Cada estilo tem demo ao vivo, prévia responsiva de verdade, paleta, receita executável e
+ficha de direção de arte. Tudo num único `index.html`, sem build, sem dependência de
+runtime, abrindo direto do disco.
 
 ```
 open index.html        # macOS
 xdg-open index.html    # Linux
 ```
 
-## O que dá para fazer
+## Como navegar
 
-| Recurso | Como |
+A biblioteca tem três visões, todas no mesmo arquivo, endereçáveis pelo hash:
+
+| Visão | Endereço | O que faz |
+|---|---|---|
+| **Catálogo** | `index.html` ou `#/` | Grade de 47 cartelas com prévia visual, trilho de filtros à esquerda |
+| **Estilo** | `#vaporwave` | Demo isolada + prévia responsiva + abas de ficha, paleta e receita |
+| **Comparação** | `#comparar=bauhaus,vaporwave` | 2 ou 3 estilos lado a lado + tabela de critérios equivalentes |
+
+Os links antigos continuam valendo: `#minimalismo`, `#glassmorphism` e os outros 45 abrem
+direto a visão do estilo.
+
+**Voltar preserva o contexto.** Ao sair de um estilo, o catálogo volta com a busca, os
+filtros, a posição de rolagem e o foco na cartela de origem. Voltar e Avançar do navegador
+percorrem só a navegação intencional — rolar não cria entrada de histórico. Editar o hash
+na barra de endereço também funciona.
+
+**Dentro de um estilo**, as setas de anterior/próximo percorrem o **conjunto de resultados
+filtrado**, não a lista inteira: se você filtrou por "Movimentos Históricos", navega entre
+os oito.
+
+### Atalhos
+
+| Tecla | Ação |
 |---|---|
-| Índice em grade | Primeira tela; clique numa cartela para saltar até a demo |
-| Busca | `/` foca o campo, `Esc` limpa. Ignora acento: *retro* acha **Retrô/Y2K** |
-| Filtro por grupo | Chips A–H na barra do topo, combináveis com a busca |
-| Deep-link | Cada estilo tem âncora própria: `index.html#vaporwave` |
-| Copiar cor | Clique num swatch da paleta e o hex vai para a área de transferência |
-| Copiar receita | `receita css` abre o essencial do estilo, com botão de copiar |
+| `/` | Foca a busca |
+| `Esc` | Limpa a busca, fecha o painel de filtros ou volta ao catálogo |
+| `Tab` | O primeiro alvo é "Pular para o conteúdo", que salta o trilho de filtros |
+| `←` `→` | Alterna entre as abas de ficha, paleta e receita |
 
-## Os 47 estilos
+## Descoberta
 
+**Busca** por nome, tag, grupo ou característica, ignorando acento — *retro* encontra
+**Retrô/Y2K** e **Neo-retrô Anos 70**.
 
-### A · Fundamentos & Minimalismos
+**Dois eixos de filtro, com papéis distintos:**
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 01 | **Minimalismo** ¹ | `#minimalismo` | whitespace, hierarquia, sans-serif light, monocromático |
-| 02 | **Flat Design** ¹ | `#flat-design` | zero skeuomorfismo, cores sólidas, ícones geométricos, blocos de cor |
-| 03 | **Estilo Suíço** | `#estilo-suico` | grid modular, helvetica, assimetria, vermelho |
-| 04 | **Wabi-sabi / Japandi** | `#wabi-sabi` | imperfeição, vazio, hairline, terra |
-| 05 | **Monocromático / Duotone** | `#duotone` | duas cores, mix-blend-mode, screen, multiply |
+- **Grupo** (A–H) é o eixo principal, seleção única. É a taxonomia da coleção.
+- **Características** são complementares e combináveis, em quatro dimensões verificáveis
+  na própria demo: *composição*, *superfície*, *tipografia* e *movimento*.
 
-### B · Sistemas de Produto
+Dentro de uma dimensão os valores somam (OU); entre dimensões restringem (E). Os filtros
+ativos aparecem como pílulas removíveis com a contagem de resultados ao lado. Quando a
+combinação não tem interseção, o estado vazio diz **quais** filtros derrubaram o resultado e
+oferece remover cada um.
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 06 | **Bento Grid** ¹ | `#bento-grid` | módulos span, radius 22px, gap constante, dashboard |
-| 07 | **Material You** | `#material-you` | material 3, superfície tonal, elevação, fab |
-| 08 | **Neumorfismo** | `#neumorfismo` | soft ui, extrusão, dupla sombra, monocromático |
-| 09 | **Claymorphic** ¹ | `#claymorphic` | argila, dupla sombra inset, radius extremo, pastel |
-| 10 | **Dados Densos** | `#dados-densos` | terminal financeiro, bloomberg, tabular nums, densidade |
-| 11 | **Isotype / Infográfico** | `#isotype` | pictograma, neurath, quantidade por repetição, infográfico |
+**Favoritos** ficam no `localStorage` e sobrevivem ao recarregamento. Toda leitura e escrita
+é protegida: navegador com armazenamento bloqueado ou valor corrompido não quebram a
+interface, apenas perdem a persistência.
 
-### C · Luz, Vidro & Superfície
+## As três coisas que cada estilo entrega
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 12 | **Glassmorphism** ¹ | `#glassmorphism` | backdrop-filter, vidro fosco, orbs, blur |
-| 13 | **Liquid Glass** | `#liquid-glass` | vidro líquido, refração, lente, especular |
-| 14 | **Aurora / Mesh Gradient** | `#aurora-mesh` | mesh gradient, saas escuro, borda em gradiente, glow |
-| 15 | **Skeuomorfismo** | `#skeuomorfismo` | textura, linho, couro, bisel |
-| 16 | **Frutiger Aero** | `#frutiger-aero` | aero, vista, glossy, aqua |
+### 1. Prévia responsiva real
 
-### D · Brutalismos & Anti-design
+Os seletores **Desktop (1280px) / Tablet (834px) / Mobile (390px)** mudam o layout de
+verdade. A demo roda dentro de um `<iframe srcdoc>`, então tem viewport próprio e as
+media queries **dela** disparam — o Flat Design passa de 4 para 2 e depois 1 coluna porque
+bate nos breakpoints dele, não porque a imagem encolheu.
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 17 | **Neobrutalismo** ¹ | `#neobrutalismo` | hard shadow, borda 4px, cores saturadas, grid exposto |
-| 18 | **Brutalismo Radical** ¹ | `#brutalismo-radical` | tipo esticado, assimetria, link azul default, sem grid confortável |
-| 19 | **Anti-design / Web 1.0** | `#anti-design` | geocities, tabela, comic sans, marquee |
-| 20 | **Punk / Fanzine** | `#punk-fanzine` | xerox, ransom note, colagem, fita crepe |
+O iframe também resolve isolamento: CSS não vaza entre estilos, IDs não colidem entre
+instâncias (`kinRoot`, `psyg1`), eventos não interferem, e fechar a visão descarta
+listeners e `requestAnimationFrame` junto com o elemento.
 
-### E · Tipografia & Editorial
+### 2. Receita executável
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 21 | **Editorial de Revista** | `#editorial` | capitular, multi-coluna, serif display, olho |
-| 22 | **Jornal / Broadsheet** | `#jornal` | manchete condensada, papel jornal, colunas justificadas, olho |
-| 23 | **Luxo / Alta-costura** | `#luxo` | letterspacing, serif fina, dourado, preto |
-| 24 | **Terminal / ASCII** | `#terminal-ascii` | monoespaçado, fósforo verde, cursor, box drawing |
-| 25 | **Design Cinético** ¹ | `#cinetico` | split por caractere, repulsão do ponteiro, scroll velocity, parallax |
-| 26 | **Gótico / Blackletter** | `#blackletter` | blackletter, fraktur, capitular rubricada, pergaminho |
+A receita **não é transcrita à mão — é gerada** do mesmo CSS que acabou de renderizar a
+prévia. Vem em blocos separados (Fontes, HTML, CSS, JavaScript), cada um com cópia própria,
+mais um botão para o arquivo `.html` completo. O exemplo inclui doctype, `<link>` só das
+famílias que aquele estilo usa, os `@keyframes` que ele referencia, o CSS da fatia, o markup
+e o JS quando existe.
 
-### F · Movimentos Históricos
+> Na versão anterior as receitas eram trechos escritos à mão e **não executavam**: 15 das 47
+> declaravam variáveis CSS fora de qualquer seletor, 5 usavam `animation:` sem incluir os
+> `@keyframes`, e 7 tinham SVG abreviado com reticências. Gerar da fonte elimina a classe
+> inteira desses erros.
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 27 | **Bauhaus** | `#bauhaus` | primárias, círculo quadrado triângulo, geométrico, weimar |
-| 28 | **Art Déco** | `#art-deco` | dourado, simetria, leque, chevron |
-| 29 | **Art Nouveau** | `#art-nouveau` | curva whiplash, floral, orgânico, mucha |
-| 30 | **Construtivismo Russo** | `#construtivismo` | diagonal, vermelho e preto, rodchenko, cartaz |
-| 31 | **Memphis 80s** | `#memphis` | sottsass, confete, squiggle, terrazzo |
-| 32 | **Neo-retrô Anos 70** | `#neo-70s` | mostarda, ferrugem, abacate, arco |
-| 33 | **Psicodélico Anos 60** | `#psicodelico` | arco-íris, textPath, tipo ondulado, swirl |
-| 34 | **Pop Art / Halftone** | `#pop-art` | ben-day, halftone, quadrinho, balão de fala |
+### 3. Ficha de direção de arte
 
-### G · Nostalgia Digital
+Uma ficha por estilo, com princípios, composição, hierarquia tipográfica, espaçamento,
+papéis das cores, superfície e profundidade, movimento, adaptação mobile e aplicações
+adequadas. Um campo final separa **o que é escolha daquele exemplo** do **que é regra geral
+do estilo** — para não inventar proibição nem afirmação histórica.
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 35 | **Retrô / Y2K** ¹ | `#y2k` | scanline, crt, grid em perspectiva, pixel font |
-| 36 | **Vaporwave** | `#vaporwave` | pôr do sol, grid, letterspacing, pastel neon |
-| 37 | **Acid / Chrome Líquido** | `#acid-chrome` | chrome, metálico, conic-gradient, ácido |
-| 38 | **Ciberpunk** ¹ | `#ciberpunk` | neon, glitch, clip-path chanfro, hud |
-| 39 | **HUD Espacial / Sci-Fi** | `#hud-espacial` | hud, cantoneira, anel orbital, spatial ui |
-| 40 | **Isométrico / 3D** | `#isometrico` | isométrico, rotateX rotateZ, preserve-3d, cubo |
+O botão **Copiar ficha como contexto de IA** exporta tudo em texto estruturado, com tokens
+concretos (hex, famílias, espessuras observadas), regras acionáveis e o exemplo mínimo
+funcional embutido. É material para colar num prompt de Claude ou Codex, não uma lista de
+adjetivos.
 
-### H · Orgânicos & Artesanais
+## Acessibilidade e movimento
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 41 | **Maximalismo Tátil** ¹ | `#maximalismo-tatil` | grão, formas orgânicas, serif + manuscrita, rotação irregular |
-| 42 | **Ilustração Flat Orgânica** ¹ | `#flat-organica` | svg assimétrico, grão, terracota, oliva |
-| 43 | **Risografia** | `#risografia` | riso, tinta spot, desalinho de registro, multiply |
-| 44 | **Corporate Memphis** | `#corporate-memphis` | alegria, humano blob, membros desproporcionais, flat |
-| 45 | **Cottagecore / Botânico** | `#cottagecore` | floral, guirlanda, sálvia, rosa seco |
-| 46 | **Solarpunk** | `#solarpunk` | eco-futurismo, solar, verde e dourado, otimista |
-| 47 | **Paper Cut / Camadas** | `#paper-cut` | papel recortado, camadas, drop-shadow, profundidade suave |
-¹ Os 12 estilos herdados dos dois labs originais (`design-styles-lab.html` e
-`design-styles-lab-02.html`), migrados sem reescrita de CSS.
+- Todo controle tem nome acessível. Os botões de cor anunciam ação e valor
+  (`Copiar cor #2b1055`); nas cartelas as amostras são decorativas (`aria-hidden`).
+- Foco visível em todo alvo, `aria-pressed` nos filtros e alternadores, abas com
+  `role="tablist"` e navegação por seta, e uma região `aria-live` que anuncia cópias,
+  contagem de resultados e troca de visão.
+- **Controle global de pausa** no topo. `prefers-reduced-motion` é respeitado desde o
+  primeiro pintar e acompanhado em tempo real por `matchMedia`; a preferência do sistema
+  **tem precedência** sobre a reprodução automática, e nesse caso o botão fica desabilitado
+  e explica o motivo.
+- A pausa cobre animação CSS, **pseudo-elementos** (que `*` sozinho não alcança), rAF e
+  rolagem suave, e é propagada aos iframes por `postMessage`.
+- As miniaturas do catálogo nunca animam.
 
-## Como isso é construído
+Onde a limitação faz parte do exemplo, a ficha declara: o Anti-design / Web 1.0 pisca e
+reprova em contraste porque está citando 1998, e a ficha diz isso e recomenda corrigir os
+dois pontos em uso real.
 
-**Um arquivo, três blocos.** `<head>` com um único `<link>` de fontes → `<style>` com
-o shell, os 47 estilos e os breakpoints → `<body>` com a barra, o catálogo, as 47
-seções e um `<script>` em IIFE.
+## Desempenho
 
-**Os metadados moram na seção, e em nenhum outro lugar.** O índice, a busca, o filtro
-e as contagens de grupo são gerados do DOM no carregamento — não existe uma lista
-paralela em JavaScript para dessincronizar. É por isso que adicionar um estilo é só
-escrever a seção.
+- **A interface usa a pilha de fontes do sistema** e pinta sem depender da rede. As 19
+  famílias servem às demos e são carregadas sem bloquear a renderização; com o Google Fonts
+  indisponível a biblioteca continua utilizável nos fallbacks.
+- As miniaturas são clones reais da demo, escalados, congelados (`animation:none`) e
+  inertes, montados sob demanda. Só as próximas da janela existem no DOM.
+- O observador de montagem usa `rootMargin` em **pixels derivados da altura da janela**,
+  recalculado no `resize`. Porcentagem ali é ambígua: o texto da spec do W3C resolve contra
+  a *largura*, os navegadores resolvem top/bottom contra a *altura*
+  ([w3c/IntersectionObserver#391](https://github.com/w3c/IntersectionObserver/issues/391)).
+- Não há observador de seção ativa por rolagem — com catálogo e visão individual separados,
+  ele deixou de ser necessário.
+- Abrir e fechar visões não acumula: iframes, listeners e rAF são descartados no fechamento.
 
-**Animação só roda na seção visível.** Com 47 demos animando ao mesmo tempo o scroll
-travaria. Um `IntersectionObserver` marca `.is-live` no que está perto da viewport, e
-o CSS pausa o resto:
+## Estrutura do arquivo
 
-```css
-html.js .lab-section:not(.is-live) *,
-html.js .lab-section:not(.is-live) *::before,
-html.js .lab-section:not(.is-live) *::after{animation-play-state:paused!important}
+```
+<head>
+  <style>                    interface (.dsl-*, prefixada, não encosta nas demos)
+  <style data-css="_base">   ambiente comum das demos + keyframes compartilhados
+  <style data-css="{slug}">  × 47 — a fatia de CSS de cada estilo
+<body>
+  barra, trilho de filtros, <main> (as três visões renderizam aqui)
+  <script type="application/json" id="dsl-fichas">    47 fichas
+  <script type="application/json" id="dsl-facetas">   vocabulário das características
+  <template data-style="{slug}"> × 47                 markup da demo + metadados
+  <script>                                            a aplicação inteira
 ```
 
-Os pseudo-elementos precisam estar na regra: `*` não os alcança, e sem eles o glitch
-do Ciberpunk e o pulse do HUD continuam rodando fora da tela. O `requestAnimationFrame`
-do demo cinético também só existe enquanto aquela seção está por perto, e
-`prefers-reduced-motion: reduce` desliga tudo. A classe `.js` é adicionada pelo próprio
-script: sem JavaScript nada é pausado, e o arquivo continua animando.
+A fatia `data-css="{slug}"` é **fonte única** de três coisas: a miniatura, o iframe da
+prévia e a receita copiável. É isso que garante que o código copiado executa — ele é o mesmo
+que renderizou na tela.
 
-**Sangramento é intencional.** Vários demos posicionam decoração fora dos limites
-(orbs, blobs, anéis, o tipo esticado do Brutalismo Radical). A `.frame` tem
-`overflow:hidden` e recorta — é o enquadramento, não um bug.
+### Adicionar o 48º estilo
 
-## Adicionar o 48º estilo
-
-Escreva o CSS num namespace próprio e acrescente uma seção seguindo este contrato.
-Nada mais precisa ser tocado:
+Acrescente a fatia de CSS e o template. Nada mais precisa ser tocado: catálogo, busca,
+filtros, contagens, comparação e receita são todos derivados do DOM.
 
 ```html
-<section class="lab-section" id="meu-estilo"
-         data-slug="meu-estilo" data-group="A" data-name="Meu Estilo"
-         data-tags="tag, outra tag, mais uma">
-  <div class="lab-head">
-    <div class="lab-head__l">
-      <span class="lab-head__id">48 · FUNDAMENTOS</span>
-      <h2>Meu Estilo</h2>
-      <div class="lab-tags"><span class="lab-tag">Tag</span></div>
-      <div class="lab-palette">
-        <button class="sw" data-hex="#112233" style="background:#112233"></button>
-      </div>
-    </div>
-    <div class="lab-head__r">
-      <p>O que define o estilo, e qual é o truque técnico dele.</p>
-      <details class="recipe"><summary>receita css</summary><div class="recipe__body">
-        <button class="recipe__copy">copiar</button>
-        <pre class="recipe__code">/* o mínimo que reproduz o estilo */</pre>
-      </div></details>
-    </div>
-  </div>
-  <div class="frame">
-    <div class="frame__chrome">
-      <i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i>
-      <div class="frame__url">meusite.com</div>
-    </div>
-    <div class="frame__body meu">…a demo…</div>
-  </div>
-</section>
+<style data-css="meu-estilo">
+  .meu{ /* só regras com o namespace do estilo */ }
+  @media(max-width:760px){ .meu__grid{grid-template-columns:1fr} }
+</style>
+
+<template data-style="meu-estilo"
+          data-name="Meu Estilo" data-group="A"
+          data-root="meu" data-url="exemplo.com"
+          data-tags="tag, outra tag"
+          data-desc="Uma frase sobre o que define o estilo."
+          data-palette="#112233,#445566"
+          data-facets="composicao:grade superficie:plana tipografia:sans-neutra movimento:estatico"
+          data-fonts="Inter" data-fontlink="https://fonts.googleapis.com/css2?family=Inter&display=swap">
+  <nav class="meu__nav">…</nav>
+</template>
 ```
+
+E acrescente a ficha correspondente em `#dsl-fichas`, com as mesmas chaves das outras.
 
 Regras que o contrato assume:
 
-- `id` e `data-slug` são iguais — é o que faz o deep-link funcionar
-- `data-group` é uma letra de `A` a `H`, e o divisor daquele grupo já existe no documento
-- a paleta usa `data-hex` (o clique copia esse valor, não o `style`)
-- se o demo tiver navegação em `<ul>`, acrescente o seletor à lista que some no
-  `@media(max-width:760px)` — senão ela estoura a moldura no celular
-- o demo não carrega imagem: só CSS, SVG inline e `data:` URI
-
-## Fontes
-
-Dezenove famílias num único pedido ao Google Fonts, com `display=swap`. É o único
-recurso externo do arquivo. O Anti-design / Web 1.0 pede
-`"Comic Sans MS", "Comic Neue", cursive` de propósito, para pegar a fonte do sistema
-antes de baixar qualquer coisa.
+- `data-root` é a classe raiz da demo; o markup do template entra dentro de
+  `<div class="frame__body {data-root}">`
+- `data-facets` usa o vocabulário declarado em `#dsl-facetas` — valor fora dele não aparece
+  em nenhum filtro
+- todo namespace é exclusivo do estilo. Se um `@keyframes` for usado por mais de um estilo,
+  ele pertence a `data-css="_base"` — senão a demo funciona na biblioteca e quebra na
+  receita copiada
+- a demo não carrega imagem: só CSS, SVG inline e `data:` URI
 
 ## Verificação
 
-O arquivo foi validado em duas camadas:
+Reproduza no navegador, com o arquivo aberto do disco (`file://`). Cada item abaixo foi
+verificado nesta entrega.
 
-- **estrutural** — árvore de tags fechada, chaves do `<style>` balanceadas, 47 seções,
-  `data-slug` únicos e iguais ao `id`, contrato completo em toda seção, nenhum recurso
-  externo fora do Google Fonts
-- **runtime**, em Chromium — zero erro de script; catálogo com 47 cartelas; busca sem
-  acento; filtro por grupo; copiar hex e receita pela área de transferência; deep-link;
-  nenhuma animação rodando fora da tela; e nenhum conteúdo em fluxo vazando da moldura
-  em 1440px, 768px e 390px
+**Integridade** — 47 cartelas no catálogo; todo template com a fatia de CSS correspondente;
+47 fichas; toda faceta dentro do vocabulário.
+
+**Busca e filtros** — digite `retro`: devem aparecer Retrô/Y2K e Neo-retrô. Selecione grupo
+F e a característica *Monoespaçada*: o resultado fica vazio e o aviso oferece remover cada
+filtro; remover o grupo traz 3 resultados de volta.
+
+**Favoritos** — favorite dois estilos e recarregue: continuam marcados. Em seguida rode
+`localStorage.setItem('dsl.fav','{quebrado')` no console e recarregue: a biblioteca abre
+normalmente.
+
+**Navegação** — abra `index.html#glassmorphism` direto; use anterior/próximo; use Voltar e
+Avançar do navegador; volte ao catálogo e confira que busca, filtros, rolagem e foco
+voltaram. Clique num link cenográfico dentro de uma demo: a rota da biblioteca não muda.
+
+**Prévia responsiva** — em um estilo com grade (Flat Design), alterne Desktop/Tablet/Mobile
+e confirme que o número de colunas muda: 4 → 2 → 1.
+
+**Comparação** — selecione três estilos; o quarto é recusado com aviso de limite; remova um;
+confira a tabela de critérios.
+
+**Acessibilidade** — percorra a página só com Tab: o primeiro alvo é "Pular para o
+conteúdo", e o percurso completo cobre barra, busca, filtros e cartelas. Contraste medido
+sobre o fundo da interface: texto principal 16,1:1, secundário 8,1:1, terciário 5,1:1,
+acento 8,2:1 — todos acima de 4,5:1.
+
+**Movimento** — pause pelo botão do topo e confirme que a demo aberta congela, inclusive
+dentro do iframe; ative movimento reduzido no sistema e recarregue: nada anima e o botão
+fica desabilitado.
+
+**Robustez** — sem erro de console; sem vazamento horizontal em 1440, 834 e 390px, com
+controles acima de 24px em todos; com o Google Fonts bloqueado a biblioteca segue
+utilizável.
+
+### O que não foi validado
+
+A execução isolada das 47 receitas geradas (abrir cada `.html` exportado num arquivo
+separado e comparar com a prévia) **não foi executada** nesta entrega. O que sustenta a
+receita é que ela usa exatamente o mesmo caminho de código do iframe da prévia, que está
+verificado — mas isso é inferência, não medição. É o primeiro teste a rodar numa próxima
+passagem.
