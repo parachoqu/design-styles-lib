@@ -1,8 +1,9 @@
 # Design Styles Lib
 
 Biblioteca navegável de **47 estilos de web design**, cada um com uma demo funcional
-renderizada no navegador — não um print. Tudo vive num único arquivo autocontido:
-`index.html`, sem build, sem dependência, sem imagem externa.
+renderizada no navegador — não um print. Duas páginas estáticas autocontidas:
+`index.html` para explorar a biblioteca e `combinador.html` para criar sistemas de
+design a partir dela, sem build, sem dependência de aplicação e sem imagem externa.
 
 Abra o arquivo no navegador. É só isso.
 
@@ -25,6 +26,39 @@ xdg-open index.html    # Linux
 | Âncoras antigas e telas menores | `index.html#vaporwave` mantém o documento contínuo; abaixo de 1024px, `#style=vaporwave` vira `#vaporwave` |
 | Copiar cor | Clique num swatch da paleta e o hex vai para a área de transferência |
 | Copiar receita | `receita css` abre o essencial do estilo, com botão de copiar |
+| Explorar as demos | Seletores, filtros e controles alteram conteúdo e estado localmente; não acionam serviços reais |
+| Combinar estilos | O link no topo abre o combinador, com até três estilos e tokens CSS copiáveis |
+
+## Combinar sistemas de design
+
+Abra **Combinar estilos** na barra do catálogo ou abra `combinador.html` diretamente.
+Busque por nome ou tag, filtre pelos grupos A–H e selecione de um a três dos 47
+estilos, sem repetições. A primeira escolha é a **Base**; a segunda influencia
+**Tom e material**; a terceira acrescenta **Detalhe e movimento**. Ao remover a
+base, a próxima escolha assume esse papel.
+
+O resultado muda imediatamente e pode ser visto como **Painel de componentes** ou
+**Landing page**. As duas prévias usam o mesmo sistema, e a origem das escolhas
+visuais aparece junto do resultado. **Copiar tokens** exporta as variáveis CSS de
+cor, tipografia, espaçamento, forma, elevação e movimento.
+
+A composição é local e determinística: cada estilo tem um perfil curado, e os
+papéis definem como suas características entram no sistema. Não há geração por IA,
+contas, histórico salvo, armazenamento ou servidor. O combinador não tenta mesclar
+o CSS completo das demos.
+
+**Compartilhar** usa o compartilhamento nativo quando disponível ou copia o link.
+As escolhas e a prévia ficam na URL:
+
+```text
+combinador.html?base=minimalismo&influence=glassmorphism&influence=bauhaus&preview=components
+```
+
+`preview` aceita `components` ou `landing`; os parâmetros `influence` são opcionais
+e seguem a ordem dos papéis. Abrir o link reconstrói a combinação. As duas páginas
+funcionam em `file://`, mas um link de arquivo só é útil em outro ambiente com o
+mesmo caminho local. Para compartilhar com outras pessoas, use a URL de uma cópia
+servida por HTTP ou HTTPS.
 
 ## Os 47 estilos
 
@@ -108,26 +142,46 @@ xdg-open index.html    # Linux
 
 | # | Estilo | Âncora | Tags |
 |---|--------|--------|------|
-| 41 | **Maximalismo Tátil** ¹ | `#maximalismo-tatil` | grão, formas orgânicas, serif + manuscrita, rotação irregular |
-| 42 | **Ilustração Flat Orgânica** ¹ | `#flat-organica` | svg assimétrico, grão, terracota, oliva |
-| 43 | **Risografia** | `#risografia` | riso, tinta spot, desalinho de registro, multiply |
-| 44 | **Corporate Memphis** | `#corporate-memphis` | alegria, humano blob, membros desproporcionais, flat |
-| 45 | **Cottagecore / Botânico** | `#cottagecore` | floral, guirlanda, sálvia, rosa seco |
-| 46 | **Solarpunk** | `#solarpunk` | eco-futurismo, solar, verde e dourado, otimista |
-| 47 | **Paper Cut / Camadas** | `#paper-cut` | papel recortado, camadas, drop-shadow, profundidade suave |
-¹ Os 12 estilos herdados dos dois labs originais (`design-styles-lab.html` e
-`design-styles-lab-02.html`), migrados sem reescrita de CSS.
+| 41 | **Maximalismo Tátil** ¹ | `#maximalismo-tatil` | papel de algodão, argila fosca, pigmento natural, tecido |
+| 42 | **Ilustração Flat Orgânica** ¹ | `#flat-organica` | svg autoral, silhueta orgânica, cor chapada, canteiros |
+| 43 | **Risografia** | `#risografia` | riso, tinta spot, separações, sobreimpressão |
+| 44 | **Corporate Memphis** | `#corporate-memphis` | alegria, proporções expressivas, figuras geométricas, flat |
+| 45 | **Cottagecore / Botânico** | `#cottagecore` | botânico, sazonalidade, horta doméstica, papel |
+| 46 | **Solarpunk** | `#solarpunk` | eco-futurismo, cooperativa, energia solar, ciclo da água |
+| 47 | **Paper Cut / Camadas** | `#paper-cut` | papel recortado, camadas opacas, luz direcional, recorte interno |
+¹ Os 12 estilos originários dos dois labs anteriores (`design-styles-lab.html` e
+`design-styles-lab-02.html`), aprofundados nesta biblioteca.
 
 ## Como isso é construído
 
-**Um arquivo, três blocos.** `<head>` com um único `<link>` de fontes → `<style>` com
+**Catálogo autocontido, três blocos.** `index.html` tem `<head>` com um único `<link>` de fontes → `<style>` com
 o shell, os 47 estilos e os breakpoints → `<body>` com a barra, o catálogo, as 47
 seções e um `<script>` em IIFE.
 
-**Os metadados moram na seção, e em nenhum outro lugar.** O índice, a busca, o filtro
-e as contagens de grupo são gerados do DOM no carregamento — não existe uma lista
-paralela em JavaScript para dessincronizar. É por isso que adicionar um estilo é só
-escrever a seção.
+**O DOM é a fonte de dados do catálogo.** O índice, a busca, o filtro e as contagens
+de grupo são gerados das seções no carregamento, sem uma lista paralela no script
+do catálogo.
+
+**Interações locais, uma raiz por demo.** A `.frame__body` original usa
+`data-demo="<slug>"`, e seus controles funcionais usam `data-act`. O registro
+`demo(slug, setup)` recebe essa raiz e inicializa seletores, listeners e estados
+somente nela, depois da montagem do catálogo. Os botões com `data-act` preservam
+seu próprio feedback; formulários demonstrativos não são enviados. As interações
+são reversíveis e locais, sem serviços reais ou persistência.
+
+**As miniaturas guardam o estado inicial.** Cada demo já contém uma composição
+completa no HTML/CSS antes de receber listeners. O catálogo clona esse conteúdo
+sem inicializar outra demo. `localizeIds(clone, i)` renomeia os IDs internos com
+um sufixo por cartão e reescreve suas referências, incluindo `url(#…)`, `href`,
+`for` e atributos ARIA. Assim, gradientes, máscaras, recortes e rótulos continuam
+ligados aos elementos da própria miniatura.
+
+**O combinador tem seu próprio adaptador de perfis.** `combinador.html` reúne o
+shell, as prévias, o motor de composição e um registro explícito dos 47 perfis,
+mantendo a abertura por `file://` sem buscar outro arquivo. Os metadados desse
+registro correspondem às seções de `index.html`; os atributos visuais são curados
+para cada papel. Os testes do combinador verificam a correspondência de metadados
+entre as duas páginas.
 
 **Duas formas de navegar, as mesmas seções.** A partir de 1024px, o endereço sem
 fragmento abre o catálogo e `#style=<slug>` mostra uma única seção, com a demo acima
@@ -152,11 +206,14 @@ html.js .lab-section:not(.is-live) *::before,
 html.js .lab-section:not(.is-live) *::after{animation-play-state:paused!important}
 ```
 
-Os pseudo-elementos precisam estar na regra: `*` não os alcança, e sem eles o glitch
-do Ciberpunk e o pulse do HUD continuam rodando fora da tela. O `requestAnimationFrame`
-do demo cinético também só existe enquanto aquela seção está por perto, e
-`prefers-reduced-motion: reduce` desliga tudo. A classe `.js` é adicionada pelo próprio
-script: sem JavaScript nada é pausado, e o arquivo continua animando.
+Os pseudo-elementos precisam estar na regra: `*` não os alcança. O registro
+`onLive(slug, callback)` conecta timers e loops ao estado de visibilidade da demo;
+o `requestAnimationFrame` cinético também respeita esse estado. Voltar ao catálogo
+suspende as demos. `onMotion(callback)` recebe a preferência de movimento reduzido
+na inicialização e quando ela muda durante a sessão. Movimentos contínuos têm
+controle local de pausa, e a composição estática continua completa. A classe `.js`
+é adicionada pelo script; o gate por visibilidade depende dele, enquanto a regra
+CSS de movimento reduzido também atua sem JavaScript.
 
 **Sangramento é intencional.** Vários demos posicionam decoração fora dos limites
 (orbs, blobs, anéis, o tipo esticado do Brutalismo Radical). A `.frame` tem
@@ -165,7 +222,10 @@ script: sem JavaScript nada é pausado, e o arquivo continua animando.
 ## Adicionar o 48º estilo
 
 Escreva o CSS num namespace próprio e acrescente uma seção seguindo este contrato.
-Nada mais precisa ser tocado:
+O catálogo a reconhece automaticamente. Para também disponibilizar o estilo no
+combinador, acrescente seu perfil curado ao registro de `combinador.html` com os
+mesmos slug, nome, grupo e tags, e atualize as contagens documentadas e verificadas
+pelos testes:
 
 ```html
 <section class="lab-section" id="meu-estilo"
@@ -193,9 +253,26 @@ Nada mais precisa ser tocado:
       <i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i>
       <div class="frame__url">meusite.com</div>
     </div>
-    <div class="frame__body meu">…a demo…</div>
+    <div class="frame__body meu" data-demo="meu-estilo">
+      <button type="button" data-act="meu-detalhe" aria-pressed="false">Ver detalhe</button>
+      <p data-meu-status role="status">Visão geral da peça.</p>
+    </div>
   </div>
 </section>
+```
+
+No registro existente, antes da inicialização das demos:
+
+```js
+demo('meu-estilo', function(root){
+  var button = root.querySelector('[data-act="meu-detalhe"]');
+  var status = root.querySelector('[data-meu-status]');
+  on(button, 'click', function(){
+    var selected = button.getAttribute('aria-pressed') !== 'true';
+    button.setAttribute('aria-pressed', String(selected));
+    setText(status, selected ? 'Detalhe do material da peça.' : 'Visão geral da peça.');
+  });
+});
 ```
 
 Regras que o contrato assume:
@@ -203,6 +280,10 @@ Regras que o contrato assume:
 - `id` e `data-slug` são iguais — é o que faz o deep-link funcionar
 - `data-group` é uma letra de `A` a `H`, e o divisor daquele grupo já existe no documento
 - a paleta usa `data-hex` (o clique copia esse valor, não o `style`)
+- seletores e listeners de interação ficam presos à raiz recebida por `demo()`;
+  use `data-act` nos controles e mantenha o estado inicial completo no HTML
+- timers e loops novos usam `onLive()` e `onMotion()`; movimento contínuo oferece
+  pausa, e os estilos visuais usam classes próprias que também funcionam nos clones
 - se o demo tiver navegação em `<ul>`, acrescente o seletor à lista que some no
   `@media(max-width:760px)` — senão ela estoura a moldura no celular
 - o demo não carrega imagem: só CSS, SVG inline e `data:` URI
@@ -239,6 +320,20 @@ HTTP, informe o endereço em `NAV_TEST_URL`:
 
 ```sh
 NAV_TEST_URL=http://127.0.0.1:8000/index.html node tests/navigation.cjs
+```
+
+A suíte dedicada do combinador verifica os 47 perfis, a correspondência com os
+metadados do catálogo, seleções de um a três estilos, remoção e promoção da base,
+restauração pela URL, prévias, cópia, compartilhamento e interação responsiva:
+
+```sh
+node tests/combinador.cjs
+```
+
+Por padrão, ela abre `combinador.html` por `file://`. Para uma versão servida:
+
+```sh
+MIXER_TEST_URL=http://127.0.0.1:8000/combinador.html node tests/combinador.cjs
 ```
 
 `NAV_BASELINE=/caminho/para/index.html` é opcional e permite comparar as 47 seções e

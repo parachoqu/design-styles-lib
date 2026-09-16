@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combinador — Design Styles Lib</title>
+<meta name="description" content="Combine até três estilos e explore um novo sistema de design: prévias de componentes e landing page, tokens CSS e link compartilhável.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Caveat:wght@400;700&family=Comic+Neue:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400;1,9..144,600&family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;700&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@400;600;800;900&family=Oswald:wght@400;500;600;700&family=Pirata+One&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Poiret+One&family=Poppins:wght@400;500;600;700;800&family=Press+Start+2P&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#0b0b0d;color:#e9e9ec;font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+button,a,input,select,summary{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed}
+a{color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:2px solid #c4b5fd;outline-offset:4px}
+::selection{background:#8b5cf6;color:#fff}
+.mixer-header{border-bottom:1px solid #28282f;background:#101014}
+.mixer-header__inner{max-width:1460px;margin:auto;padding:0 32px;min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.mixer-brand{font-size:13px;font-weight:650;letter-spacing:-.025em;display:flex;align-items:center;gap:10px;text-decoration:none}
+.mixer-mark{height:13px;width:13px;background:#a78bfa;border-radius:4px;box-shadow:5px 5px 0 #44346e;margin-right:5px}
+.mixer-back{font-size:12px;color:#b5b5c0;text-underline-offset:5px}
+.mixer-main{max-width:1460px;margin:auto;padding:40px 32px 64px}
+.mixer-intro{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:30px}
+.mixer-intro h1{font-size:clamp(28px,3.6vw,46px);letter-spacing:-.055em;line-height:1.12;margin:0 0 12px;font-weight:600}
+.mixer-intro p{max-width:610px;color:#a6a6b3;font-size:14px;line-height:1.7;margin:0}
+.mixer-count{color:#bcb1d7;font-size:12px;white-space:nowrap}
+.mixer-recipe{border:0;padding:0;margin:0 0 26px;min-width:0}
+.mixer-recipe legend{font-size:12px;color:#b5b5c0;margin-bottom:12px;padding:0}
+.mixer-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.mixer-slot{position:relative;border:1px dashed #3a3a43;border-radius:12px;min-height:104px;padding:15px 44px 15px 18px;background:#101014;min-width:0}
+.mixer-slot.is-filled{border-style:solid;border-color:#514368;background:#17131f}
+.mixer-slot__role{font-size:11px;color:#ae9ecb;display:block;margin-bottom:9px}
+.mixer-slot strong{font-size:14px;line-height:1.4;font-weight:550;display:block}
+.mixer-slot p{font-size:11px;line-height:1.5;color:#9e9daa;margin:6px 0 0}
+.mixer-remove{position:absolute;right:9px;top:9px;width:32px;height:32px;border:0;border-radius:7px;background:transparent;color:#c4b5da;font-size:21px}
+.mixer-remove:hover{background:#30263e}
+.mixer-workspace{display:grid;grid-template-columns:310px minmax(0,1fr);align-items:start;gap:28px}
+.mixer-selector{border:1px solid #2b2b33;border-radius:12px;background:#111115;min-width:0;overflow:hidden}
+.mixer-selector__head{padding:18px 16px 14px;border-bottom:1px solid #292930}
+.mixer-selector__row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.mixer-selector h2{font-size:14px;font-weight:550;margin:0}
+.mixer-reset{font-size:11px;color:#bca7e4;background:none;border:0;padding:5px;text-decoration:underline;text-underline-offset:3px}
+.mixer-reset:disabled{color:#777782;text-decoration:none}
+.mixer-label{display:block;color:#b8b8c2;font-size:11px;margin-bottom:7px}
+.mixer-input,.mixer-select{width:100%;min-height:40px;border:1px solid #3b3b46;border-radius:7px;background:#1a1a20;color:#ececf2;padding:9px 11px;font-size:12px;min-width:0}
+.mixer-input::placeholder{color:#92929f}
+.mixer-input:focus,.mixer-select:focus{border-color:#a78bfa}
+.mixer-filter{margin-top:12px;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center}
+.mixer-filter .mixer-label{margin:0}
+.mixer-filter .mixer-select{font-size:11px}
+.mixer-results-count{font-size:11px;color:#a0a0ae;margin:13px 0 0}
+.mixer-options{max-height:540px;overflow-y:auto;padding:6px;scrollbar-width:thin;scrollbar-color:#474052 #17171c;overscroll-behavior:contain}
+.mixer-option{width:100%;border:1px solid transparent;border-radius:8px;text-align:left;color:#e5e5eb;background:transparent;padding:12px 10px;display:flex;align-items:center;gap:12px;transition:background .15s,border-color .15s}
+.mixer-option:hover{background:#202027}
+.mixer-option[aria-pressed=true]{background:#292035;border-color:#70518e}
+.mixer-option:disabled{opacity:.45}
+.mixer-option__swatches{display:grid;grid-template-columns:repeat(2,14px);gap:3px;flex:none}
+.mixer-option__swatches i{height:14px;border-radius:3px;border:1px solid #ffffff26}
+.mixer-option__copy{min-width:0;flex:1}
+.mixer-option__copy strong{display:block;font-size:12px;font-weight:550;line-height:1.5}
+.mixer-option__copy small{font-size:10px;line-height:1.6;color:#aaa9b7;display:block;margin-top:3px}
+.mixer-option__check{font-size:16px;color:#c4b5fd;flex:none}
+.mixer-no-results{padding:20px 12px;color:#b8b8c5;font-size:12px;line-height:1.7}
+.mixer-limit{font-size:11px;line-height:1.6;color:#aaa9b7;padding:12px 16px;margin:0;border-top:1px solid #292930}
+.mixer-output{min-width:0}
+.mixer-empty{min-height:490px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #292930;border-radius:12px;padding:44px 24px;background:radial-gradient(ellipse at 50% 25%,#241b343f,transparent 70%)}
+.mixer-empty__inner{max-width:440px}
+.mixer-empty h2{font-size:25px;letter-spacing:-.04em;font-weight:550;margin:30px 0 14px}
+.mixer-empty p{font-size:13px;color:#a9a8b6;line-height:1.8;margin:0 auto 24px;max-width:340px}
+.mixer-diagram{position:relative;margin:auto;width:184px;height:110px}
+.mixer-diagram i{position:absolute;width:76px;height:94px;border:1px solid #8b75a9;border-radius:12px;top:8px;background:#211a2e}
+.mixer-diagram i:nth-child(1){left:8px;transform:rotate(-14deg);background:repeating-linear-gradient(0deg,#292334 0 14px,#534369 14px 15px)}
+.mixer-diagram i:nth-child(2){left:53px;top:0;background:#574477}
+.mixer-diagram i:nth-child(2)::after{content:'';display:block;width:36px;height:36px;border-radius:50%;margin:27px auto;background:#baa4df}
+.mixer-diagram i:nth-child(3){left:98px;transform:rotate(14deg);background:radial-gradient(#ab92d0 1px,transparent 1px) 0 0/9px 9px,#292034}
+.mixer-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#26202f;border:1px solid #665378;color:#e1d6f2;border-radius:7px;padding:10px 14px;min-height:40px;font-size:12px;font-weight:500;text-decoration:none}
+.mixer-button:hover{background:#382b46;border-color:#b494da}
+.mixer-button--primary{background:#c4b5fd;border-color:#c4b5fd;color:#211536}
+.mixer-button--primary:hover{background:#d7ccff;border-color:#d7ccff}
+.mixer-result-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 15px}
+.mixer-result-head h2{font-size:18px;letter-spacing:-.035em;font-weight:600;margin:0 0 5px}
+.mixer-result-head p{font-size:11px;color:#aaa4b7;margin:0;line-height:1.5}
+.mixer-preview-switch{display:flex;background:#17171d;padding:4px;border:1px solid #34313c;border-radius:8px;gap:3px;flex:none}
+.mixer-preview-switch button{border:0;background:transparent;color:#a9a9b7;border-radius:5px;padding:8px 11px;font-size:11px;min-height:34px}
+.mixer-preview-switch button[aria-pressed=true]{background:#e1daec;color:#261b37}
+.mixer-browser{border:1px solid #45404e;border-radius:12px;overflow:hidden}
+.mixer-browser-bar{background:#1b1920;min-height:35px;display:flex;align-items:center;gap:5px;padding:0 12px;border-bottom:1px solid #39333f}
+.mixer-browser-bar i{width:6px;height:6px;border-radius:50%;background:#5d5668}
+.mixer-browser-bar span{font-size:10px;color:#b5a9c6;margin:auto}
+.mixer-preview-note{font-size:11px;color:#9998a7;margin:10px 0 22px;line-height:1.6}
+.mixer-details{border-top:1px solid #2b2b33;padding-top:21px;margin-top:22px}
+.mixer-details h3{font-size:14px;font-weight:550;margin:0 0 16px}
+.mixer-origins{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.mixer-origin{border-left:2px solid #65507e;padding-left:12px;min-width:0}
+.mixer-origin small{color:#b9a4d8;font-size:10px;display:block;margin-bottom:7px}
+.mixer-origin strong{font-size:12px;display:block;line-height:1.5;font-weight:550}
+.mixer-origin p{font-size:11px;color:#aaa9b7;line-height:1.7;margin:6px 0 0}
+.mixer-token-swatches{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.mixer-token-swatch{min-width:0}
+.mixer-token-swatch i{display:block;height:34px;border:1px solid #ffffff26;border-radius:5px;margin-bottom:7px}
+.mixer-token-swatch span{font-size:10px;display:block;color:#ccc6d3;line-height:1.5}
+.mixer-token-swatch small{font-size:10px;display:block;color:#96909f;margin-top:3px}
+.mixer-token-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
+.mixer-token-facts div{min-width:0}
+.mixer-token-facts dt{font-size:11px;color:#a6a0b0;margin-bottom:6px}
+.mixer-token-facts dd{font-size:12px;line-height:1.6;margin:0;color:#e2dbea;overflow-wrap:anywhere}
+.mixer-principles{padding-left:18px;margin:0;color:#b8b1c3;font-size:12px;line-height:1.8}
+.mixer-principles li+li{margin-top:6px}
+.mixer-adjustments{font-size:11px;line-height:1.7;color:#b9a4d8;padding:12px 14px;background:#231b2d;border-radius:7px;margin:16px 0 0}
+.mixer-export-head{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.mixer-export-head h3{margin:0}
+.mixer-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mixer-code{background:#101014;border:1px solid #2b2b33;border-radius:8px}
+.mixer-code summary{cursor:pointer;font-size:12px;color:#c5b8d5;padding:14px 16px}
+.mixer-code pre{white-space:pre-wrap;word-break:break-word;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.8;color:#c9b8de;max-height:350px;overflow:auto;margin:0;padding:0 16px 18px;user-select:all}
+.mixer-share-field{margin-top:14px}
+.mixer-share-field input{font-size:11px;color:#b7afc2}
+.mixer-status{font-size:12px;color:#d2bff0;line-height:1.6;min-height:20px;margin:17px 0 0}
+.mixer-footer{border-top:1px solid #26262f;padding-top:24px;margin-top:38px;color:#92929f;font-size:11px;line-height:1.8;display:flex;justify-content:space-between;gap:18px}
+.mixer-footer a{text-underline-offset:4px}
+.mixer-noscript{display:block;border:1px solid #665378;border-radius:8px;padding:20px;margin:0 0 25px;line-height:1.7;color:#d6c7ed}
+/* A única superfície que recebe os tokens gerados é esta prévia. */
+.mixer-preview{background:var(--ds-color-bg);color:var(--ds-color-text);font-family:var(--ds-font-body);font-size:var(--ds-font-size);line-height:1.55;isolation:isolate;position:relative}
+.mixer-preview *{min-width:0}
+.mixer-preview :focus-visible{outline:3px solid var(--ds-color-focus);outline-offset:3px}
+.mixer-demo{position:relative;padding:clamp(16px,3vw,30px);overflow:hidden}
+.mixer-demo::before{content:'';position:absolute;inset:0 0 auto;height:8px;background-image:var(--ds-pattern);background-size:var(--ds-pattern-size);pointer-events:none;opacity:.7;z-index:-1}
+.mixer-demo h2,.mixer-demo h3,.mixer-demo h4{font-family:var(--ds-font-display);font-weight:var(--ds-heading-weight);letter-spacing:var(--ds-letter-spacing);line-height:1.15;margin:0}
+.mixer-demo h2{font-size:calc(clamp(24px,3vw,38px) * var(--ds-display-scale));overflow-wrap:anywhere}
+.mixer-demo h3{font-size:clamp(17px,1.8vw,23px)}
+.mixer-demo p{margin:0}
+.mixer-demo-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:var(--ds-space-3);border-bottom:var(--ds-border-width) solid var(--ds-color-line);margin-bottom:var(--ds-space-4)}
+.mixer-demo-brand{font-family:var(--ds-font-display);font-weight:var(--ds-heading-weight);font-size:21px;display:flex;align-items:center;gap:9px}
+.mixer-demo-symbol{width:21px;height:21px;background:var(--ds-color-accent);border-radius:var(--ds-radius-small);display:inline-block;box-shadow:3px 3px 0 var(--ds-color-line)}
+.mixer-demo-nav small{font-size:11px;color:var(--ds-color-muted)}
+.mixer-demo-avatar{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;font-size:10px;font-weight:700;background:var(--ds-color-accent);color:var(--ds-color-on-accent);flex:none}
+.mixer-demo-welcome{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:var(--ds-space-4)}
+.mixer-demo-welcome p{color:var(--ds-color-muted);font-size:calc(var(--ds-font-size) * .86);margin-top:8px;max-width:48ch}
+.mixer-demo-button{border:var(--ds-border-width) solid var(--ds-color-accent);border-radius:var(--ds-radius-small);background:var(--ds-color-accent);color:var(--ds-color-on-accent);padding:10px 15px;font-size:12px;font-family:var(--ds-font-body);font-weight:650;line-height:1.4;transition:transform var(--ds-motion-duration);min-height:40px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.mixer-demo-button:hover{transform:translateY(calc(-1 * var(--ds-motion-distance)))}
+.mixer-demo-button--secondary{background:var(--ds-color-surface);color:var(--ds-color-text);border-color:var(--ds-color-line)}
+.mixer-demo-stats{display:grid;grid-template-columns:repeat(var(--ds-layout-columns),minmax(0,1fr));gap:var(--ds-space-3);margin-bottom:var(--ds-space-3)}
+.mixer-demo-card{background:var(--ds-color-surface);border:var(--ds-border-width) solid var(--ds-color-line);border-radius:var(--ds-radius);padding:var(--ds-space-3);box-shadow:var(--ds-shadow);position:relative}
+.mixer-demo-stats .mixer-demo-card small{font-size:11px;color:var(--ds-color-muted);display:block;margin-bottom:6px}
+.mixer-demo-stats .mixer-demo-card strong{font-size:28px;line-height:1.2;font-family:var(--ds-font-display);font-weight:var(--ds-heading-weight)}
+.mixer-demo-stats .mixer-demo-card>span{font-size:10px;color:var(--ds-color-muted);display:block;margin-top:7px}
+.mixer-demo-work{display:grid;grid-template-columns:1.1fr 1fr;gap:var(--ds-space-3)}
+.mixer-demo-work h3{font-size:17px;margin-bottom:var(--ds-space-3)}
+.mixer-demo-task{display:flex;align-items:center;gap:9px;padding:10px 0;border-top:1px solid var(--ds-color-line);font-size:11px}
+.mixer-demo-task input{accent-color:var(--ds-color-accent);width:16px;height:16px;flex:none}
+.mixer-demo-task:has(input:checked) span{text-decoration:line-through}
+.mixer-demo-status{background:var(--ds-color-success);color:var(--ds-color-on-success);font-size:9px;border-radius:var(--ds-radius-small);padding:4px 7px;display:inline-block;font-weight:650}
+.mixer-demo-label{font-size:11px;display:block;margin-bottom:7px}
+.mixer-demo-input{width:100%;padding:10px;border:1px solid var(--ds-color-line);background:var(--ds-color-bg);color:var(--ds-color-text);border-radius:var(--ds-radius-small);font-size:12px;margin-bottom:12px;min-height:40px}
+.mixer-demo-input::placeholder{color:var(--ds-color-muted)}
+.mixer-demo-form .mixer-demo-button{width:100%}
+.mixer-demo-feedback{font-size:11px;color:var(--ds-color-muted);line-height:1.6;margin-top:10px!important;min-height:18px}
+.mixer-demo-bottom{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:var(--ds-space-4);font-size:10px;color:var(--ds-color-muted)}
+.mixer-landing-hero{display:grid;grid-template-columns:1.25fr .75fr;gap:var(--ds-space-4);align-items:center;padding:var(--ds-space-4) 0 var(--ds-space-5)}
+.mixer-landing-hero h2{font-size:calc(clamp(30px,4vw,54px) * var(--ds-display-scale));max-width:14ch;line-height:1.06}
+.mixer-landing-hero p{color:var(--ds-color-muted);font-size:calc(var(--ds-font-size) * .94);line-height:1.8;margin:18px 0 22px;max-width:45ch}
+.mixer-landing-art{aspect-ratio:1/1.12;position:relative;border:var(--ds-border-width) solid var(--ds-color-line);border-radius:var(--ds-radius);background-color:var(--ds-color-surface);background-image:var(--ds-pattern);background-size:var(--ds-pattern-size);box-shadow:var(--ds-shadow);overflow:hidden;display:grid;place-items:center}
+.mixer-landing-art::before{content:'';width:62%;aspect-ratio:1;border:18px solid var(--ds-color-accent);border-radius:50%;position:absolute;left:12%;top:16%}
+.mixer-landing-art::after{content:'';width:46%;aspect-ratio:1;background:var(--ds-color-text);border-radius:var(--ds-radius);position:absolute;right:4%;bottom:7%;transform:rotate(-12deg);border:var(--ds-border-width) solid var(--ds-color-line)}
+.mixer-landing-art span{position:absolute;z-index:1;bottom:11%;left:10%;width:65%;height:8px;background:var(--ds-color-accent);transform:rotate(-30deg)}
+.mixer-landing-features{display:grid;grid-template-columns:repeat(var(--ds-layout-columns),minmax(0,1fr));gap:var(--ds-space-3);padding-top:var(--ds-space-3);border-top:var(--ds-border-width) solid var(--ds-color-line)}
+.mixer-landing-features h3{font-size:18px;margin-bottom:9px}
+.mixer-landing-features p{color:var(--ds-color-muted);font-size:11px;line-height:1.8}
+@media(min-width:1200px){.mixer-selector{position:sticky;top:20px}}
+@media(max-width:1100px){.mixer-workspace{grid-template-columns:265px minmax(0,1fr);gap:20px}.mixer-main{padding-left:24px;padding-right:24px}.mixer-result-head{align-items:start;flex-direction:column}.mixer-demo-work{grid-template-columns:1fr}.mixer-token-swatches{grid-template-columns:repeat(3,minmax(0,1fr))}.mixer-origins{grid-template-columns:1fr;gap:14px}.mixer-landing-hero{grid-template-columns:1fr}.mixer-landing-art{aspect-ratio:2.5/1}.mixer-landing-art::before{width:32%;top:8%}.mixer-landing-art::after{width:27%;right:14%;bottom:-14%}}
+@media(max-width:760px){.mixer-header__inner{padding:0 18px;min-height:64px}.mixer-main{padding:28px 18px 40px}.mixer-intro{align-items:start;flex-direction:column;gap:14px;margin-bottom:22px}.mixer-slots{grid-template-columns:1fr;gap:8px}.mixer-slot{min-height:74px;padding:12px 42px 12px 14px}.mixer-slot__role{margin-bottom:5px}.mixer-slot p{margin-top:4px}.mixer-workspace{grid-template-columns:1fr;gap:24px}.mixer-options{max-height:300px}.mixer-option{padding:10px}.mixer-selector__head{padding:16px}.mixer-empty{min-height:340px}.mixer-diagram{transform:scale(.8);height:88px}.mixer-empty h2{font-size:22px;margin-top:22px}.mixer-result-head{flex-direction:row;align-items:center}.mixer-demo-work{grid-template-columns:1.1fr 1fr}.mixer-landing-hero{grid-template-columns:1.25fr .75fr}.mixer-landing-art{aspect-ratio:1/1.12}.mixer-landing-art::before{width:62%;top:16%}.mixer-landing-art::after{width:46%;right:4%;bottom:7%}.mixer-origins{grid-template-columns:repeat(3,minmax(0,1fr))}.mixer-footer{flex-direction:column;gap:8px}}
+@media(max-width:480px){.mixer-main{padding-left:14px;padding-right:14px}.mixer-header__inner{padding:0 14px}.mixer-brand{font-size:12px}.mixer-back{font-size:11px}.mixer-intro p{font-size:13px}.mixer-result-head{flex-direction:column;align-items:start}.mixer-preview-switch{width:100%}.mixer-preview-switch button{flex:1}.mixer-demo{padding:18px 14px}.mixer-demo-stats,.mixer-landing-features{grid-template-columns:1fr}.mixer-demo-stats .mixer-demo-card{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 8px}.mixer-demo-stats .mixer-demo-card small{margin:0}.mixer-demo-stats .mixer-demo-card strong{grid-column:2;grid-row:1/3;font-size:24px}.mixer-demo-stats .mixer-demo-card>span{margin:0}.mixer-demo-work{grid-template-columns:1fr}.mixer-landing-hero{grid-template-columns:1fr}.mixer-landing-art{aspect-ratio:2.5/1}.mixer-landing-art::before{width:32%;top:8%}.mixer-landing-art::after{width:27%;right:14%;bottom:-14%}.mixer-origins{grid-template-columns:1fr}.mixer-token-facts{grid-template-columns:1fr 1fr}.mixer-demo-nav small{display:none}.mixer-export-head{align-items:start;flex-direction:column}.mixer-actions{width:100%}.mixer-actions button{flex:1}.mixer-slot strong{font-size:13px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.mixer-demo-button:hover{transform:none}}
+</style>
+</head>
+<body>
+<header class="mixer-header"><div class="mixer-header__inner">
+  <a class="mixer-brand" href="index.html"><span class="mixer-mark" aria-hidden="true"></span>Design Styles Lib</a>
+  <a class="mixer-back" href="index.html">Voltar à biblioteca</a>
+</div></header>
+<main class="mixer-main">
+  <div class="mixer-intro"><div><h1>Estilos que se encontram.</h1><p>Escolha uma base e até duas influências. Explore a combinação em uma interface, entenda suas regras e leve os tokens para o seu projeto.</p></div><span class="mixer-count" id="mixer-count">0 de 3 selecionados</span></div>
+  <noscript class="mixer-noscript">Ative o JavaScript para combinar estilos. Você ainda pode explorar as demos na <a href="index.html">biblioteca de estilos</a>.</noscript>
+  <fieldset class="mixer-recipe"><legend>Sua combinação, na ordem em que cada estilo entra</legend><div class="mixer-slots" id="mixer-slots"></div></fieldset>
+  <div class="mixer-workspace">
+    <aside class="mixer-selector" aria-labelledby="mixer-selector-title">
+      <div class="mixer-selector__head">
+        <div class="mixer-selector__row"><h2 id="mixer-selector-title">Escolha os estilos</h2><button class="mixer-reset" id="mixer-reset" type="button" disabled>Limpar combinação</button></div>
+        <label class="mixer-label" for="mixer-search">Buscar estilo ou técnica</label>
+        <input class="mixer-input" id="mixer-search" type="search" placeholder="Ex.: suíço, vidro, editorial…" autocomplete="off" spellcheck="false">
+        <div class="mixer-filter"><label class="mixer-label" for="mixer-group">Grupo</label><select class="mixer-select" id="mixer-group"><option value="all">Todos os grupos</option></select></div>
+        <p class="mixer-results-count" id="mixer-results-count" role="status" aria-live="polite" aria-atomic="true"></p>
+      </div>
+      <div class="mixer-options" id="mixer-options" role="group" aria-label="Estilos disponíveis" aria-describedby="mixer-limit"></div>
+      <p class="mixer-no-results" id="mixer-no-results" hidden>Nenhum estilo encontrado. Experimente outro termo ou grupo.</p>
+      <p class="mixer-limit" id="mixer-limit">O primeiro estilo define a base. Os próximos acrescentam personalidade.</p>
+    </aside>
+    <section class="mixer-output" aria-label="Sistema de design gerado">
+      <div class="mixer-empty" id="mixer-empty"><div class="mixer-empty__inner">
+        <div class="mixer-diagram" aria-hidden="true"><i></i><i></i><i></i></div>
+        <h2>Uma base. Novas possibilidades.</h2><p>Comece por um estilo ao lado. Depois, acrescente outras referências e veja um sistema ganhar forma.</p>
+        <button class="mixer-button" id="mixer-example" type="button">Experimentar uma combinação</button>
+      </div></div>
+      <div id="mixer-result" hidden>
+        <div class="mixer-result-head"><div><h2 id="mixer-result-title" tabindex="-1">Seu sistema</h2><p id="mixer-result-subtitle"></p></div>
+          <div class="mixer-preview-switch" role="group" aria-label="Tipo de prévia"><button type="button" data-preview="components" aria-pressed="true" aria-controls="mixer-components">Componentes</button><button type="button" data-preview="landing" aria-pressed="false" aria-controls="mixer-landing">Landing page</button></div>
+        </div>
+        <div class="mixer-browser"><div class="mixer-browser-bar" aria-hidden="true"><i></i><i></i><i></i><span id="mixer-browser-label">forma / workspace</span></div>
+          <div class="mixer-preview" id="mixer-preview">
+            <div class="mixer-demo" id="mixer-components" aria-label="Prévia de componentes">
+              <div class="mixer-demo-nav"><div class="mixer-demo-brand"><i class="mixer-demo-symbol" aria-hidden="true"></i>Forma</div><small>Seu espaço de criação</small><span class="mixer-demo-avatar" aria-label="Perfil de Ana Lima">AL</span></div>
+              <div class="mixer-demo-welcome"><div><h2>Espaço para boas ideias.</h2><p>Organize o próximo passo e dê forma ao que vem pela frente.</p></div></div>
+              <div class="mixer-demo-stats">
+                <div class="mixer-demo-card"><small>Projetos em curso</small><strong id="mixer-project-count">12</strong><span>Ideias em movimento</span></div>
+                <div class="mixer-demo-card"><small>Entregas da semana</small><strong>08</strong><span>Seu trabalho ganhando forma</span></div>
+                <div class="mixer-demo-card"><small>Pessoas no time</small><strong>24</strong><span>Criação compartilhada</span></div>
+              </div>
+              <div class="mixer-demo-work">
+                <div class="mixer-demo-card"><h3>Um passo de cada vez</h3><label class="mixer-demo-task"><input type="checkbox" checked><span>Definir a direção visual</span></label><label class="mixer-demo-task"><input type="checkbox"><span>Explorar os componentes</span></label><label class="mixer-demo-task"><input type="checkbox"><span>Compartilhar com o time</span></label><span class="mixer-demo-status">Pronto para explorar</span></div>
+                <form class="mixer-demo-card mixer-demo-form" id="mixer-demo-form"><h3>A próxima ideia</h3><label class="mixer-demo-label" for="mixer-demo-project">Nome do projeto</label><input class="mixer-demo-input" id="mixer-demo-project" placeholder="Uma ideia extraordinária" maxlength="60" required><button class="mixer-demo-button" type="submit">Criar projeto</button><p class="mixer-demo-feedback" id="mixer-demo-feedback" role="status">Experimente os campos e botões.</p></form>
+              </div>
+              <div class="mixer-demo-bottom"><span>Feito de escolhas que conversam.</span><button class="mixer-demo-button mixer-demo-button--secondary" type="button" id="mixer-demo-reset">Recomeçar demo</button></div>
+            </div>
+            <div class="mixer-demo" id="mixer-landing" aria-label="Prévia de landing page" hidden>
+              <div class="mixer-demo-nav"><div class="mixer-demo-brand"><i class="mixer-demo-symbol" aria-hidden="true"></i>Forma</div><small>Um lugar para criar</small><button class="mixer-demo-button mixer-demo-button--secondary" type="button" data-demo-explore>Explorar</button></div>
+              <div class="mixer-landing-hero"><div><h2>Boas ideias merecem espaço.</h2><p>Um lugar para reunir referências, experimentar possibilidades e transformar o que você imagina em algo que faz sentido.</p><button class="mixer-demo-button" type="button" data-demo-explore>Encontre sua próxima ideia <span aria-hidden="true">↗</span></button></div><div class="mixer-landing-art" aria-hidden="true"><span></span></div></div>
+              <div class="mixer-landing-features" id="mixer-features" tabindex="-1"><div class="mixer-demo-card"><h3>Reúna</h3><p>Guarde as referências que despertam sua curiosidade em um só lugar.</p></div><div class="mixer-demo-card"><h3>Experimente</h3><p>Conecte ideias e descubra novas direções para o seu projeto.</p></div><div class="mixer-demo-card"><h3>Compartilhe</h3><p>Dê o próximo passo com as pessoas que criam junto com você.</p></div></div>
+              <div class="mixer-demo-bottom"><span>Forma · Um espaço para o que vem.</span><span>Da ideia ao encontro.</span></div>
+            </div>
+          </div>
+        </div>
+        <p class="mixer-preview-note">Duas aplicações do mesmo sistema. Os controles da prévia são demonstrativos e não salvam dados.</p>
+        <section class="mixer-details" aria-labelledby="mixer-origins-title"><h3 id="mixer-origins-title">O que cada estilo traz</h3><div class="mixer-origins" id="mixer-origins"></div></section>
+        <section class="mixer-details" aria-labelledby="mixer-token-title"><h3 id="mixer-token-title">Fundações do sistema</h3><div class="mixer-token-swatches" id="mixer-token-swatches"></div><dl class="mixer-token-facts" id="mixer-token-facts"></dl></section>
+        <section class="mixer-details" aria-labelledby="mixer-principles-title"><h3 id="mixer-principles-title">Como usar esta combinação</h3><ul class="mixer-principles" id="mixer-principles"></ul><p class="mixer-adjustments" id="mixer-adjustments" hidden></p></section>
+        <section class="mixer-details" aria-labelledby="mixer-export-title">
+          <div class="mixer-export-head"><h3 id="mixer-export-title">Leve para o seu projeto</h3><div class="mixer-actions"><button class="mixer-button mixer-button--primary" id="mixer-copy" type="button">Copiar tokens CSS</button><button class="mixer-button" id="mixer-share" type="button">Compartilhar</button></div></div>
+          <details class="mixer-code"><summary>Ver variáveis CSS</summary><pre id="mixer-tokens" tabindex="0"></pre></details>
+          <div class="mixer-share-field"><label class="mixer-label" for="mixer-link">Link desta combinação</label><input class="mixer-input" id="mixer-link" readonly spellcheck="false"></div>
+        </section>
+      </div>
+      <p class="mixer-status" id="mixer-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    </section>
+  </div>
+  <footer class="mixer-footer"><span>47 referências. Uma direção que é sua.</span><a href="index.html">Explore os estilos originais na biblioteca</a></footer>
+</main>
+<script id="mixer-engine">
+(function (root) {
+  'use strict';
+
+  var groups = Object.freeze({
+    A: 'Fundamentos & Minimalismos',
+    B: 'Sistemas de Produto',
+    C: 'Luz, Vidro & Superfície',
+    D: 'Brutalismos & Anti-design',
+    E: 'Tipografia & Editorial',
+    F: 'Movimentos Históricos',
+    G: 'Nostalgia Digital',
+    H: 'Orgânicos & Artesanais'
+  });
+  var fonts = {
+    sans: "'Inter', system-ui, sans-serif",
+    geometric: "'Space Grotesk', 'Arial', sans-serif",
+    serif: "'Fraunces', 'Georgia', serif",
+    editorial: "'Playfair Display', 'Georgia', serif",
+    mono: "'JetBrains Mono', 'Courier New', monospace",
+    rounded: "'Nunito', 'Trebuchet MS', sans-serif",
+    heavy: "'Archivo Black', 'Arial Black', sans-serif",
+    condensed: "'Oswald', 'Arial Narrow', sans-serif",
+    deco: "'Poiret One', 'Georgia', serif",
+    technical: "'Orbitron', 'Courier New', monospace",
+    bubble: "'Righteous', 'Trebuchet MS', sans-serif",
+    comic: "'Bangers', 'Impact', sans-serif",
+    gothic: "'Pirata One', 'Georgia', serif",
+    handwritten: "'Caveat', 'Comic Sans MS', cursive",
+    pixel: "'VT323', 'Courier New', monospace"
+  };
+  var patterns = {
+    none: 'none',
+    paper: 'repeating-linear-gradient(112deg, rgba(98, 72, 34, .035) 0 1px, transparent 1px 5px)',
+    halftone: 'radial-gradient(circle at 2px 2px, rgba(180, 78, 113, .10) 1px, transparent 1.5px)',
+    glass: 'radial-gradient(ellipse at 15% 10%, rgba(255, 45, 120, .11), transparent 55%), radial-gradient(ellipse at 90% 95%, rgba(0, 212, 255, .10), transparent 55%)',
+    liquid: 'linear-gradient(125deg, rgba(255, 255, 255, .30), transparent 35%, rgba(43, 108, 255, .045) 75%, rgba(255, 255, 255, .25))',
+    mesh: 'radial-gradient(ellipse at 15% 15%, rgba(99, 74, 255, .12), transparent 58%), radial-gradient(ellipse at 85% 80%, rgba(20, 184, 166, .10), transparent 60%)',
+    linen: 'repeating-linear-gradient(0deg, rgba(74, 50, 32, .035) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, rgba(74, 50, 32, .035) 0 1px, transparent 1px 4px)',
+    aero: 'radial-gradient(ellipse at 80% 5%, rgba(255, 255, 255, .50), transparent 60%), linear-gradient(160deg, rgba(45, 159, 221, .06), transparent 65%)',
+    checker: 'repeating-linear-gradient(45deg, rgba(0, 128, 128, .07) 0 8px, transparent 8px 16px)',
+    xerox: 'repeating-linear-gradient(171deg, rgba(17, 17, 17, .05) 0 1px, transparent 1px 4px)',
+    scanline: 'repeating-linear-gradient(0deg, rgba(127, 192, 151, .06) 0 1px, transparent 1px 5px)',
+    gothic: 'repeating-linear-gradient(135deg, rgba(158, 43, 37, .065) 0 1px, transparent 1px 24px)',
+    geometric: 'linear-gradient(135deg, transparent 74%, rgba(29, 78, 216, .06) 74% 88%, transparent 88%)',
+    deco: 'repeating-linear-gradient(60deg, rgba(199, 162, 90, .065) 0 1px, transparent 1px 30px), repeating-linear-gradient(120deg, rgba(199, 162, 90, .065) 0 1px, transparent 1px 30px)',
+    botanical: 'radial-gradient(ellipse at 0% 100%, rgba(107, 90, 36, .08), transparent 50%), radial-gradient(ellipse at 100% 0%, rgba(163, 74, 42, .055), transparent 45%)',
+    diagonal: 'repeating-linear-gradient(155deg, transparent 0 45px, rgba(201, 35, 28, .07) 45px 51px, transparent 51px 100px)',
+    confetti: 'radial-gradient(circle at 15% 25%, rgba(255, 93, 143, .11) 0 4px, transparent 5px), radial-gradient(circle at 75% 75%, rgba(61, 218, 215, .12) 0 5px, transparent 6px)',
+    seventies: 'repeating-radial-gradient(ellipse at 50% 120%, transparent 0 35px, rgba(212, 85, 43, .07) 35px 45px, transparent 45px 60px)',
+    psychedelic: 'repeating-conic-gradient(from 20deg at 90% 95%, rgba(255, 45, 149, .06) 0deg 18deg, transparent 18deg 36deg)',
+    pop: 'radial-gradient(circle at 3px 3px, rgba(17, 17, 17, .10) 1.5px, transparent 2px)',
+    grid: 'repeating-linear-gradient(0deg, rgba(0, 255, 247, .055) 0 1px, transparent 1px 26px), repeating-linear-gradient(90deg, rgba(255, 0, 212, .055) 0 1px, transparent 1px 26px)',
+    sunset: 'linear-gradient(180deg, rgba(255, 110, 199, .09), transparent 48%, rgba(0, 255, 247, .055))',
+    chrome: 'linear-gradient(135deg, rgba(201, 206, 222, .12), transparent 35%, rgba(198, 255, 0, .045) 60%, rgba(201, 206, 222, .10))',
+    telemetry: 'repeating-linear-gradient(0deg, rgba(79, 212, 255, .055) 0 1px, transparent 1px 32px), repeating-linear-gradient(90deg, rgba(79, 212, 255, .055) 0 1px, transparent 1px 32px)',
+    isometric: 'repeating-linear-gradient(30deg, rgba(124, 131, 255, .06) 0 1px, transparent 1px 32px), repeating-linear-gradient(150deg, rgba(74, 224, 200, .05) 0 1px, transparent 1px 32px)',
+    organic: 'radial-gradient(ellipse at 5% 95%, rgba(92, 122, 74, .075), transparent 60%), radial-gradient(ellipse at 95% 0%, rgba(209, 102, 63, .06), transparent 55%)',
+    riso: 'repeating-linear-gradient(168deg, rgba(255, 72, 176, .04) 0 1px, transparent 1px 5px), repeating-linear-gradient(12deg, rgba(0, 120, 191, .035) 0 1px, transparent 1px 7px)',
+    gingham: 'repeating-linear-gradient(0deg, rgba(150, 168, 130, .06) 0 12px, transparent 12px 24px), repeating-linear-gradient(90deg, rgba(150, 168, 130, .06) 0 12px, transparent 12px 24px)',
+    solar: 'repeating-conic-gradient(from 0deg at 80% 0%, rgba(201, 134, 31, .055) 0deg 12deg, transparent 12deg 24deg)',
+    paperCut: 'radial-gradient(ellipse at 100% 110%, rgba(139, 127, 212, .085) 0 28%, transparent 28.5%), radial-gradient(ellipse at 0% 110%, rgba(79, 163, 209, .065) 0 25%, transparent 25.5%)'
+  };
+
+  function profile(slug, name, group, tags, palette, principle, options) {
+    var p = Object.assign({
+      slug: slug, name: name, group: group, tags: tags,
+      palette: palette.split(' '), principle: principle,
+      bg: '#f7f7f5', surface: '#ffffff', text: '#202022', muted: '#626267',
+      accent: '#32323b', line: '#77777b', body: fonts.sans, display: fonts.sans,
+      unit: 6, size: 15, columns: 3, radius: 8, border: 1, weight: 700,
+      tracking: '-0.025em', scale: 1, shadow: 'none', pattern: patterns.none,
+      duration: 180, distance: 2,
+      structure: 'Grade clara, espaçamento regular e hierarquia funcional.',
+      material: 'Superfícies sólidas e acento contido.',
+      detail: 'Geometria simples e movimento breve.'
+    }, options);
+    Object.freeze(p.palette);
+    return Object.freeze(p);
+  }
+
+  var profiles = Object.freeze([
+    profile('minimalismo', 'Minimalismo', 'A', 'whitespace, hierarquia, sans-serif light, acento único, grid editorial, medida de leitura', '#fdfdfc #ececea #8b8b86 #2b4acb #1a1a18',
+      'Proporção, medida de leitura e um único acento com função declarada sustentam a hierarquia.', {
+        bg: '#fdfdfc', surface: '#f7f7f4', text: '#1a1a18', muted: '#62625d', accent: '#2b4acb', line: '#c9c9c2', unit: 8, columns: 2, radius: 2, weight: 400, scale: 1.08, duration: 220, distance: 1,
+        structure: 'Espaçamento generoso, duas colunas e medida de leitura curta.', material: 'Base monocromática de papel, peso leve e nenhuma sombra.', detail: 'Fios de 1 px, cantos quase retos e um acento azul só para marcar a escolha.'
+      }),
+    profile('flat-design', 'Flat Design', 'A', 'zero skeuomorfismo, cores sólidas, ícones geométricos, abas, estados evidentes, 2013', '#3498db #2ecc71 #e74c3c #f39c12 #9b59b6 #34495e',
+      'Cor chapada e geometria simples comunicam função — e o que é clicável se anuncia por contorno e estado.', {
+        bg: '#edf4fa', surface: '#ffffff', text: '#25384a', muted: '#4a6177', accent: '#3498db', line: '#6c859a', radius: 5, border: 2, display: "'Roboto', 'Arial', sans-serif", duration: 130, distance: 0,
+        structure: 'Grade de três colunas, faixas de cor e leitura direta.', material: 'Azul chapado, superfícies brancas e nenhuma sombra.', detail: 'Contorno de 2 px como estado, cantos de 5 px e resposta imediata.'
+      }),
+    profile('estilo-suico', 'Estilo Suíço', 'A', 'grid modular, helvetica, assimetria, vermelho sinal, tipografia internacional, grade visível', '#ffffff #e30613 #767676 #333333 #000000',
+      'Doze colunas e uma linha de base de 8 px dão endereço a cada elemento; o vermelho apenas sinaliza.', {
+        bg: '#ffffff', surface: '#f1f1ef', text: '#111111', muted: '#555555', accent: '#e30613', line: '#777777', body: "'Helvetica Neue', 'Arial', sans-serif", display: "'Helvetica Neue', 'Arial', sans-serif", radius: 0, weight: 800, scale: 1.16, tracking: '-0.05em', border: 2, duration: 120, distance: 0,
+        structure: 'Grade modular de doze colunas, assimetria calculada e sans-serif objetiva.', material: 'Papel branco, vermelho de sinalização e títulos de alto peso.', detail: 'Cantos retos, filetes de divisão nítidos e ritmo vertical de 8 px.'
+      }),
+    profile('wabi-sabi', 'Wabi-sabi / Japandi', 'A', 'imperfeição, impermanência, vazio, hairline, japandi, serif light, grão, cerâmica', '#f4f1ea #e8e2d7 #c3b49a #a8604a #8a8072 #33302a',
+      'Uma sensibilidade da impermanência: vazio, argila fosca e assimetria pequena acolhem a marca do uso.', {
+        bg: '#f4f1ea', surface: '#e8e2d7', text: '#33302a', muted: '#6d6254', accent: '#a8604a', line: '#c3b49a', body: fonts.serif, display: fonts.serif, unit: 8, columns: 2, radius: 3, weight: 400, pattern: patterns.paper, duration: 420, distance: 1,
+        structure: 'Ritmo amplo, duas colunas e corpo em serifa leve com medida curta.', material: 'Papel washi, argila fosca e um só acento de terra queimada.', detail: 'Fio de 1 px, grão sutil e movimento lento.'
+      }),
+    profile('duotone', 'Monocromático / Duotone', 'A', 'duas tintas, monocromático, mix-blend-mode, multiply, figura e fundo, retícula', '#0f1436 #ff3d68 #7b8ada #a6adcf',
+      'Dois slots de cor com função fixa: sombra e luz. Matizes opostos dão duotone; a mesma família dá monocromático.', {
+        bg: '#0f1436', surface: '#1b2450', text: '#f6f4ff', muted: '#a6adcf', accent: '#ff3d68', line: '#7b8ada', display: fonts.geometric, radius: 0, weight: 700, pattern: patterns.halftone, duration: 200, distance: 3,
+        structure: 'Fundo de tinta escura, cartaz assimétrico e grade de três colunas.', material: 'Duas tintas por função — a terceira só nasce da sobreposição em multiply.', detail: 'Retícula de linha, recortes retos e figura contra fundo cheio.'
+      }),
+    profile('bento-grid', 'Bento Grid', 'B', 'módulos span, radius 22px, gap constante, painel, período selecionável, marmita', '#f2f2f4 #0071e3 #d8f24a #e8e4dd #111114',
+      'Cada compartimento tem uma função; o tamanho declara a prioridade e o espaçamento nunca muda.', {
+        bg: '#f2f2f4', surface: '#ffffff', text: '#111114', muted: '#62626b', accent: '#0071e3', line: '#85858e', unit: 6, radius: 22, weight: 600, shadow: '0 4px 18px rgba(17, 17, 20, .055)', duration: 230, distance: 3,
+        structure: 'Módulos de tamanhos diferentes na mesma grade, com goteira constante.', material: 'Superfícies brancas, um módulo grafite dominante e acento azul.', detail: 'Cantos de 22 px, elevação leve e deslocamento suave no hover.'
+      }),
+    profile('material-you', 'Material You', 'B', 'material 3, papéis de cor, superfície tonal, elevação, fab, cor de origem, roboto', '#fef7ff #e8def8 #6750a4 #21005d #386a20',
+      'Cada elemento ocupa um papel de cor; uma origem preenche todos de uma vez, com o contraste preservado.', {
+        bg: '#fef7ff', surface: '#e8def8', text: '#21005d', muted: '#625474', accent: '#6750a4', line: '#81718f', body: "'Roboto', 'Arial', sans-serif", display: "'Roboto', 'Arial', sans-serif", radius: 28, weight: 500, shadow: '0 3px 8px rgba(103, 80, 164, .14)', duration: 280, distance: 2,
+        structure: 'Grade confortável, corpo Roboto e ação principal destacada por forma.', material: 'Superfícies lilás, roxo tonal e elevação por tom, não por sombra dura.', detail: 'Formas amplas de 28 px, camada de estado translúcida e movimento acolhedor.'
+      }),
+    profile('neumorfismo', 'Neumorfismo', 'B', 'soft ui, extrusão, dupla sombra, direção de luz, inset, controles reais', '#e4e9f2 #ffffff #a3b1c6 #7c8ba8 #46536b',
+      'Uma única direção de luz modela um material contínuo; o estado selecionado ganha marca, não só relevo.', {
+        bg: '#e4e9f2', surface: '#e4e9f2', text: '#344158', muted: '#526179', accent: '#46536b', line: '#7c8ba8', radius: 20, border: 1, weight: 600, shadow: '8px 8px 18px rgba(117, 135, 163, .30), -8px -8px 18px rgba(255, 255, 255, .85)', duration: 200, distance: 1,
+        structure: 'Base cinza-azulada, ritmo regular e controles agrupados em placa.', material: 'Superfície contínua com sombra escura a 135° e realce claro oposto.', detail: 'Profundidade proporcional à escala da peça e deslocamento mínimo.'
+      }),
+    profile('claymorphic', 'Claymorphic', 'B', 'argila, dupla sombra inset, radius extremo, pastel, volume, contato com a superfície', '#eae4fb #f5f1ff #ff7fa8 #6cc9a3 #9b8bff #3b2e63',
+      'A sombra de contato apoia o objeto; o sombreado interno dá a espessura da massa.', {
+        bg: '#eae4fb', surface: '#f5f1ff', text: '#3b2e63', muted: '#6e5b89', accent: '#ff7fa8', line: '#8e7aa8', body: fonts.rounded, display: fonts.rounded, unit: 7, radius: 32, weight: 900, shadow: '8px 10px 22px rgba(100, 76, 159, .22), inset 3px 3px 6px rgba(255, 255, 255, .8), inset -3px -3px 8px rgba(128, 101, 179, .16)', duration: 320, distance: 5,
+        structure: 'Espaçamento acolhedor, cena de volumes e uma área lisa reservada ao texto.', material: 'Pastéis opacos, títulos cheios e silhuetas que fogem do círculo exato.', detail: 'Cantos de 32 px, compressão breve ao toque e movimento elástico contido.'
+      }),
+    profile('dados-densos', 'Dados Densos', 'B', 'terminal financeiro, tabular nums, alinhamento decimal, ordenação, densidade, monoespaçado', '#0a0a0a #151510 #ff9500 #3ddc84 #ff453a #d8d8d0',
+      'Densidade serve à comparação: a vírgula cai sempre na mesma coluna e a cor vem acompanhada de sinal.', {
+        bg: '#0a0a0a', surface: '#171715', text: '#d8d8d0', muted: '#aaa99d', accent: '#ff9500', line: '#77776c', body: fonts.mono, display: fonts.mono, unit: 4, size: 13, radius: 0, weight: 700, tracking: '-0.03em', scale: .84, duration: 90, distance: 0,
+        structure: 'Tabela densa com cabeçalho ordenável, corpo pequeno e números monoespaçados.', material: 'Preto de terminal, laranja de sinalização e linha selecionada com marca à esquerda.', detail: 'Cantos retos, filete de 1 px e resposta imediata.'
+      }),
+    profile('isotype', 'Isotype / Infográfico', 'B', 'pictograma, neurath, quantidade por repetição, viena, legenda explícita, didático', '#f0ebe0 #d94f3d #f2c14e #4a7b9d #25231f',
+      'Quantidade maior significa mais signos, nunca signo maior — e a legenda declara a unidade e o arredondamento.', {
+        bg: '#f0ebe0', surface: '#faf6ed', text: '#25231f', muted: '#665e52', accent: '#d94f3d', line: '#857763', display: fonts.geometric, radius: 2, weight: 700, duration: 160, distance: 2,
+        structure: 'Linhas alinhadas à esquerda, unidade constante e legenda ao pé.', material: 'Papel quente, vermelho tijolo, filete grosso e títulos geométricos.', detail: 'Signos de peso uniforme, meia unidade recortada e transições curtas.'
+      }),
+    profile('glassmorphism', 'Glassmorphism', 'C', 'backdrop-filter, vidro fosco, cena de fundo, camadas, tonalização, translúcido', '#1a0f2e #ff2d78 #00d4ff #ffb800 #f3ecff',
+      'Vidro fosco só existe sobre uma cena: desfoque, tonalização, quina e sombra separam os planos.', {
+        bg: '#1a0f2e', surface: '#352745', text: '#faf5ff', muted: '#c1b3d5', accent: '#ff2d78', line: '#a697b9', radius: 20, weight: 600, shadow: '0 16px 35px rgba(5, 1, 16, .26), inset 0 1px 0 rgba(255, 255, 255, .35)', pattern: patterns.glass, duration: 320, distance: 4,
+        structure: 'Fundo ameixa profundo, cena luminosa por baixo e leitura espaçada.', material: 'Rosa luminoso, quina clara de 1 px e piso de tonalização que segura o texto.', detail: 'Halos suaves, cantos amplos e superfície sólida quando não há suporte.'
+      }),
+    profile('liquid-glass', 'Liquid Glass', 'C', 'vidro líquido, lente, rim especular, apple 2025, squircle, centro de controles', '#2b6cff #7a2bff #ff2b8f #ffd36e #4fc3ff',
+      'Apresentado pela Apple em junho de 2025: o material vive nos controles, com rim especular e reflexo de borda.', {
+        bg: '#edf4ff', surface: '#f6f9ff', text: '#173258', muted: '#526684', accent: '#2b6cff', line: '#728baa', unit: 7, radius: 26, weight: 600, shadow: '0 10px 26px rgba(43, 108, 255, .13), inset 1px 1px 1px rgba(255, 255, 255, .95), inset -1px -1px 3px rgba(43, 108, 255, .13)', pattern: patterns.liquid, duration: 360, distance: 4,
+        structure: 'Ambiente claro, controles agrupados em painel e ritmo confortável.', material: 'Azul vívido, superfície perolada e espessura sugerida por reflexo de borda.', detail: 'Squircle contínuo, varredura diagonal e resposta contínua ao valor.'
+      }),
+    profile('aurora-mesh', 'Aurora / Mesh Gradient', 'C', 'mesh gradient, saas escuro, borda em gradiente, cenário cromático, screen, premium', '#06060c #4338ca #0ea5e9 #a21caf #14b8a6',
+      'Campos de cor com função: concentração nas quinas, transição no meio e uma zona calma atrás do texto.', {
+        bg: '#06060c', surface: '#171526', text: '#f2f0ff', muted: '#aaa5c2', accent: '#8d80ff', line: '#7f799b', display: fonts.geometric, radius: 16, weight: 600, shadow: '0 8px 32px rgba(67, 56, 202, .20)', pattern: patterns.mesh, duration: 420, distance: 4,
+        structure: 'Fundo quase preto, grade tecnológica esmaecida e zona calma sob o título.', material: 'Violeta luminoso, borda em gradiente e superfícies profundas.', detail: 'Malha de luz difusa, movimento lento e transições prolongadas.'
+      }),
+    profile('skeuomorfismo', 'Skeuomorfismo', 'C', 'couro, papel pautado, lombada, divisórias, bisel, led, marca de uso', '#c9bda8 #4a3220 #fffdf5 #ddd2b8 #f0b8b0 #5ac8fa',
+      'O objeto físico inteiro: lombada, divisória e pauta, com uma só direção de luz sobre tudo.', {
+        bg: '#ddd2b8', surface: '#fffdf5', text: '#382718', muted: '#68543d', accent: '#4a3220', line: '#927858', body: fonts.serif, display: fonts.serif, radius: 7, border: 2, weight: 600, shadow: '0 4px 8px rgba(74, 50, 32, .24), inset 0 2px 0 rgba(255, 255, 255, .80)', pattern: patterns.linen, duration: 180, distance: 1,
+        structure: 'Papel pautado com margem, divisórias no topo e lombada à esquerda.', material: 'Couro marrom, bisel de luz vinda de cima e sombras curtas.', detail: 'Trama de linho, marcas de uso discretas e cantos de objeto físico.'
+      }),
+    profile('frutiger-aero', 'Frutiger Aero', 'C', 'aqua, céu e grama, bolhas, ícones com volume, humanista, natureza e tecnologia', '#8fd8ff #2d9fdd #6fc04a #eafaff #f5c43a #12587f',
+      'Céu, água e vegetação convivendo com superfície brilhante — otimismo tecnológico sem ironia.', {
+        bg: '#d8f2ff', surface: '#f0fcff', text: '#0a4a6e', muted: '#3e6379', accent: '#2d9fdd', line: '#648fa2', display: fonts.rounded, radius: 24, weight: 800, shadow: '0 6px 15px rgba(10, 74, 110, .16), inset 0 3px 0 rgba(255, 255, 255, .90)', pattern: patterns.aero, duration: 300, distance: 3,
+        structure: 'Base celeste com horizonte verde, painel claro e espaçamento convidativo.', material: 'Azul aquático, reflexo controlado na metade de cima e títulos humanistas.', detail: 'Gotas e bolhas translúcidas, ícones com volume e luz do céu.'
+      }),
+    profile('neobrutalismo', 'Neobrutalismo', 'D', 'hard shadow, borda 4px, cores saturadas, selo com função, contato com a sombra, pop', '#ffe94a #ff4fa3 #4ad9ff #5ce27a #000000',
+      'Sombra sem blur com medida: a escada 3/6/8 separa navegação, cartão e ação — e o pressionado encosta na sombra.', {
+        bg: '#fff8d0', surface: '#ffe94a', text: '#111111', muted: '#534b25', accent: '#ff4fa3', line: '#111111', display: fonts.heavy, radius: 2, border: 3, weight: 900, shadow: '5px 5px 0 #111111', duration: 120, distance: 3,
+        structure: 'Grade frontal, contraste de escala entre título, cartão e ação principal.', material: 'Amarelo pop, rosa saturado, borda preta de 4 px e sombra sólida.', detail: 'Cantos quase retos, selos rotacionados e deslocamento até encostar na sombra.'
+      }),
+    profile('brutalismo-radical', 'Brutalismo Radical', 'D', 'tipo esticado, assimetria, link azul default, índice exposto, scaleY, monoespaçado', '#e8e6e0 #ff2200 #0000ee #000000',
+      'Tipografia deformada e estrutura à vista: o índice numerado é o esqueleto da página, não um enfeite.', {
+        bg: '#e8e6e0', surface: '#f7f5ef', text: '#000000', muted: '#4d4b46', accent: '#0000ee', line: '#000000', body: fonts.mono, display: fonts.condensed, unit: 5, columns: 2, radius: 0, border: 3, weight: 700, tracking: '-0.055em', scale: 1.2, duration: 80, distance: 0,
+        structure: 'Blocos de larguras desiguais, índice numerado e corpo monoespaçado.', material: 'Azul de hyperlink, vermelho de régua e títulos esticados em escala bruta.', detail: 'Cantos retos, foco berrante e nenhum movimento decorativo.'
+      }),
+    profile('anti-design', 'Anti-design / Web 1.0', 'D', 'web 1.0, geocities, tabelas, gif, livro de visitas, contador, times new roman', '#008080 #c0c0c0 #0000ee #00ff00 #ffff00 #000000',
+      'As convenções da primeira web com lógica interna: serifa no texto, monoespaçada nos números, azul sublinhado no link.', {
+        bg: '#d9e8e4', surface: '#c0c0c0', text: '#000038', muted: '#354f52', accent: '#000080', line: '#606060', body: "'Times New Roman', serif", display: "'Comic Neue', 'Comic Sans MS', cursive", unit: 5, radius: 0, border: 2, weight: 700, shadow: '3px 3px 0 #333333, inset 2px 2px 0 #ffffff', pattern: patterns.checker, duration: 90, distance: 0,
+        structure: 'Sidebar em tabela, miolo corrido e composição compacta em serifa clássica.', material: 'Janelas prateadas, papel de parede repetido e bordas outset em relevo.', detail: 'Cantos quadrados, contador de sete segmentos e efeitos com botão de parar.'
+      }),
+    profile('punk-fanzine', 'Punk / Fanzine', 'D', 'ransom note, xerox, colagem, grampo, recorte, tiragem pequena, diy', '#e6e4df #cfccc4 #ff2f00 #111111',
+      'Papel de fotocópia, preto saturado e uma só cor de intervenção; a irregularidade fica em volta do miolo legível.', {
+        bg: '#e6e4df', surface: '#e2d6aa', text: '#111111', muted: '#565048', accent: '#ff2f00', line: '#111111', body: fonts.mono, display: fonts.heavy, unit: 5, columns: 2, radius: 0, border: 2, weight: 900, shadow: '4px 4px 0 rgba(17, 17, 17, .85)', pattern: patterns.xerox, duration: 100, distance: 2,
+        structure: 'Composição principal ao centro, miniaturas de página em volta e corpo de máquina.', material: 'Papel de xerox, vermelho de intervenção e títulos montados letra a letra.', detail: 'Trama de fotocópia, margens cortadas e grampo na dobra.'
+      }),
+    profile('editorial', 'Editorial de Revista', 'E', 'revista, capitular, colunas, pull quote, índice da edição, medida de linha', '#f7f4ec #ddd7c8 #b03a2e #6b6558 #141310',
+      'Abertura, medida de linha e ritmo de coluna: a página se organiza como uma revista, não como um blog.', {
+        bg: '#fbf9f5', surface: '#f3efe4', text: '#141310', muted: '#6f675a', accent: '#b03a2e', line: '#7a7366', body: fonts.serif, display: fonts.editorial, unit: 7, columns: 2, radius: 0, weight: 400, scale: 1.15, duration: 280, distance: 1,
+        structure: 'Abertura com linha fina e assinatura, corpo em colunas justificadas com respiro.', material: 'Papel creme, acento rubro na capitular e display de revista.', detail: 'Fios finos, pull quote atravessando a coluna e transições discretas.'
+      }),
+    profile('jornal', 'Jornal / Broadsheet', 'E', 'manchete condensada, papel jornal, colunas justificadas, editorias, fio duplo, dateline', '#f2efe4 #ece8da #a8281e #5a564a #16150f',
+      'Hierarquia por tamanho, peso e posição: manchete, olho, corpo justificado e trilho de breves.', {
+        bg: '#f2efe4', surface: '#ece8da', text: '#16150f', muted: '#5a564a', accent: '#a8281e', line: '#7a7568', body: "'Georgia', serif", display: fonts.condensed, unit: 4, size: 14, radius: 0, border: 2, weight: 700, scale: 1.08, pattern: patterns.paper, duration: 120, distance: 0,
+        structure: 'Cabeçalho com data, editorias em fio duplo e corpo em colunas densas.', material: 'Papel amarelado, manchete condensada em caixa-alta e vermelho reservado ao chapéu.', detail: 'Fio duplo, pontilhado nas breves e movimento mínimo.'
+      }),
+    profile('luxo', 'Luxo / Alta-costura', 'E', 'alta-costura, serifa display, dourado contido, entreletra larga, tecido, sob medida', '#0c0b0a #151412 #c8a96a #d8cbb2 #efece4',
+      'Uma peça no centro, entreletra larga e o dourado sempre em traço fino, nunca em área cheia.', {
+        bg: '#0c0b0a', surface: '#211e18', text: '#efece4', muted: '#b5ab97', accent: '#c8a96a', line: '#9f8757', display: fonts.editorial, unit: 9, columns: 2, radius: 0, weight: 400, tracking: '.025em', scale: 1.1, duration: 560, distance: 1,
+        structure: 'Intervalos amplos, peça em destaque ao centro e ficha técnica em versalete.', material: 'Dourado em fio, superfícies escuras e contraste entre serifa de display e sem serifa miúda.', detail: 'Cantos retos, legendas em caixa-alta espaçada e transições lentas.'
+      }),
+    profile('terminal-ascii', 'Terminal / ASCII', 'E', 'monoespaçado, prompt, comandos locais, ascii, cor semântica, crt', '#07100a #4ee87c #9fffbf #ffcc4d #ff6b5a',
+      'Cor com função fixa — saída, aviso, erro e valor — sobre alinhamento monoespaçado.', {
+        bg: '#07100a', surface: '#102018', text: '#9fffbf', muted: '#74b18a', accent: '#4ee87c', line: '#4e9668', body: fonts.mono, display: fonts.mono, unit: 4, size: 13, radius: 0, weight: 700, scale: .9, shadow: '0 0 14px rgba(78, 232, 124, .08)', pattern: patterns.scanline, duration: 100, distance: 0,
+        structure: 'Grade densa, painéis desenhados em caixa e toda a leitura em monoespaçada.', material: 'Verde de fósforo, âmbar de aviso e vermelho de erro sobre preto de terminal.', detail: 'Linhas de varredura discretas, cursor na entrada e resposta imediata.'
+      }),
+    profile('cinetico', 'Design Cinético', 'E', 'tipografia em movimento, repulsão, inércia de scroll, marquee, controles de reprodução', '#0d0d0f #785aff #8a8a94 #f5f5f7',
+      'Deslocamento como lógica única, com zonas de repouso para a leitura e controle de reprodução.', {
+        bg: '#0d0d0f', surface: '#212028', text: '#f5f5f7', muted: '#b2afc4', accent: '#917aff', line: '#878097', display: fonts.heavy, unit: 7, columns: 2, radius: 8, weight: 900, tracking: '-0.055em', scale: 1.16, duration: 260, distance: 7,
+        structure: 'Composição ampla e contrastada, com blocos parados entre as faixas em movimento.', material: 'Violeta elétrico, contorno vazado no marquee e títulos de grande peso.', detail: 'Deslocamento proporcional à distância do ponteiro, com pausa e intensidade ajustáveis.'
+      }),
+    profile('blackletter', 'Gótico / Blackletter', 'E', 'textura quadrata, capitular, rubrica, fólio, pergaminho, escritório monástico', '#0a0908 #3a3128 #9e2b25 #b6ab97 #ded6c4',
+      'Blackletter é família, não fonte: a textura fica no display e o corpo longo vai para uma serifa de leitura.', {
+        bg: '#0a0908', surface: '#251e18', text: '#ded6c4', muted: '#b2a28c', accent: '#c96458', line: '#8c785d', body: fonts.serif, display: fonts.gothic, unit: 7, columns: 2, radius: 0, border: 2, weight: 400, tracking: '.015em', scale: 1.15, pattern: patterns.gothic, duration: 350, distance: 1,
+        structure: 'Mancha justificada em serifa sobre preto de tinta, com nota na margem e fólio ao pé.', material: 'Vermelho de rubrica, pergaminho quente e textura quadrata no título e na capitular.', detail: 'Ornamento periférico discreto, bordas retas e virada de fólio lenta.'
+      }),
+    profile('bauhaus', 'Bauhaus', 'F', 'círculo quadrado triângulo, primárias, oficina, forma e função, geometria, 1919', '#f0ece2 #d62828 #1d4ed8 #f2b705 #111111',
+      'Arte e ofício na mesma mesa: a forma elementar serve à produção em série, não à vitrine.', {
+        bg: '#f0ece2', surface: '#faf6ed', text: '#111111', muted: '#58534a', accent: '#d62828', line: '#111111', body: fonts.geometric, display: fonts.geometric, radius: 0, border: 3, weight: 700, scale: 1.08, pattern: patterns.geometric, duration: 180, distance: 2,
+        structure: 'Grade geométrica dividida por réguas de 3 px e corpo de construção simples.', material: 'Primárias chapadas sobre papel claro, com preto estrutural.', detail: 'Círculo, quadrado e triângulo como vocabulário fechado.'
+      }),
+    profile('art-deco', 'Art Déco', 'F', 'geometria escalonada, dourado, eixo simétrico, leque, ornamento próprio, 1925', '#0e1114 #16202a #c7a25a #8c6d33 #e9dfc6',
+      'Arquitetura antes de ornamento: eixo central, massa em degraus e metal só na aresta.', {
+        bg: '#0e1114', surface: '#212322', text: '#e9dfc6', muted: '#b6aa90', accent: '#c7a25a', line: '#a78b57', display: fonts.deco, unit: 8, columns: 2, radius: 2, border: 2, weight: 400, tracking: '.07em', scale: 1.12, pattern: patterns.deco, duration: 420, distance: 1,
+        structure: 'Eixo central rígido, colunas simétricas e intervalos de ritmo arquitetônico.', material: 'Dourado acetinado em fio, superfícies profundas e tipografia de fachada.', detail: 'Leque em série, zigurate e fio duplo repetidos na mesma proporção.'
+      }),
+    profile('art-nouveau', 'Art Nouveau', 'F', 'curva vegetal, caule condutor, vitral, botânico, moldura orgânica, 1897', '#f3ecd9 #8a9c52 #c98a3a #a34a2a #6b5a24',
+      'A curva é estrutura: o caule conduz a leitura e a moldura nasce das folhas dos cantos.', {
+        bg: '#f3ecd9', surface: '#e8dec0', text: '#3f3518', muted: '#6b5a24', accent: '#a34a2a', line: '#8a7440', body: fonts.serif, display: fonts.editorial, unit: 7, columns: 2, radius: 30, border: 2, weight: 400, pattern: patterns.botanical, duration: 420, distance: 3,
+        structure: 'Ritmo calmo, corpo em serifa e superfície de leitura lisa dentro da moldura.', material: 'Oliva, terracota e vitral confinado a uma área.', detail: 'Curvas contínuas de espessura constante e encontros desenhados nos cantos.'
+      }),
+    profile('construtivismo', 'Construtivismo Russo', 'F', 'diagonal, vermelho e preto, fotomontagem, serigrafia, escala, agitprop', '#e8e2d4 #c9231c #8a1610 #151513',
+      'Um ângulo só, repetido em tudo que é estrutura, apontando para a palavra de maior escala.', {
+        bg: '#efe9dc', surface: '#faf6ed', text: '#151513', muted: '#575247', accent: '#c9231c', line: '#151513', body: fonts.geometric, display: fonts.condensed, unit: 5, columns: 2, radius: 0, border: 3, weight: 700, tracking: '-0.035em', scale: 1.16, pattern: patterns.diagonal, duration: 130, distance: 3,
+        structure: 'Planos inclinados no mesmo ângulo, com os dados práticos sempre na horizontal.', material: 'Vermelho de serigrafia, preto e papel cru; a terceira cor vem da sobreposição.', detail: 'Escala em conflito entre a palavra dominante e o texto de apoio.'
+      }),
+    profile('memphis', 'Memphis 80s', 'F', 'laminado, padrão bacterio, geometria pós-moderna, milão 1981, cor que briga, objeto', '#fdf6e8 #ff5d8f #3ddad7 #ffd23f #b28dff #1a1a1a',
+      'Laminado estampado e cor que briga de propósito, com o contorno preto segurando a silhueta.', {
+        bg: '#fdf6e8', surface: '#fce7ec', text: '#262138', muted: '#665672', accent: '#3ddad7', line: '#42364d', body: fonts.geometric, display: fonts.bubble, unit: 7, radius: 14, border: 2, weight: 400, shadow: '5px 5px 0 rgba(178, 141, 255, .8)', pattern: patterns.confetti, duration: 220, distance: 5,
+        structure: 'Grade espaçada, objeto em destaque e motivos confinados às bordas.', material: 'Laminado estampado, cores saturadas e contorno preto em toda peça.', detail: 'Padrões em duas escalas, pé cônico e esfera que não sustenta nada.'
+      }),
+    profile('neo-70s', 'Neo-retrô Anos 70', 'F', 'tipografia arredondada, faixas cromáticas, vinil, mostarda e laranja, releitura contemporânea', '#f7e7c8 #e98a20 #c75b2c #d9a520 #6b3a20',
+      'Releitura contemporânea dos anos 70: arco, faixa quente em quatro tempos e creme como papel.', {
+        bg: '#f4e3c1', surface: '#ecd3a2', text: '#493022', muted: '#72533b', accent: '#d4552b', line: '#947148', body: fonts.rounded, display: fonts.bubble, unit: 7, columns: 2, radius: 34, border: 2, weight: 400, shadow: '3px 4px 0 rgba(122, 139, 58, .45)', pattern: patterns.seventies, duration: 320, distance: 3,
+        structure: 'Arco dominante, faixa cromática horizontal e duas colunas de leitura calorosa.', material: 'Creme de papel, laranja e mostarda em degradê, com marrom de contorno.', detail: 'Sulco, selo central e cantos generosos.'
+      }),
+    profile('psicodelico', 'Psicodélico Anos 60', 'F', 'tipografia em onda, luz líquida, contraste vibrante, cartaz de festival, 1967', '#2b0a4a #ff2d95 #ff8a00 #ffe500 #00c2ff #3ddc84',
+      'A letra se deforma para caber no espaço que ela mesma criou; os dados ficam numa área estável.', {
+        bg: '#2b0a4a', surface: '#461c60', text: '#fff3ce', muted: '#d6b6e6', accent: '#ffe500', line: '#bb8ece', display: fonts.bubble, unit: 7, columns: 2, radius: 40, border: 2, weight: 400, tracking: '.005em', scale: 1.13, shadow: '4px 4px 0 rgba(255, 45, 149, .50)', pattern: patterns.psychedelic, duration: 400, distance: 6,
+        structure: 'Cartaz como centro de interesse e um bloco estável para data, hora e ação.', material: 'Amarelo vibrante sobre roxo profundo, com degradê próprio em cada linha.', detail: 'Ondas de textPath, luz líquida lenta e nenhum flash.'
+      }),
+    profile('pop-art', 'Pop Art / Halftone', 'F', 'retícula, balão, contorno grosso, quadro a quadro, banca, ben-day', '#ffe74c #ff2e63 #2e6bff #f7f3e8 #111111',
+      'A retícula é meio-tom impresso: o ponto cresce na área grande e encolhe na pequena.', {
+        bg: '#fff4ac', surface: '#ffffff', text: '#111111', muted: '#625216', accent: '#e5194b', line: '#111111', display: fonts.comic, radius: 12, border: 3, weight: 400, tracking: '.025em', scale: 1.16, shadow: '5px 5px 0 #111111', pattern: patterns.pop, duration: 140, distance: 4,
+        structure: 'Quadros com contorno de 5 px, sequência de leitura e banca de edições ao pé.', material: 'Massa de cor chapada, contorno preto e papel jornal claro.', detail: 'Retícula Ben-Day proporcional, balão com rabicho e onomatopeia recortada.'
+      }),
+    profile('y2k', 'Retrô / Y2K', 'G', 'plástico translúcido, cromado, elipse, skin, player, futurismo do milênio', '#1b0140 #00fff7 #ff00d4 #c8ff4a #d8d8f0',
+      'Plástico translúcido, bisel cromado e elipse: o futuro que o milênio prometeu, com pixel só no visor.', {
+        bg: '#1b0140', surface: '#362350', text: '#f4ecff', muted: '#c0c0d8', accent: '#00fff7', line: '#a293b7', body: fonts.mono, display: fonts.pixel, unit: 5, size: 14, radius: 2, border: 2, weight: 400, tracking: '.025em', scale: 1.18, shadow: '4px 4px 0 rgba(255, 0, 212, .48), inset 1px 1px 0 rgba(255, 255, 255, .45)', pattern: patterns.grid, duration: 130, distance: 3,
+        structure: 'Fundo violeta, aparelho compacto no centro e ritmo de interface de sistema.', material: 'Carcaça translúcida, bisel cromado e ciano neon; bitmap reservado ao visor.', detail: 'Cápsulas elípticas, brilho de topo e grade digital ao fundo.'
+      }),
+    profile('vaporwave', 'Vaporwave', 'G', 'colagem, memória digital, janela antiga, fita cassete, grade infinita, sem áudio', '#2b1055 #7b2d8e #ff6ec7 #00fff7 #ffb86b',
+      'Colagem de memória: janela de sistema antigo, arquitetura vazia e o silêncio entre os elementos.', {
+        bg: '#2b1055', surface: '#48266d', text: '#ffe8f8', muted: '#d3b5e5', accent: '#ff6ec7', line: '#ad87c9', display: fonts.geometric, unit: 8, columns: 2, radius: 4, weight: 500, tracking: '.075em', shadow: '4px 4px 0 rgba(0, 255, 247, .20)', pattern: patterns.sunset, duration: 480, distance: 3,
+        structure: 'Camadas de colagem sobre fundo violeta, com vazio deliberado entre os blocos.', material: 'Rosa neon, janela prateada de sistema antigo e entreletra muito aberta.', detail: 'Sol em faixas, grade em fuga e movimento lento com pausa.'
+      }),
+    profile('acid-chrome', 'Acid / Chrome Líquido', 'G', 'cromo líquido, ácido, reflexo alternado, silhueta metálica, drop, autoral', '#07070a #c6ff00 #ff3df2 #c9ced9 #6d7484',
+      'Combinação autoral: cartaz ácido e objeto metálico cujo reflexo alterna bandas claras e escuras.', {
+        bg: '#08070c', surface: '#22242c', text: '#edf0f8', muted: '#b0b6c8', accent: '#c6ff00', line: '#929aa9', display: fonts.heavy, unit: 7, radius: 30, weight: 900, tracking: '-0.045em', shadow: 'inset 0 2px 0 rgba(225, 233, 255, .55), 0 8px 22px rgba(0, 0, 0, .4)', pattern: patterns.chrome, duration: 320, distance: 5,
+        structure: 'Fundo quase preto, objeto isolado no palco e uma área lisa para a ficha.', material: 'Verde ácido, alumínio polido em bandas e sombra de contato colorida.', detail: 'Curvas fundidas, inversão de reflexo na dobra e resposta presa ao objeto.'
+      }),
+    profile('ciberpunk', 'Ciberpunk', 'G', 'neon, canais, permissões, alerta, desgaste, glitch por evento, hud', '#05060a #00fff7 #ff00d4 #ffb300 #ff3b5c',
+      'Uma cor operacional e cores de estado: âmbar degrada, magenta é sensível, vermelho é intrusão.', {
+        bg: '#05010f', surface: '#13152c', text: '#d7fcff', muted: '#7bb8cc', accent: '#00fff7', line: '#648f9e', body: fonts.mono, display: fonts.technical, unit: 5, size: 14, radius: 2, border: 2, weight: 800, tracking: '.015em', scale: .94, shadow: '0 0 18px rgba(0, 255, 247, .13), 3px 3px 0 rgba(255, 0, 212, .25)', pattern: patterns.scanline, duration: 110, distance: 3,
+        structure: 'Base escura, canais no topo e painéis de estado em grade compacta.', material: 'Ciano de sinalização sobre superfície gasta, com arranhão discreto no lugar de ruído.', detail: 'Varredura delicada e glitch curto, disparado só por evento; sem flashes.'
+      }),
+    profile('hud-espacial', 'HUD Espacial / Sci-Fi', 'G', 'telemetria, cantoneira, trajetória, unidades, alvo selecionável, sci-fi', '#020c14 #4fd4ff #9ff3ff #ffcf5a #ff6b5a',
+      'Instrumentação a serviço de uma tarefa: toda leitura traz unidade e a trajetória mostra a situação.', {
+        bg: '#03060d', surface: '#101c2a', text: '#cfe9ff', muted: '#8daabd', accent: '#4fd4ff', line: '#5c859c', body: fonts.mono, display: fonts.technical, unit: 5, size: 13, radius: 2, weight: 600, tracking: '.04em', scale: .92, shadow: 'inset 0 0 22px rgba(79, 212, 255, .035)', pattern: patterns.telemetry, duration: 180, distance: 1,
+        structure: 'Três instrumentos essenciais, diagrama de trajetória e corpo de telemetria.', material: 'Azul instrumental sobre superfícies profundas, com âmbar reservado ao alvo.', detail: 'Cantoneira em canto oposto, linha fina de referência e número tabular.'
+      }),
+    profile('isometrico', 'Isométrico / 3D', 'G', 'axonometria, camadas, vista explodida, sombra sólida, eixos paralelos, diagrama', '#0f1020 #7c83ff #4ae0c8 #ff8ac4 #ffd666',
+      'Eixos paralelos e escala estável: a camada de baixo mede o mesmo que a de cima.', {
+        bg: '#0f1020', surface: '#242744', text: '#f0efff', muted: '#b2b4d9', accent: '#7c83ff', line: '#8a90ba', display: fonts.geometric, unit: 7, radius: 10, weight: 700, shadow: '4px 5px 0 #383d6e, 8px 10px 0 rgba(20, 23, 49, .8)', pattern: patterns.isometric, duration: 280, distance: 5,
+        structure: 'Fundo azul profundo, pilha de camadas rotuladas e leitura em três colunas.', material: 'Violeta com iluminação de um só lado e sombra sólida deslocada, nunca desfocada.', detail: 'Eixos paralelos, oclusão coerente e afastamento controlado na vista explodida.'
+      }),
+    profile('maximalismo-tatil', 'Maximalismo Tátil', 'H', 'papel de algodão, argila fosca, pigmento natural, tecido, colagem, serif + manuscrita', '#f3e6d0 #e8734a #3f7d5c #e8b83a #2e1f12',
+      'Uma peça domina a bancada; borda, espessura e luz distinguem papel, barro, tecido e pigmento.', {
+        bg: '#f3e6d0', surface: '#fff8e9', text: '#2e1f12', muted: '#72543c', accent: '#3f7d5c', line: '#987248', body: "'Inter', 'Arial', sans-serif", display: fonts.serif, unit: 6, columns: 2, radius: 20, border: 2, weight: 800, tracking: '-.025em', scale: 1.15, shadow: '2px 3px 0 #c7af86, 7px 10px 16px rgba(46, 31, 18, .14)', pattern: patterns.paper, duration: 180, distance: 2,
+        structure: 'Título em serifa de grande escala, objeto principal e etiquetas em sequência.', material: 'Argila terracota, papel de algodão, tecido tramado e pigmento com luz vinda da esquerda.', detail: 'Camadas com espessuras diferentes, bordas irregulares e seleção por contorno e marca.'
+      }),
+    profile('flat-organica', 'Ilustração Flat Orgânica', 'H', 'svg autoral, silhueta orgânica, cor chapada, canteiros, terracota, oliva', '#faf3e8 #d1663f #5c7a4a #e8a33f #3d2f24',
+      'Silhuetas próprias, cor chapada e espaço entre formas fazem a ilustração explicar o conteúdo.', {
+        bg: '#faf3e8', surface: '#ece4cc', text: '#3d2f24', muted: '#715e4b', accent: '#5c7a4a', line: '#94775a', body: "'Inter', 'Arial', sans-serif", display: fonts.serif, unit: 7, columns: 2, radius: 24, weight: 700, pattern: patterns.organic, duration: 180, distance: 1,
+        structure: 'Cena ilustrada ampla, seletores numerados e ficha de cultivo em coluna lateral.', material: 'Cinco cores opacas, oliva vegetal, terra queimada e fundo claro sem volume simulado.', detail: 'Curvas assimétricas, contorno de seleção e mudança de conteúdo ligada ao canteiro.'
+      }),
+    profile('risografia', 'Risografia', 'H', 'riso, tinta spot, separações, sobreimpressão, registro, retícula, dithering, papel', '#f4f0e4 #ff48b0 #0078bf #ffd400 #1f1b16',
+      'Matrizes separadas combinam tintas sobre papel; retículas ou dithering reproduzem gradações.', {
+        bg: '#f4f0e4', surface: '#fff7e5', text: '#1f1b16', muted: '#675e50', accent: '#0078bf', line: '#887b66', body: fonts.geometric, display: fonts.heavy, unit: 6, radius: 2, border: 2, weight: 900, shadow: '2px 2px 0 rgba(255, 72, 176, .55)', pattern: patterns.riso, duration: 160, distance: 2,
+        structure: 'Bancada tipográfica com cartaz dominante, legenda de tintas e controles de prova.', material: 'Papel aparente, rosa, azul e amarelo sobrepostos; multiply aproxima a mistura sem simular fluorescência.', detail: 'Retícula tonal e pequeno desvio de registro ajustável; textos de interface permanecem nítidos.'
+      }),
+    profile('corporate-memphis', 'Corporate Memphis', 'H', 'alegria, proporções expressivas, figuras geométricas, flat, saas, ilustração corporativa, colaboração', '#ffffff #6c5ce7 #fd79a8 #00b894 #1f1f3d',
+      'Personagens de proporções expressivas explicam ações do produto; Alegria é uma referência específica dessa linguagem.', {
+        bg: '#f7f6ff', surface: '#ffffff', text: '#1f1f3d', muted: '#64627d', accent: '#6c5ce7', line: '#8782a8', body: fonts.rounded, display: "'Poppins', 'Arial', sans-serif", unit: 7, radius: 24, weight: 700, shadow: '0 7px 24px rgba(108, 92, 231, .09)', pattern: patterns.organic, duration: 180, distance: 2,
+        structure: 'Mensagem à esquerda, cena à direita e três recursos ligados a uma prévia funcional.', material: 'Branco e violeta com rosa e verde em personagens geométricos, sem modelagem volumétrica.', detail: 'Cabeças compactas, membros amplos e objetos compartilhados; a seleção troca pose, cena e conteúdo juntos.'
+      }),
+    profile('cottagecore', 'Cottagecore / Botânico', 'H', 'botânico, sazonalidade, horta doméstica, papel, tecido gingham, sálvia, rosa seco, ilustração botânica, manuscrita', '#fbf7ee #96a882 #b06a72 #a3893f #3f4436',
+      'A sensibilidade rural contemporânea encontra a ilustração botânica em um almanaque de colheitas, cultivo e receitas sazonais.', {
+        bg: '#fbf7ee', surface: '#f2efe1', text: '#3f4436', muted: '#60694f', accent: '#873f4e', line: '#9b9e83', body: fonts.sans, display: fonts.serif, unit: 8, columns: 2, radius: 10, border: 1, weight: 400, scale: 1.08, tracking: '-.02em', shadow: '3px 4px 0 rgba(163, 137, 63, .10)', pattern: patterns.gingham, duration: 200, distance: 1,
+        structure: 'Página de almanaque em duas colunas, listas de colheita e fichas de cultivo.', material: 'Papel creme, sálvia e rosa seco; serifa acolhedora com manuscrita restrita a notas na demo.', detail: 'Xadrez de tecido nas bordas, linhas botânicas e mudança sazonal sem movimento contínuo.'
+      }),
+    profile('solarpunk', 'Solarpunk', 'H', 'eco-futurismo, cooperativa, energia solar, ciclo da água, cultivo, infraestrutura visível, verde e dourado, comunidade', '#eaf6e4 #3d8c4a #ffd66b #c9861f #1f3326',
+      'Um futuro ecológico fica compreensível quando arquitetura, recursos e cuidado comunitário revelam suas relações funcionais.', {
+        bg: '#eaf6e4', surface: '#f7f9e8', text: '#1f3326', muted: '#48633c', accent: '#31713c', line: '#799563', body: "'Poppins', 'Arial', sans-serif", display: fonts.serif, unit: 7, columns: 2, radius: 22, border: 1, weight: 600, scale: 1.08, shadow: '0 4px 0 rgba(61, 140, 74, .12)', pattern: patterns.solar, duration: 180, distance: 1,
+        structure: 'Mapa do bairro e indicadores lado a lado, com exploração sequencial dos sistemas.', material: 'Estruturas claras, verde vegetal, luz dourada e títulos de serifa orgânica.', detail: 'Fluxos numerados, unidades explícitas e raios estáticos; transições curtas sinalizam a seleção.'
+      }),
+    profile('paper-cut', 'Paper Cut / Camadas', 'H', 'papel recortado, camadas opacas, luz direcional, recorte interno, vista explodida, espessura', '#fdf6ec #f4805e #4fa3d1 #8b7fd4 #2f2a3a',
+      'Folhas opacas, recortes internos e sombras coerentes com uma fonte de luz constroem a profundidade.', {
+        bg: '#fdf6ec', surface: '#fffaf4', text: '#2f2a3a', muted: '#655768', accent: '#397fae', line: '#958198', body: fonts.rounded, display: fonts.serif, unit: 7, columns: 2, radius: 3, weight: 600, shadow: '3px 4px 0 #d8c3d9, 5px 7px 12px rgba(47, 42, 58, .12)', pattern: patterns.paperCut, duration: 350, distance: 3,
+        structure: 'Introdução curta ao lado da paisagem e bancada de seleção sob a cena.', material: 'Papéis foscos creme, violeta, azul e coral; bordas nítidas e espessura aparente.', detail: 'Recorte interno, seleção por contorno e afastamento breve das camadas; luz alta à esquerda projeta sombra para baixo e direita.'
+      })
+  ]);
+
+  var bySlug = Object.create(null);
+  profiles.forEach(function (p) { bySlug[p.slug] = p; });
+
+  function normalize(slugs) {
+    if (!Array.isArray(slugs)) return [];
+    var result = [];
+    slugs.forEach(function (slug) {
+      if (typeof slug === 'string' && bySlug[slug] && result.indexOf(slug) === -1 && result.length < 3) result.push(slug);
+    });
+    return result;
+  }
+
+  function rgb(hex) {
+    return [1, 3, 5].map(function (offset) { return parseInt(hex.slice(offset, offset + 2), 16); });
+  }
+  function hex(channels) {
+    return '#' + channels.map(function (c) { return Math.round(c).toString(16).padStart(2, '0'); }).join('');
+  }
+  function blend(a, b, amount) {
+    var bChannels = rgb(b);
+    return hex(rgb(a).map(function (channel, i) { return channel + (bChannels[i] - channel) * amount; }));
+  }
+  function luminance(color) {
+    var c = rgb(color).map(function (value) {
+      value /= 255;
+      return value <= .04045 ? value / 12.92 : Math.pow((value + .055) / 1.055, 2.4);
+    });
+    return c[0] * .2126 + c[1] * .7152 + c[2] * .0722;
+  }
+  function contrast(a, b) {
+    var aLuminance = luminance(a), bLuminance = luminance(b);
+    return (Math.max(aLuminance, bLuminance) + .05) / (Math.min(aLuminance, bLuminance) + .05);
+  }
+  function minimumContrast(color, backgrounds) {
+    return Math.min.apply(null, backgrounds.map(function (bg) { return contrast(color, bg); }));
+  }
+  function accessibleColor(preferred, backgrounds, target) {
+    if (minimumContrast(preferred, backgrounds) >= target) return preferred;
+    var endpoint = minimumContrast('#000000', backgrounds) > minimumContrast('#ffffff', backgrounds) ? '#000000' : '#ffffff';
+    for (var amount = .025; amount <= 1; amount += .025) {
+      var candidate = blend(preferred, endpoint, Math.min(1, amount));
+      if (minimumContrast(candidate, backgrounds) >= target) return candidate;
+    }
+    return endpoint;
+  }
+
+  function compose(input) {
+    var slugs = normalize(input);
+    if (!slugs.length) return null;
+    var chosen = slugs.map(function (slug) { return bySlug[slug]; });
+    var base = chosen[0], material = chosen[1] || base, detail = chosen[2] || material;
+    var adjustments = [];
+    var bg = base.bg, surface = material.surface;
+    var anchorText = accessibleColor(base.text, [bg], 4.5);
+    var anchorMuted = accessibleColor(base.muted, [bg], 4.5);
+    // Keep imported materials on the base's light/dark side. Opaque colors make
+    // the same exported tokens usable without a hidden backdrop dependency.
+    var endpoint = contrast('#000000', bg) > contrast('#ffffff', bg) ? '#000000' : '#ffffff';
+    function readableSurface(candidate) {
+      return contrast(endpoint, candidate) >= 7 && contrast(anchorText, candidate) >= 4.5 && contrast(anchorMuted, candidate) >= 4.5;
+    }
+    if (!readableSurface(surface)) {
+      for (var amount = .05; amount <= 1.01; amount += .05) {
+        surface = blend(material.surface, bg, Math.min(amount, 1));
+        if (readableSurface(surface)) break;
+      }
+    }
+    var backgrounds = [bg, surface];
+    var text = accessibleColor(base.text, backgrounds, 4.5);
+    var muted = accessibleColor(base.muted, backgrounds, 4.5);
+    var accent = material.accent;
+    var onAccent = contrast('#ffffff', accent) > contrast('#000000', accent) ? '#ffffff' : '#000000';
+    var line = accessibleColor(material.line, backgrounds, 3);
+    var focus = accessibleColor(accent, backgrounds, 3);
+    var success = luminance(bg) < .2 ? '#70dfa0' : '#217345';
+    var onSuccess = contrast('#ffffff', success) > contrast('#000000', success) ? '#ffffff' : '#000000';
+
+    if (surface !== material.surface) adjustments.push('A superfície de ' + material.name + ' foi aproximada da luminosidade da base para manter texto e foco legíveis.');
+    if (text !== base.text || muted !== base.muted) adjustments.push('Os tons de texto foram ajustados para contraste mínimo de 4,5:1 sobre o fundo e a superfície.');
+    if (focus !== accent || line !== material.line) adjustments.push('Foco e contornos receberam tons próprios para contraste mínimo de 3:1.');
+
+    var tokens = {
+      '--ds-color-bg': bg,
+      '--ds-color-surface': surface,
+      '--ds-color-text': text,
+      '--ds-color-muted': muted,
+      '--ds-color-accent': accent,
+      '--ds-color-on-accent': onAccent,
+      '--ds-color-line': line,
+      '--ds-color-focus': focus,
+      '--ds-color-success': success,
+      '--ds-color-on-success': onSuccess,
+      '--ds-font-body': base.body,
+      '--ds-font-display': material.display,
+      '--ds-font-mono': fonts.mono,
+      '--ds-font-size': base.size + 'px',
+      '--ds-heading-weight': String(material.weight),
+      '--ds-letter-spacing': material.tracking,
+      '--ds-space-unit': base.unit + 'px',
+      '--ds-space-1': base.unit + 'px',
+      '--ds-space-2': base.unit * 2 + 'px',
+      '--ds-space-3': base.unit * 3 + 'px',
+      '--ds-space-4': base.unit * 4 + 'px',
+      '--ds-space-5': base.unit * 6 + 'px',
+      '--ds-space-6': base.unit * 8 + 'px',
+      '--ds-radius': detail.radius + 'px',
+      '--ds-radius-small': Math.round(detail.radius / 2) + 'px',
+      '--ds-border-width': material.border + 'px',
+      '--ds-shadow': material.shadow,
+      '--ds-pattern': detail.pattern,
+      '--ds-pattern-size': detail.pattern === patterns.halftone || detail.pattern === patterns.pop ? '10px 10px' : 'auto',
+      '--ds-motion-duration': detail.duration + 'ms',
+      '--ds-motion-distance': detail.distance + 'px',
+      '--ds-layout-columns': String(base.columns),
+      '--ds-display-scale': String(material.scale)
+    };
+    var origins = [{
+      role: 'Base', style: base.name,
+      description: base.structure + (chosen.length === 1 ? ' Também fornece o material, as formas e os detalhes.' : '')
+    }];
+    if (chosen[1]) origins.push({
+      role: 'Tom e material', style: material.name,
+      description: material.material + (chosen.length === 2 ? ' Também fornece as formas e os detalhes.' : '')
+    });
+    if (chosen[2]) origins.push({role: 'Detalhe e movimento', style: detail.name, description: detail.detail});
+    return {
+      slugs: slugs,
+      name: chosen.map(function (p) { return p.name; }).join(' × '),
+      tokens: tokens,
+      origins: origins,
+      principles: chosen.map(function (p) { return p.principle; }),
+      adjustments: adjustments
+    };
+  }
+
+  var api = Object.freeze({profiles: profiles, groups: groups, compose: compose, normalize: normalize});
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) root.MixerEngine = api;
+})(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
+</script>
+<script>
+(function(){
+  'use strict';
+  var engine = window.MixerEngine;
+  if(!engine) return;
+  var get = function(id){ return document.getElementById('mixer-' + id); };
+  var state = { slugs: [], preview: 'components' }, system = null, css = '';
+  var profiles = engine.profiles, bySlug = new Map(profiles.map(function(p){ return [p.slug, p]; }));
+  var roles = ['Base', 'Tom e material', 'Detalhe e movimento'];
+  var roleHelp = ['Estrutura, ritmo e legibilidade', 'Acento, tipografia e superfícies', 'Formas, padrões e microinterações'];
+  var optionButtons = [];
+  function node(tag, className, text){
+    var el = document.createElement(tag);
+    if(className) el.className = className;
+    if(text !== undefined) el.textContent = text;
+    return el;
+  }
+  function norm(text){ return String(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  function announce(message){ get('status').textContent = message; }
+  function makeURL(){
+    var url = new URL(location.href);
+    url.search = ''; url.hash = '';
+    if(state.slugs.length){
+      url.searchParams.set('base', state.slugs[0]);
+      state.slugs.slice(1).forEach(function(slug){ url.searchParams.append('influence', slug); });
+      url.searchParams.set('preview', state.preview);
+    }
+    return url.href;
+  }
+  function writeURL(){
+    try { history.replaceState({ mixer: 1 }, '', makeURL()); } catch(error) { /* A seleção continua utilizável em arquivos locais restritos. */ }
+  }
+  function readURL(){
+    var params = new URL(location.href).searchParams;
+    var base = params.get('base');
+    state.slugs = base && bySlug.has(base) ? engine.normalize([base].concat(params.getAll('influence'))) : [];
+    state.preview = params.get('preview') === 'landing' ? 'landing' : 'components';
+    var invalid = (base && !bySlug.has(base)) || (!base && params.has('influence'));
+    if(invalid) announce('A base deste link não foi encontrada. Escolha um estilo para começar.');
+    render(); writeURL();
+  }
+  Object.keys(engine.groups).forEach(function(key){
+    var option = node('option', '', key + ' · ' + engine.groups[key]);
+    option.value = key; get('group').appendChild(option);
+  });
+  profiles.forEach(function(profile){
+    var button = node('button', 'mixer-option');
+    button.type = 'button'; button.dataset.style = profile.slug;
+    button.setAttribute('aria-pressed', 'false');
+    button.setAttribute('aria-label', profile.name);
+    var swatches = node('span', 'mixer-option__swatches'); swatches.setAttribute('aria-hidden', 'true');
+    profile.palette.slice(0,4).forEach(function(color){ var swatch = node('i'); swatch.style.background = color; swatches.appendChild(swatch); });
+    var copy = node('span', 'mixer-option__copy');
+    copy.appendChild(node('strong', '', profile.name));
+    copy.appendChild(node('small', '', profile.group + ' · ' + profile.tags.split(',').slice(0,2).map(function(t){ return t.trim(); }).join(' · ')));
+    var check = node('span', 'mixer-option__check', '+'); check.setAttribute('aria-hidden', 'true');
+    button.append(swatches, copy, check);
+    button.addEventListener('click', function(){
+      if(state.slugs.indexOf(profile.slug) !== -1){ remove(profile.slug, false); return; }
+      if(state.slugs.length >= 3) return;
+      state.slugs.push(profile.slug); update();
+      announce(profile.name + ' adicionado como ' + roles[state.slugs.length - 1].toLowerCase() + '. ' + state.slugs.length + ' de 3 selecionados.');
+    });
+    get('options').appendChild(button); optionButtons.push(button);
+  });
+  function filter(){
+    var query = norm(get('search').value.trim()), group = get('group').value, visible = 0;
+    optionButtons.forEach(function(button){
+      var p = bySlug.get(button.dataset.style);
+      var match = (group === 'all' || group === p.group) && norm(p.name + ' ' + p.tags + ' ' + engine.groups[p.group]).includes(query);
+      button.hidden = !match; if(match) visible++;
+    });
+    get('results-count').textContent = visible + (visible === 1 ? ' estilo disponível' : ' estilos disponíveis');
+    get('no-results').hidden = visible !== 0;
+  }
+  function remove(slug, restoreFocus){
+    var wasBase = state.slugs[0] === slug;
+    state.slugs = state.slugs.filter(function(item){ return item !== slug; });
+    update();
+    var message = bySlug.get(slug).name + ' removido.';
+    if(wasBase && state.slugs.length) message += ' ' + bySlug.get(state.slugs[0]).name + ' agora é a base.';
+    announce(message);
+    if(restoreFocus){
+      var next = get('slots').querySelector('[data-remove]');
+      if(next) next.focus({ preventScroll: true }); else get('search').focus({ preventScroll: true });
+    }
+  }
+  function renderSlots(){
+    get('slots').replaceChildren();
+    roles.forEach(function(role, i){
+      var profile = bySlug.get(state.slugs[i]);
+      var slot = node('div', 'mixer-slot' + (profile ? ' is-filled' : ''));
+      slot.appendChild(node('span', 'mixer-slot__role', (i + 1) + ' · ' + role));
+      slot.appendChild(node('strong', '', profile ? profile.name : (i ? 'Influência opcional' : 'Escolha seu ponto de partida')));
+      slot.appendChild(node('p', '', roleHelp[i]));
+      if(profile){
+        var button = node('button', 'mixer-remove', '×'); button.type = 'button'; button.dataset.remove = profile.slug;
+        button.setAttribute('aria-label', 'Remover ' + profile.name);
+        button.addEventListener('click', function(){ remove(profile.slug, true); }); slot.appendChild(button);
+      }
+      get('slots').appendChild(slot);
+    });
+    get('count').textContent = state.slugs.length + ' de 3 selecionados';
+    get('reset').disabled = !state.slugs.length;
+    get('limit').textContent = state.slugs.length === 3 ? 'Limite de 3 estilos atingido. Remova uma escolha para experimentar outra.' : 'O primeiro estilo define a base. Os próximos acrescentam personalidade.';
+    optionButtons.forEach(function(button){
+      var selected = state.slugs.includes(button.dataset.style);
+      button.setAttribute('aria-pressed', String(selected)); button.disabled = !selected && state.slugs.length === 3;
+      button.querySelector('.mixer-option__check').textContent = selected ? '✓' : '+';
+    });
+  }
+  function showPreview(){
+    document.querySelectorAll('[data-preview]').forEach(function(button){ button.setAttribute('aria-pressed', String(button.dataset.preview === state.preview)); });
+    get('components').hidden = state.preview !== 'components'; get('landing').hidden = state.preview !== 'landing';
+    get('browser-label').textContent = state.preview === 'components' ? 'forma / workspace' : 'forma / ideias';
+  }
+  function exportCSS(){
+    return '/* Design Styles Lib · ' + state.slugs.map(function(slug){ return bySlug.get(slug).name; }).join(' + ') + ' */\n' +
+      '/* Fontes: carregue as famílias abaixo ou mantenha os fallbacks. */\n:root {\n' +
+      Object.keys(system.tokens).map(function(key){ return '  ' + key + ': ' + system.tokens[key] + ';'; }).join('\n') + '\n}\n\n' +
+      '@media (prefers-reduced-motion: reduce) {\n  :root {\n    --ds-motion-duration: 0ms;\n    --ds-motion-distance: 0px;\n  }\n}';
+  }
+  function renderResult(){
+    get('result').dataset.base = state.slugs[0];
+    get('result-title').textContent = 'Seu sistema combinado';
+    get('result-subtitle').textContent = state.slugs.map(function(slug){ return bySlug.get(slug).name; }).join(' + ');
+    var preview = get('preview'); preview.removeAttribute('style');
+    Object.keys(system.tokens).forEach(function(key){ preview.style.setProperty(key, system.tokens[key]); });
+    get('origins').replaceChildren();
+    system.origins.forEach(function(origin, i){
+      var el = node('div', 'mixer-origin'); el.append(node('small', '', roles[i]), node('strong', '', origin.style), node('p', '', origin.description)); get('origins').appendChild(el);
+    });
+    get('principles').replaceChildren();
+    system.principles.forEach(function(text){ get('principles').appendChild(node('li', '', text)); });
+    get('adjustments').hidden = !system.adjustments.length;
+    get('adjustments').textContent = system.adjustments.join(' ');
+    get('token-swatches').replaceChildren();
+    [['bg','Fundo'],['surface','Superfície'],['text','Texto'],['muted','Texto secundário'],['accent','Acento'],['line','Borda']].forEach(function(item){
+      var color = system.tokens['--ds-color-' + item[0]], swatch = node('div', 'mixer-token-swatch'), chip = node('i');
+      chip.style.background = color; chip.setAttribute('aria-hidden', 'true');
+      swatch.append(chip, node('span', '', item[1]), node('small', '', color)); get('token-swatches').appendChild(swatch);
+    });
+    get('token-facts').replaceChildren();
+    [['Texto','--ds-font-body'],['Títulos','--ds-font-display'],['Unidade de espaço','--ds-space-unit'],['Cantos','--ds-radius'],['Grade','--ds-layout-columns'],['Resposta ao gesto','--ds-motion-duration']].forEach(function(item){
+      var value = system.tokens[item[1]], el = node('div');
+      if(item[1].includes('font-')) value = value.split(',')[0].replace(/['"]/g,'');
+      if(item[1] === '--ds-layout-columns') value += ' colunas';
+      el.append(node('dt','',item[0]),node('dd','',value)); get('token-facts').appendChild(el);
+    });
+    css = exportCSS(); get('tokens').textContent = css;
+    get('link').value = makeURL();
+    document.title = state.slugs.map(function(slug){ return bySlug.get(slug).name; }).join(' + ') + ' — Combinador';
+  }
+  function render(){
+    renderSlots(); filter(); showPreview();
+    system = engine.compose(state.slugs);
+    get('empty').hidden = !!system; get('result').hidden = !system;
+    if(system) renderResult();
+    else { document.title = 'Combinador — Design Styles Lib'; get('result').removeAttribute('data-base'); }
+  }
+  function update(){ render(); writeURL(); }
+  async function copyText(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      try { await navigator.clipboard.writeText(text); return true; } catch(error) { /* Usar cópia local quando a API estiver indisponível. */ }
+    }
+    var previous = document.activeElement, area = node('textarea');
+    area.value = text; area.setAttribute('readonly',''); area.style.cssText = 'position:fixed;left:-9999px;top:0';
+    document.body.appendChild(area); area.select(); var copied = false;
+    try { copied = document.execCommand('copy'); } catch(error) { copied = false; }
+    area.remove(); if(previous) previous.focus({ preventScroll: true }); return copied;
+  }
+  get('copy').addEventListener('click', async function(){
+    announce(await copyText(css) ? 'Tokens CSS copiados.' : 'Não foi possível copiar automaticamente. Abra “Ver variáveis CSS” e selecione o conteúdo.');
+  });
+  get('share').addEventListener('click', async function(){
+    var url = makeURL();
+    if(navigator.share){
+      try { await navigator.share({ title: 'Meu sistema de design', text: get('result-subtitle').textContent, url: url }); announce('Combinação compartilhada.'); return; }
+      catch(error) { if(error.name === 'AbortError') { announce('Compartilhamento cancelado.'); return; } }
+    }
+    if(await copyText(url)) announce(location.protocol === 'file:' ? 'Link local copiado. Para abrir em outro dispositivo, compartilhe uma versão hospedada da biblioteca.' : 'Link da combinação copiado.');
+    else { get('link').focus(); get('link').select(); announce('Copie o link selecionado para compartilhar esta combinação.'); }
+  });
+  get('link').addEventListener('click', function(){ this.select(); });
+  get('search').addEventListener('input', filter); get('group').addEventListener('change', filter);
+  get('search').addEventListener('keydown', function(event){ if(event.key === 'Escape'){ this.value = ''; filter(); } });
+  document.addEventListener('keydown', function(event){
+    if(event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !event.target.closest('input,textarea,select,[contenteditable]')){ event.preventDefault(); get('search').focus(); }
+  });
+  get('reset').addEventListener('click', function(){ state.slugs = []; state.preview = 'components'; update(); get('search').focus({ preventScroll: true }); announce('Combinação limpa. Escolha uma nova base.'); });
+  get('example').addEventListener('click', function(){
+    state.slugs = ['minimalismo','glassmorphism','bauhaus']; update(); get('result-title').focus({ preventScroll: true }); announce('Exemplo criado: Minimalismo como base, Glassmorphism no material e Bauhaus nos detalhes.');
+  });
+  document.querySelectorAll('[data-preview]').forEach(function(button){ button.addEventListener('click', function(){ state.preview = button.dataset.preview; showPreview(); get('link').value = makeURL(); writeURL(); }); });
+  get('demo-form').addEventListener('submit', function(event){
+    event.preventDefault(); var input = get('demo-project'), name = input.value.trim();
+    if(!name){ input.setCustomValidity('Dê um nome ao projeto.'); input.reportValidity(); return; }
+    get('project-count').textContent = String(Number(get('project-count').textContent) + 1);
+    get('demo-feedback').textContent = '“' + name + '” criado nesta prévia.'; input.value = '';
+  });
+  get('demo-project').addEventListener('input', function(){ this.setCustomValidity(''); });
+  get('demo-reset').addEventListener('click', function(){
+    get('demo-form').reset(); get('demo-project').setCustomValidity(''); get('project-count').textContent = '12';
+    get('components').querySelectorAll('input[type=checkbox]').forEach(function(input){ input.checked = input.defaultChecked; });
+    get('demo-feedback').textContent = 'Prévia reiniciada. Experimente os campos e botões.';
+  });
+  document.querySelectorAll('[data-demo-explore]').forEach(function(button){ button.addEventListener('click', function(){ get('features').focus(); get('features').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' }); }); });
+  window.addEventListener('popstate', readURL);
+  readURL();
+})();
+</script>
+</body>
+</html>
