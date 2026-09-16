@@ -161,6 +161,26 @@ html.js .lab-section:not(.is-live) *::after{animation-play-state:paused!importan
   transform:translateY(-3px);border-color:rgba(139,92,246,.55);
   background:rgba(139,92,246,.07);
 }
+.card__preview{
+  position:relative;width:100%;height:112px;border-radius:7px;
+  overflow:hidden;background:#0e0e11;border:1px solid rgba(255,255,255,.08);
+  pointer-events:none;user-select:none;margin-bottom:2px;
+  transition:border-color .28s,box-shadow .28s;
+}
+.card:hover .card__preview{
+  border-color:rgba(139,92,246,.45);
+  box-shadow:0 6px 20px -6px rgba(0,0,0,.7);
+}
+.card__stage{
+  position:absolute;top:0;left:0;
+  width:840px;height:520px;
+  transform-origin:top left;
+  transform:scale(var(--prev-scale,.22));
+  pointer-events:none;
+}
+.card__preview *,.card__preview *::before,.card__preview *::after{
+  animation:none!important;transition:none!important;
+}
 .card__top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .card__n{
   font-size:10px;color:#55555e;font-weight:700;letter-spacing:.1em;
@@ -374,6 +394,7 @@ a.card{text-decoration:none}
   .lab-group{padding:44px 14px 4px}
   .cat{padding:118px 14px 20px}
   .cat__grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .card__preview{height:96px}
   .frame{border-radius:8px}
 }
 /* ============================================================
@@ -7787,6 +7808,25 @@ h1{font-family:'Fraunces',serif}  h1 em{font-style:italic;color:var(--amber)}</p
     card.dataset.slug = s.dataset.slug;
     card.href = '#' + (desktop.matches ? 'style=' : '') + s.dataset.slug;
 
+    var body = s.querySelector('.frame__body');
+    if(body){
+      var prev = doc.createElement('div');
+      prev.className = 'card__preview';
+      prev.setAttribute('aria-hidden', 'true');
+      var stage = doc.createElement('div');
+      stage.className = 'card__stage';
+      var clone = body.cloneNode(true);
+      clone.removeAttribute('id');
+      clone.querySelectorAll('[id]').forEach(function(el){ el.removeAttribute('id'); });
+      clone.querySelectorAll('a, button, input, textarea, select').forEach(function(el){
+        el.tabIndex = -1;
+        el.setAttribute('aria-hidden', 'true');
+      });
+      stage.appendChild(clone);
+      prev.appendChild(stage);
+      card.appendChild(prev);
+    }
+
     var top = doc.createElement('div');
     top.className = 'card__top';
     top.innerHTML = '<span class="card__n">' + (i < 9 ? '0' : '') + (i + 1) + '</span>' +
@@ -7829,6 +7869,22 @@ h1{font-family:'Fraunces',serif}  h1 em{font-style:italic;color:var(--amber)}</p
     grid.appendChild(card);
     return card;
   });
+
+  if(window.ResizeObserver && grid){
+    var ro = new ResizeObserver(function(entries){
+      for(var j = 0; j < entries.length; j++){
+        var entry = entries[j];
+        var w = entry.contentRect ? entry.contentRect.width : entry.target.clientWidth;
+        if(w > 0){
+          entry.target.style.setProperty('--prev-scale', (w / 840).toFixed(4));
+        }
+      }
+    });
+    cards.forEach(function(c){
+      var p = c.querySelector('.card__preview');
+      if(p) ro.observe(p);
+    });
+  }
 
   var empty = doc.createElement('div');
   empty.className = 'cat__empty';

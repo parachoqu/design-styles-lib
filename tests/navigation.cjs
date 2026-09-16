@@ -191,7 +191,7 @@ async function mobileSnapshot(page) {
   });
 
   await run('browser Back/Forward preserve search, group, catalog scroll and originating card focus', async () => {
-    const page = await openPage(1280, 460);
+    const page = await openPage(1280, 600);
     await page.locator('.chip[data-value="F"]').click();
     await page.locator('#q').fill('a');
     const card = page.locator('#catGrid .card:visible').last();
