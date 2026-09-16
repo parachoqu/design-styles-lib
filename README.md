@@ -25,7 +25,7 @@ xdg-open index.html    # Linux
 | Abrir em nova aba / compartilhar | As cartelas têm links próprios; um link aberto diretamente percorre a sequência completa dos 47 estilos |
 | Âncoras antigas e telas menores | `index.html#vaporwave` mantém o documento contínuo; abaixo de 1024px, `#style=vaporwave` vira `#vaporwave` |
 | Copiar cor | Clique num swatch da paleta e o hex vai para a área de transferência |
-| Copiar receita | `receita css` abre o essencial do estilo, com botão de copiar |
+| Prompt universal | `prompt universal` abre as diretrizes e regras completas do estilo para aplicar a qualquer projeto ou usar com IA, com botão de copiar |
 | Explorar as demos | Seletores, filtros e controles alteram conteúdo e estado localmente; não acionam serviços reais |
 | Combinar estilos | O link no topo abre o combinador, com até três estilos e tokens CSS copiáveis |
 
@@ -242,7 +242,7 @@ pelos testes:
     </div>
     <div class="lab-head__r">
       <p>O que define o estilo, e qual é o truque técnico dele.</p>
-      <details class="recipe"><summary>receita css</summary><div class="recipe__body">
+      <details class="recipe"><summary>prompt universal</summary><div class="recipe__body">
         <button class="recipe__copy">copiar</button>
         <pre class="recipe__code">/* o mínimo que reproduz o estilo */</pre>
       </div></details>
@@ -303,7 +303,7 @@ As verificações da biblioteca abrangem duas camadas:
   `data-slug` únicos e iguais ao `id`, contrato completo em toda seção, nenhum recurso
   externo fora do Google Fonts
 - **runtime**, em Chromium — zero erro de script; catálogo com 47 cartelas; busca sem
-  acento; filtro por grupo; copiar hex e receita pela área de transferência; deep-link;
+  acento; filtro por grupo; copiar hex e prompt universal pela área de transferência; deep-link;
   nenhuma animação rodando fora da tela; e nenhum conteúdo em fluxo vazando da moldura
   em 1440px, 768px e 390px
 
@@ -344,8 +344,8 @@ Confira também no navegador: catálogo sem fragmento em 1440px; abertura de uma
 cartela; anterior/próximo dentro de um grupo filtrado e nos limites da lista; retorno
 com busca, grupo, rolagem e foco restaurados; Voltar/Avançar; edição manual do hash;
 link de estilo em nova aba; âncora antiga; e apresentação contínua em 768px e 390px.
-Na visão individual, confirme que a demo vem antes do resumo, tags, paleta e receita,
-e que copiar cor/receita e as interações originais continuam funcionando.
+Na visão individual, confirme que a demo vem antes do resumo, tags, paleta e prompt universal,
+e que copiar cor/prompt universal e as interações originais continuam funcionando.
 
 Os comandos e cenários acima descrevem como verificar a navegação; não constituem
 um registro de aprovação dos testes desta revisão.

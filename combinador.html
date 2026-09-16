@@ -239,8 +239,9 @@ a{color:inherit}
         <section class="mixer-details" aria-labelledby="mixer-token-title"><h3 id="mixer-token-title">Fundações do sistema</h3><div class="mixer-token-swatches" id="mixer-token-swatches"></div><dl class="mixer-token-facts" id="mixer-token-facts"></dl></section>
         <section class="mixer-details" aria-labelledby="mixer-principles-title"><h3 id="mixer-principles-title">Como usar esta combinação</h3><ul class="mixer-principles" id="mixer-principles"></ul><p class="mixer-adjustments" id="mixer-adjustments" hidden></p></section>
         <section class="mixer-details" aria-labelledby="mixer-export-title">
-          <div class="mixer-export-head"><h3 id="mixer-export-title">Leve para o seu projeto</h3><div class="mixer-actions"><button class="mixer-button mixer-button--primary" id="mixer-copy" type="button">Copiar tokens CSS</button><button class="mixer-button" id="mixer-share" type="button">Compartilhar</button></div></div>
+          <div class="mixer-export-head"><h3 id="mixer-export-title">Leve para o seu projeto</h3><div class="mixer-actions"><button class="mixer-button mixer-button--primary" id="mixer-copy" type="button">Copiar tokens CSS</button><button class="mixer-button" id="mixer-copy-prompt" type="button">Copiar prompt universal</button><button class="mixer-button" id="mixer-share" type="button">Compartilhar</button></div></div>
           <details class="mixer-code"><summary>Ver variáveis CSS</summary><pre id="mixer-tokens" tabindex="0"></pre></details>
+          <details class="mixer-code"><summary>Ver prompt universal para IA & dev</summary><pre id="mixer-prompt" tabindex="0"></pre></details>
           <div class="mixer-share-field"><label class="mixer-label" for="mixer-link">Link desta combinação</label><input class="mixer-input" id="mixer-link" readonly spellcheck="false"></div>
         </section>
       </div>
@@ -824,6 +825,33 @@ a{color:inherit}
     get('components').hidden = state.preview !== 'components'; get('landing').hidden = state.preview !== 'landing';
     get('browser-label').textContent = state.preview === 'components' ? 'forma / workspace' : 'forma / ideias';
   }
+  function exportPrompt(){
+    var names = state.slugs.map(function(slug){ return bySlug.get(slug).name; }).join(' + ');
+    var lines = [
+      '# Diretiva de Design System: ' + names,
+      'Aplique este sistema combinado a qualquer projeto web, app ou componente.\n',
+      '## 1. Origem e Papel dos Estilos',
+      system.origins.map(function(origin, i){
+        return '- **' + roles[i] + ' (' + origin.style + ')**: ' + origin.description;
+      }).join('\n'),
+      '\n## 2. Princípios de Aplicação',
+      system.principles.map(function(p){ return '- ' + p; }).join('\n'),
+      (system.adjustments && system.adjustments.length ? '\n**Ajustes de contraste e legibilidade:** ' + system.adjustments.join(' ') : ''),
+      '\n## 3. Design Tokens CSS (:root)',
+      '```css',
+      exportCSS(),
+      '```',
+      '\n## 4. Diretrizes de Execução',
+      '- **Cores & Superfícies**: Aplique os tokens semânticos --ds-color-bg, --ds-color-surface, --ds-color-text, --ds-color-muted, --ds-color-accent e --ds-color-line.',
+      '- **Tipografia**: Use --ds-font-display para títulos e --ds-font-body para textos e interfaces.',
+      '- **Espaçamento & Grid**: Use --ds-space-unit e estruture o layout na grade de --ds-layout-columns colunas.',
+      '- **Bordas & Raios**: Use --ds-radius consistentemente em contêineres e botões.',
+      '- **Micro-interações**: Aplique transições com --ds-motion-duration e --ds-motion-easing (respeitando prefers-reduced-motion).',
+      '- **Acessibilidade**: Garanta contraste WCAG AA para todos os textos e foco visível.\n',
+      'Aplique este sistema à interface solicitada gerando a estrutura e os estilos completos.'
+    ];
+    return lines.filter(function(line){ return line !== null && line !== undefined; }).join('\n');
+  }
   function exportCSS(){
     return '/* Design Styles Lib · ' + state.slugs.map(function(slug){ return bySlug.get(slug).name; }).join(' + ') + ' */\n' +
       '/* Fontes: carregue as famílias abaixo ou mantenha os fallbacks. */\n:root {\n' +
@@ -858,6 +886,7 @@ a{color:inherit}
       el.append(node('dt','',item[0]),node('dd','',value)); get('token-facts').appendChild(el);
     });
     css = exportCSS(); get('tokens').textContent = css;
+    promptText = exportPrompt(); get('mixer-prompt').textContent = promptText;
     get('link').value = makeURL();
     document.title = state.slugs.map(function(slug){ return bySlug.get(slug).name; }).join(' + ') + ' — Combinador';
   }
@@ -881,6 +910,9 @@ a{color:inherit}
   }
   get('copy').addEventListener('click', async function(){
     announce(await copyText(css) ? 'Tokens CSS copiados.' : 'Não foi possível copiar automaticamente. Abra “Ver variáveis CSS” e selecione o conteúdo.');
+  });
+  get('copy-prompt').addEventListener('click', async function(){
+    announce(await copyText(promptText) ? 'Prompt universal copiado para a área de transferência.' : 'Não foi possível copiar automaticamente. Abra “Ver prompt universal” e selecione o conteúdo.');
   });
   get('share').addEventListener('click', async function(){
     var url = makeURL();
