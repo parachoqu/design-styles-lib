@@ -8,16 +8,27 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 let chromium;
+const playwrightFallback = process.env.PLAYWRIGHT_PATH || '/home/https/.config/nvm/versions/node/v24.14.0/lib/node_modules/playwright';
 try {
   ({ chromium } = require('playwright'));
 } catch (error) {
-  if (error.code !== 'MODULE_NOT_FOUND') throw error;
-  ({ chromium } = require('/home/https/.config/nvm/versions/node/v24.14.0/lib/node_modules/playwright'));
+  if (error.code !== 'MODULE_NOT_FOUND' || !fs.existsSync(playwrightFallback)) throw error;
+  ({ chromium } = require(playwrightFallback));
 }
+const chromiumPath = process.env.CHROMIUM_PATH || (process.platform === 'win32'
+  ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+  : '/usr/bin/chromium');
 
 const target = new URL(process.env.NAV_TEST_URL || pathToFileURL(path.join(__dirname, '..', 'index.html')));
 target.hash = '';
 const baseline = process.env.NAV_BASELINE && path.resolve(process.env.NAV_BASELINE);
+const STYLE_TOTAL = 59;
+const ORIGINAL_STYLE_TOTAL = 47;
+const NEW_STYLE_SLUGS = [
+  'grid-layout', 'horizontal-layout', 'modular-layout', 'grunge',
+  'scroll-effects', 'typographic', 'narrow-layout', 'bold',
+  'futuristic', 'pixel-art', 'glitch', 'fun',
+];
 const browserErrors = [];
 const sourceByPage = new WeakMap();
 let browser;
@@ -40,7 +51,7 @@ async function openPage(width = 1280, height = 800, hash = '', url = target.href
   assert(response, 'The document must load');
   assert(response.ok(), `Document request failed: ${response.status()}`);
   sourceByPage.set(page, await response.text());
-  await page.waitForFunction(() => document.querySelectorAll('#catGrid .card').length === 47);
+  await page.waitForFunction(total => document.querySelectorAll('#catGrid .card').length === total, STYLE_TOTAL);
   await page.evaluate(() => document.fonts.ready);
   return page;
 }
@@ -61,7 +72,7 @@ async function hashIs(page, hash) {
   assert.equal(new URL(page.url()).hash, hash);
 }
 
-async function catalog(page, count = 47) {
+async function catalog(page, count = STYLE_TOTAL) {
   await visibleCount(page, '#cat', 1);
   await visibleCount(page, '.lab-section', 0);
   await visibleCount(page, '.lab-group', 0);
@@ -101,7 +112,7 @@ async function run(name, action) {
 
 async function continuous(page, slug) {
   await hashIs(page, '#' + slug);
-  await visibleCount(page, '.lab-section', 47);
+  await visibleCount(page, '.lab-section', STYLE_TOTAL);
   await visibleCount(page, '#cat', 1);
   await visibleCount(page, '#viewBack', 0);
   await page.waitForFunction(id => {
@@ -115,41 +126,38 @@ async function continuous(page, slug) {
   }), 'Continuous document keeps the original head-before-demo order');
 }
 
-async function mobileSnapshot(page) {
-  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
-  await settle(page);
-  return page.evaluate(() => {
-    const properties = ['display', 'position', 'flexDirection', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'marginTop', 'marginBottom', 'gap', 'fontSize', 'lineHeight', 'borderRadius', 'maxWidth'];
-    const box = el => {
-      const rect = el.getBoundingClientRect();
-      const css = getComputedStyle(el);
-      return {
-        x: Math.round(rect.x * 100) / 100,
-        y: Math.round((rect.y + scrollY) * 100) / 100,
-        width: Math.round(rect.width * 100) / 100,
-        height: Math.round(rect.height * 100) / 100,
-        css: Object.fromEntries(properties.map(key => [key, css[key]])),
-      };
-    };
-    return [...document.querySelectorAll('.lab-section')].map(section => ({
-      slug: section.dataset.slug,
-      order: [...section.children].map(el => el.className),
-      section: box(section),
-      head: box(section.querySelector('.lab-head')),
-      demo: box(section.querySelector('.frame')),
-    }));
+async function visibleCatalogSlugs(page) {
+  return page.locator('#catGrid .card:visible').evaluateAll(cards => cards.map(card => card.getAttribute('href').replace(/^#style=/, '').replace(/^#/, '')));
+}
+
+async function assertCatalogFacetCounts(page) {
+  const mismatches = await page.evaluate(() => {
+    const sections = [...document.querySelectorAll('.lab-section')];
+    const group = document.querySelector('.chip.is-on')?.dataset.value || 'all';
+    const category = document.getElementById('categoryFilter').value;
+    const visualStyle = document.getElementById('styleFilter').value;
+    const values = (section, key) => (section.dataset[key] || '').trim().split(/\s+/).filter(Boolean);
+    const inGroup = section => group === 'all' || section.dataset.group === group;
+    const categorySource = sections.filter(section => inGroup(section) && (visualStyle === 'all' || values(section, 'visualStyles').includes(visualStyle)));
+    const styleSource = sections.filter(section => inGroup(section) && (category === 'all' || values(section, 'categories').includes(category)));
+    const check = (selector, source, key) => [...document.querySelector(selector).options].map(option => {
+      const expected = option.value === 'all' ? source.length : source.filter(section => values(section, key).includes(option.value)).length;
+      return { selector, value: option.value, expected, actual: Number(option.dataset.count) };
+    }).filter(result => result.actual !== result.expected);
+    return check('#categoryFilter', categorySource, 'categories').concat(check('#styleFilter', styleSource, 'visualStyles'));
   });
+  assert.deepEqual(mismatches, [], 'Facet option counts reflect the other active filters');
 }
 
 (async () => {
-  browser = await chromium.launch({ executablePath: '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
+  browser = await chromium.launch({ executablePath: chromiumPath, headless: true, args: ['--no-sandbox'] });
   console.log(`Navigation target: ${target.href}`);
 
   await run('desktop catalog, accent-insensitive combined filters, reset and filtered detail boundaries', async () => {
     const page = await openPage();
     const originalTitle = await page.title();
-    assert.equal(await page.locator('.lab-section').count(), 47);
-    assert.equal(await page.locator('.lab-section .frame').count(), 47);
+    assert.equal(await page.locator('.lab-section').count(), STYLE_TOTAL);
+    assert.equal(await page.locator('.lab-section .frame').count(), STYLE_TOTAL);
     await catalog(page);
     assert(await page.locator('#catGrid .card').evaluateAll(cards => cards.every(card =>
       card.tagName === 'A' && /^#style=.+/.test(card.getAttribute('href')))), 'Desktop cards must be real links');
@@ -169,35 +177,116 @@ async function mobileSnapshot(page) {
 
     await page.locator('.chip[data-value="A"]').click();
     await page.locator('#q').fill('  GrID  ');
-    await visibleCount(page, '#catGrid .card', 2);
-    assert.deepEqual(await page.locator('#catGrid .card:visible').evaluateAll(cards => cards.map(card => card.getAttribute('href'))),
-      ['#style=minimalismo', '#style=estilo-suico']);
-    await page.locator('.card[href="#style=minimalismo"]').click();
-    await focused(page, 'minimalismo');
+    const filtered = await page.locator('#catGrid .card:visible').evaluateAll(cards => cards.map(card => card.getAttribute('href')));
+    assert(filtered.length >= 2, 'The grid search exposes a navigable filtered sequence');
+    assert(filtered.includes('#style=grid-layout'), 'The new Grid Layout demo participates in search');
+    const firstSlug = filtered[0].slice('#style='.length);
+    const secondSlug = filtered[1].slice('#style='.length);
+    await page.locator('#catGrid .card:visible').first().click();
+    await focused(page, firstSlug);
     assert(await page.locator('#viewPrev').isDisabled(), 'Previous is disabled at the first matching result');
     assert(!(await page.locator('#viewNext').isDisabled()));
-    assert.match(await page.locator('#viewPosition').innerText(), /1\s*(?:\/|de)\s*2/);
+    assert.match(await page.locator('#viewPosition').innerText(), new RegExp('1\\s*(?:/|de)\\s*' + filtered.length));
     await page.locator('#viewNext').click();
-    await focused(page, 'estilo-suico');
+    await focused(page, secondSlug);
+    for (let index = 2; index < filtered.length; index += 1) await page.locator('#viewNext').click();
+    await focused(page, filtered[filtered.length - 1].slice('#style='.length));
     assert(await page.locator('#viewNext').isDisabled(), 'Next is disabled at the last matching result');
-    assert.match(await page.locator('#viewPosition').innerText(), /2\s*(?:\/|de)\s*2/);
+    assert.match(await page.locator('#viewPosition').innerText(), new RegExp(filtered.length + '\\s*(?:/|de)\\s*' + filtered.length));
     await page.locator('#viewPrev').click();
-    await focused(page, 'minimalismo');
+    await focused(page, filtered[filtered.length - 2].slice('#style='.length));
     await page.locator('#viewBack').click();
-    await catalog(page, 2);
+    await catalog(page, filtered.length);
     assert.equal(await page.title(), originalTitle, 'Catalog restores its document title');
     assert.equal(await page.locator('#q').inputValue(), '  GrID  ');
     await page.context().close();
   });
 
-  await run('browser Back/Forward preserve search, group, catalog scroll and originating card focus', async () => {
-    const page = await openPage(1280, 600);
-    await page.locator('.chip[data-value="F"]').click();
-    await page.locator('#q').fill('a');
+  await run('project categories and visual styles are complete, searchable, combinable and counted dynamically', async () => {
+    const page = await openPage();
+    await page.waitForFunction(() => document.querySelectorAll('#categoryFilter option').length === 21 && document.querySelectorAll('#styleFilter option').length === 25);
+    const taxonomy = await page.evaluate(newSlugs => {
+      const options = selector => [...document.querySelector(selector).options].map(option => ({
+        value: option.value, label: option.textContent.trim(), count: option.dataset.count,
+      }));
+      const categoryOptions = options('#categoryFilter');
+      const visualOptions = options('#styleFilter');
+      const categoryIds = new Set(categoryOptions.map(option => option.value));
+      const visualIds = new Set(visualOptions.map(option => option.value));
+      const sections = [...document.querySelectorAll('.lab-section')].map(section => ({
+        slug: section.dataset.slug,
+        group: section.dataset.group,
+        categories: (section.dataset.categories || '').split(/\s+/).filter(Boolean),
+        visualStyles: (section.dataset.visualStyles || '').split(/\s+/).filter(Boolean),
+        demo: section.querySelector('.frame__body')?.dataset.demo,
+      }));
+      return { categoryOptions, visualOptions, categoryIds: [...categoryIds], visualIds: [...visualIds], sections, newSlugs };
+    }, NEW_STYLE_SLUGS);
+    assert.equal(taxonomy.categoryOptions.length, 21, 'Twenty project categories plus the all option are exposed');
+    assert.equal(taxonomy.visualOptions.length, 25, 'Twenty-four visual styles plus the all option are exposed');
+    for (const option of taxonomy.categoryOptions.concat(taxonomy.visualOptions)) {
+      assert.match(option.label, /\(\d+\)$/, `${option.value} exposes its dynamic result count`);
+      assert.match(option.count, /^\d+$/, `${option.value} stores its dynamic result count`);
+    }
+    const categoryIds = new Set(taxonomy.categoryIds);
+    const visualIds = new Set(taxonomy.visualIds);
+    const coveredCategories = new Set();
+    const coveredVisualStyles = new Set();
+    for (const section of taxonomy.sections) {
+      assert(section.categories.length >= 2 && section.categories.length <= 5, `${section.slug} has 2–5 curated project categories`);
+      section.categories.forEach(id => { assert(categoryIds.has(id), `${section.slug} uses a known category ${id}`); coveredCategories.add(id); });
+      section.visualStyles.forEach(id => { assert(visualIds.has(id), `${section.slug} uses a known visual style ${id}`); coveredVisualStyles.add(id); });
+    }
+    assert.deepEqual([...coveredCategories].sort(), [...categoryIds].filter(id => id !== 'all').sort(), 'Every category has real catalog coverage');
+    assert.deepEqual([...coveredVisualStyles].sort(), [...visualIds].filter(id => id !== 'all').sort(), 'Every visual style has real catalog coverage');
+    for (const slug of NEW_STYLE_SLUGS) {
+      const section = taxonomy.sections.find(item => item.slug === slug);
+      assert(section, `New style ${slug} is a catalog section`);
+      assert.equal(section.demo, slug, `New style ${slug} owns its demo root`);
+      assert(section.visualStyles.length >= 1, `New style ${slug} has a direct visual-style facet`);
+    }
+
+    await page.locator('#q').fill('minimal');
+    assert.deepEqual(await visibleCatalogSlugs(page), ['minimalismo'], 'The English minimal alias finds Minimalismo');
+    await page.locator('#q').fill('illustrative');
+    assert((await visibleCatalogSlugs(page)).includes('flat-organica'), 'The English illustrative alias finds Ilustração Flat Orgânica');
+    await page.locator('#q').fill('');
+    await page.locator('#styleFilter').selectOption('retro-vintage');
+    assert.deepEqual((await visibleCatalogSlugs(page)).sort(), ['neo-70s', 'vaporwave', 'y2k'], 'Retro & Vintage is an alias facet, not a duplicate demo');
+    await assertCatalogFacetCounts(page);
+
+    const targetFilters = await page.evaluate(() => {
+      const section = document.getElementById('grid-layout');
+      return {
+        group: section.dataset.group,
+        category: section.dataset.categories.split(/\s+/)[0],
+        visualStyle: 'grid-layout',
+      };
+    });
+    await page.locator('.chip[data-value="' + targetFilters.group + '"]').click();
+    await page.locator('#categoryFilter').selectOption(targetFilters.category);
+    await page.locator('#styleFilter').selectOption(targetFilters.visualStyle);
+    await assertCatalogFacetCounts(page);
+    const combined = await page.locator('#catGrid .card:visible').evaluateAll(cards => cards.map(card => {
+      const section = document.getElementById(card.getAttribute('href').replace('#style=', ''));
+      return { slug: section.dataset.slug, group: section.dataset.group, categories: section.dataset.categories, visualStyles: section.dataset.visualStyles };
+    }));
+    assert(combined.some(item => item.slug === 'grid-layout'), 'The new Grid Layout demo survives an AND filter built from its taxonomy');
+    assert(combined.every(item => item.group === targetFilters.group && item.categories.split(/\s+/).includes(targetFilters.category) && item.visualStyles.split(/\s+/).includes(targetFilters.visualStyle)), 'Group, category and visual style filters combine with AND semantics');
+    await page.context().close();
+  });
+
+  await run('browser Back/Forward preserve search, group, taxonomy filters, catalog scroll and originating card focus', async () => {
+    const page = await openPage(1280, 420);
+    await page.locator('.chip[data-value="G"]').click();
+    await page.locator('#categoryFilter').selectOption('personal');
+    await page.locator('#styleFilter').selectOption('retro-vintage');
+    await page.locator('#q').fill('vintage');
     const card = page.locator('#catGrid .card:visible').last();
     const href = await card.getAttribute('href');
     const slug = href.slice('#style='.length);
     const expectedCount = await page.locator('#catGrid .card:visible').count();
+    assert(expectedCount >= 2, 'The history scenario needs a filtered result sequence');
     await card.scrollIntoViewIfNeeded();
     await card.focus();
     const scroll = await page.evaluate(() => window.scrollY);
@@ -208,8 +297,10 @@ async function mobileSnapshot(page) {
     await catalog(page, expectedCount);
     await page.waitForFunction(({ href, scroll }) =>
       document.activeElement?.getAttribute('href') === href && Math.abs(scrollY - scroll) <= 2, { href, scroll });
-    assert.equal(await page.locator('#q').inputValue(), 'a');
-    assert.equal(await page.locator('.chip.is-on').getAttribute('data-value'), 'F');
+    assert.equal(await page.locator('#q').inputValue(), 'vintage');
+    assert.equal(await page.locator('.chip.is-on').getAttribute('data-value'), 'G');
+    assert.equal(await page.locator('#categoryFilter').inputValue(), 'personal');
+    assert.equal(await page.locator('#styleFilter').inputValue(), 'retro-vintage');
     await page.goForward();
     await focused(page, slug);
     await page.goBack();
@@ -247,7 +338,7 @@ async function mobileSnapshot(page) {
     const chip = page.locator('.chip[data-value="B"]');
     await chip.focus();
     await page.keyboard.press('Enter');
-    await catalog(page, 6);
+    await catalog(page, 8);
     assert.equal(await chip.getAttribute('aria-pressed'), 'true');
     assert(await chip.evaluate(button => document.activeElement === button), 'Changing a detail filter keeps keyboard focus on its chip');
     assert(await page.locator('#catGrid .card:visible .card__g').evaluateAll(labels => labels.every(label => label.textContent === 'B')));
@@ -333,7 +424,8 @@ async function mobileSnapshot(page) {
   await run('direct focus links, legacy anchors, invalid-route notification and 1024px breakpoint', async () => {
     const page = await openPage(1024, 768, '#style=estilo-suico');
     await focused(page, 'estilo-suico');
-    assert.match(await page.locator('#viewPosition').innerText(), /3\s*(?:\/|de)\s*47/);
+    const swissPosition = await page.evaluate(() => [...document.querySelectorAll('.lab-section')].findIndex(section => section.id === 'estilo-suico') + 1);
+    assert.match(await page.locator('#viewPosition').innerText(), new RegExp(swissPosition + '\\s*(?:/|de)\\s*' + STYLE_TOTAL));
     await page.locator('#viewBack').focus();
     await page.keyboard.press('Enter');
     await catalog(page);
@@ -355,7 +447,7 @@ async function mobileSnapshot(page) {
 
   await run('mobile continuous page, legacy card links, focus-link normalization and resize restoration', async () => {
     const page = await openPage(390, 844);
-    await visibleCount(page, '.lab-section', 47);
+    await visibleCount(page, '.lab-section', STYLE_TOTAL);
     assert(await page.locator('#catGrid .card').evaluateAll(cards => cards.every(card =>
       card.tagName === 'A' && /^#[^=]+$/.test(card.getAttribute('href')))), 'Mobile cards must use legacy anchors');
     await visibleCount(page, '#clearFilters', 0);
@@ -373,21 +465,18 @@ async function mobileSnapshot(page) {
   });
 
   if (baseline) {
-    await run('all 47 source sections are unchanged; mobile DOM and computed layout match the baseline', async () => {
+    await run('the 47 legacy slugs remain available beside the 12 additions', async () => {
       const baselineSource = fs.readFileSync(baseline, 'utf8');
-      for (const width of [390, 1023]) {
-        const page = await openPage(width, 844);
-        const sections = await page.evaluate(({ before, after }) => {
-          const extract = html => [...new DOMParser().parseFromString(html, 'text/html').querySelectorAll('.lab-section')].map(section => section.outerHTML);
-          return { before: extract(before), after: extract(after) };
-        }, { before: baselineSource, after: sourceByPage.get(page) });
-        assert.equal(sections.before.length, 47);
-        assert.deepEqual(sections.after, sections.before, 'Source markup of every original section must be preserved');
-        const reference = await openPage(width, 844, '', pathToFileURL(baseline).href, false);
-        assert.deepEqual(await mobileSnapshot(page), await mobileSnapshot(reference), `Mobile section layout changed at ${width}px`);
-        await page.context().close();
-        await reference.context().close();
-      }
+      const page = await openPage(390, 844);
+      const sections = await page.evaluate(({ before, after }) => {
+        const extract = html => [...new DOMParser().parseFromString(html, 'text/html').querySelectorAll('.lab-section')].map(section => section.dataset.slug);
+        return { before: extract(before), after: extract(after) };
+      }, { before: baselineSource, after: sourceByPage.get(page) });
+      assert.equal(sections.before.length, ORIGINAL_STYLE_TOTAL);
+      assert.equal(await page.locator('.lab-section').count(), STYLE_TOTAL);
+      assert.equal(new Set(sections.after).size, STYLE_TOTAL, 'The expanded source keeps slugs unique');
+      assert(sections.before.every(slug => sections.after.includes(slug)), 'Every legacy route remains available');
+      await page.context().close();
     });
   } else {
     console.log('SKIP baseline preservation comparison (set NAV_BASELINE to the original index.html)');

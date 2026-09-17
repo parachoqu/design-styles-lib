@@ -9,17 +9,29 @@ const os = require('node:os');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 let chromium;
+const playwrightFallback = process.env.PLAYWRIGHT_PATH || '/home/https/.config/nvm/versions/node/v24.14.0/lib/node_modules/playwright';
 try {
   ({ chromium } = require('playwright'));
 } catch (error) {
-  if (error.code !== 'MODULE_NOT_FOUND') throw error;
-  ({ chromium } = require('/home/https/.config/nvm/versions/node/v24.14.0/lib/node_modules/playwright'));
+  if (error.code !== 'MODULE_NOT_FOUND' || !fs.existsSync(playwrightFallback)) throw error;
+  ({ chromium } = require(playwrightFallback));
 }
+const chromiumPath = process.env.CHROMIUM_PATH || (process.platform === 'win32'
+  ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+  : '/usr/bin/chromium');
 
 const target = new URL(process.env.MIXER_TEST_URL || pathToFileURL(path.join(__dirname, '..', 'combinador.html')));
 target.search = '';
 target.hash = '';
 const catalogTarget = new URL('index.html', target);
+const STYLE_TOTAL = 59;
+const CATEGORY_TOTAL = 20;
+const VISUAL_STYLE_TOTAL = 24;
+const NEW_STYLE_SLUGS = [
+  'grid-layout', 'horizontal-layout', 'modular-layout', 'grunge',
+  'scroll-effects', 'typographic', 'narrow-layout', 'bold',
+  'futuristic', 'pixel-art', 'glitch', 'fun',
+];
 const browserErrors = [];
 let browser;
 let currentPage;
@@ -52,7 +64,7 @@ async function openPage({ width = 1440, height = 900, url = target.href, reduced
   });
   const response = await page.goto(url, { waitUntil: 'load' });
   assert(response?.ok(), `Document must load: ${url}`);
-  if (mixer) await page.waitForFunction(() => window.MixerEngine?.profiles.length === 47);
+  if (mixer) await page.waitForFunction(total => window.MixerEngine?.profiles.length === total, STYLE_TOTAL);
   await page.evaluate(() => document.fonts.ready);
   return page;
 }
@@ -110,6 +122,36 @@ async function captureCopies(page) {
   });
 }
 
+async function visibleMixerSlugs(page) {
+  return page.locator('#mixer-options [data-style]:visible').evaluateAll(buttons => buttons.map(button => button.dataset.style));
+}
+
+async function assertMixerFacetCounts(page) {
+  const mismatches = await page.evaluate(() => {
+    const engine = window.MixerEngine;
+    const norm = text => String(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    const category = document.getElementById('mixer-category').value;
+    const visualStyle = document.getElementById('mixer-visual-style').value;
+    const group = document.getElementById('mixer-group').value;
+    const query = norm(document.getElementById('mixer-search').value.trim());
+    const taxonomyTerms = (map, ids) => ids.flatMap(id => [id, map[id].label].concat(map[id].aliases || []));
+    const matchesSearch = profile => norm([
+      profile.slug, profile.name, profile.tags, engine.groups[profile.group],
+      ...taxonomyTerms(engine.categories, profile.categories),
+      ...taxonomyTerms(engine.visualStyles, profile.visualStyles),
+    ].join(' ')).includes(query);
+    const base = profile => matchesSearch(profile) && (group === 'all' || profile.group === group);
+    const categorySource = engine.profiles.filter(profile => base(profile) && (visualStyle === 'all' || profile.visualStyles.includes(visualStyle)));
+    const styleSource = engine.profiles.filter(profile => base(profile) && (category === 'all' || profile.categories.includes(category)));
+    const check = (selector, source, key) => [...document.querySelector(selector).options].map(option => {
+      const expected = option.value === 'all' ? source.length : source.filter(profile => profile[key].includes(option.value)).length;
+      return { selector, value: option.value, expected, actual: Number(option.dataset.count) };
+    }).filter(result => result.actual !== result.expected);
+    return check('#mixer-category', categorySource, 'categories').concat(check('#mixer-visual-style', styleSource, 'visualStyles'));
+  });
+  assert.deepEqual(mismatches, [], 'Mixer facet option counts reflect the other active filters');
+}
+
 function luminance(color) {
   const hex = /^#([\da-f]{3}|[\da-f]{6})$/i.exec(color.trim());
   const rgb = /^rgba?\(\s*(\d+(?:\.\d+)?)\s*[, ]\s*(\d+(?:\.\d+)?)\s*[, ]\s*(\d+(?:\.\d+)?)(?:\s*[,/]\s*1)?\s*\)$/i.exec(color.trim());
@@ -130,23 +172,26 @@ function contrast(a, b) {
 }
 
 (async () => {
-  browser = await chromium.launch({ executablePath: '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
+  browser = await chromium.launch({ executablePath: chromiumPath, headless: true, args: ['--no-sandbox'] });
   console.log(`Mixer target: ${target.href}`);
 
-  await run('catalog entry point and all 47 profiles match the original library', async () => {
+  await run('catalog entry point, taxonomy and all 59 profiles match the library', async () => {
     const catalog = await openPage({ url: catalogTarget.href, mixer: false });
-    assert.equal(await catalog.locator('.lab-section').count(), 47);
+    await catalog.waitForFunction(total => document.querySelectorAll('.lab-section').length === total && [...document.querySelectorAll('.lab-section')].every(section => section.hasAttribute('data-categories') && section.hasAttribute('data-visual-styles')), STYLE_TOTAL);
+    assert.equal(await catalog.locator('.lab-section').count(), STYLE_TOTAL);
     const original = await catalog.locator('.lab-section').evaluateAll(sections => sections.map(section => ({
       slug: section.dataset.slug,
       name: section.dataset.name,
       group: section.dataset.group,
       tags: section.dataset.tags.split(',').map(tag => tag.trim()),
       palette: [...section.querySelectorAll('.lab-palette .sw[data-hex]')].map(button => button.dataset.hex.toLowerCase()),
+      categories: section.dataset.categories.trim().split(/\s+/).filter(Boolean),
+      visualStyles: section.dataset.visualStyles.trim().split(/\s+/).filter(Boolean),
     })));
     const link = catalog.locator('a[href="combinador.html"]').first();
     assert(await link.isVisible(), 'Catalog exposes a visible relative link to the mixer');
     await link.click();
-    await catalog.waitForFunction(() => window.MixerEngine?.profiles.length === 47);
+    await catalog.waitForFunction(total => window.MixerEngine?.profiles.length === total, STYLE_TOTAL);
     assert.equal(new URL(catalog.url()).pathname, target.pathname);
     const actual = await catalog.evaluate(() => window.MixerEngine.profiles.map(profile => ({
       slug: profile.slug,
@@ -154,11 +199,48 @@ function contrast(a, b) {
       group: profile.group,
       tags: Array.isArray(profile.tags) ? profile.tags : profile.tags.split(',').map(tag => tag.trim()),
       palette: profile.palette.map(color => color.toLowerCase()),
+      categories: profile.categories,
+      visualStyles: profile.visualStyles,
     })));
     assert.deepEqual(actual, original, 'Curated profiles preserve the catalog metadata and palette');
-    assert.equal(new Set(actual.map(profile => profile.slug)).size, 47);
-    assert.equal(await catalog.locator('#mixer-options [data-style]').count(), 47);
+    assert.equal(new Set(actual.map(profile => profile.slug)).size, STYLE_TOTAL);
+    assert.equal(await catalog.locator('#mixer-options [data-style]').count(), STYLE_TOTAL);
     assert(await catalog.locator('a[href="index.html"]').first().isVisible(), 'Mixer has a visible return link');
+    const taxonomy = await catalog.evaluate(() => {
+      const engine = window.MixerEngine;
+      return {
+        categories: engine.categories,
+        visualStyles: engine.visualStyles,
+        profileTaxonomy: engine.profiles.map(profile => ({ slug: profile.slug, categories: profile.categories, visualStyles: profile.visualStyles })),
+        categoryOptions: [...document.querySelector('#mixer-category').options].map(option => ({ value: option.value, label: option.textContent.trim(), count: option.dataset.count })),
+        visualOptions: [...document.querySelector('#mixer-visual-style').options].map(option => ({ value: option.value, label: option.textContent.trim(), count: option.dataset.count })),
+      };
+    });
+    assert.equal(Object.keys(taxonomy.categories).length, CATEGORY_TOTAL);
+    assert.equal(Object.keys(taxonomy.visualStyles).length, VISUAL_STYLE_TOTAL);
+    assert.equal(taxonomy.categoryOptions.length, CATEGORY_TOTAL + 1);
+    assert.equal(taxonomy.visualOptions.length, VISUAL_STYLE_TOTAL + 1);
+    for (const [id, item] of Object.entries({ ...taxonomy.categories, ...taxonomy.visualStyles })) {
+      assert.equal(typeof item.label, 'string', `${id} has a Portuguese label`);
+      assert(item.label.length > 0 && Array.isArray(item.aliases) && item.aliases.length > 0, `${id} has searchable aliases`);
+    }
+    for (const option of taxonomy.categoryOptions.concat(taxonomy.visualOptions)) {
+      assert.match(option.label, /\(\d+\)$/, `${option.value} labels its current result count`);
+      assert.match(option.count, /^\d+$/, `${option.value} records its current result count`);
+    }
+    const categoryCoverage = new Set();
+    const visualCoverage = new Set();
+    for (const profile of taxonomy.profileTaxonomy) {
+      assert(profile.categories.length >= 2 && profile.categories.length <= 5, `${profile.slug} has curated project categories`);
+      profile.categories.forEach(id => { assert(id in taxonomy.categories, `${profile.slug} uses known category ${id}`); categoryCoverage.add(id); });
+      profile.visualStyles.forEach(id => { assert(id in taxonomy.visualStyles, `${profile.slug} uses known visual style ${id}`); visualCoverage.add(id); });
+    }
+    assert.deepEqual([...categoryCoverage].sort(), Object.keys(taxonomy.categories).sort(), 'Every category has profile coverage');
+    assert.deepEqual([...visualCoverage].sort(), Object.keys(taxonomy.visualStyles).sort(), 'Every visual style has profile coverage');
+    for (const slug of NEW_STYLE_SLUGS) {
+      const profile = taxonomy.profileTaxonomy.find(item => item.slug === slug);
+      assert(profile && profile.visualStyles.length > 0, `New ${slug} profile has a direct visual-style facet`);
+    }
     await selected(catalog, []);
     await catalog.context().close();
   });
@@ -175,7 +257,7 @@ function contrast(a, b) {
     assert.notEqual(await page.locator('#mixer-tokens').textContent(), baseTokens, 'The second style changes the system');
     await choose(page, 'neobrutalismo');
     await selected(page, ['minimalismo', 'glassmorphism', 'neobrutalismo']);
-    assert.equal(await page.locator('#mixer-options [data-style]:disabled').count(), 44);
+    assert.equal(await page.locator('#mixer-options [data-style]:disabled').count(), STYLE_TOTAL - 3);
     assert(!(await page.locator('#mixer-options [data-style="minimalismo"]').isDisabled()), 'Selected options remain removable at capacity');
     await choose(page, 'neobrutalismo');
     await selected(page, ['minimalismo', 'glassmorphism']);
@@ -191,7 +273,7 @@ function contrast(a, b) {
     await page.context().close();
   });
 
-  await run('accent-insensitive search combines with group filtering and preserves selection', async () => {
+  await run('search aliases, group/category/style AND filters, dynamic counts and selection preservation', async () => {
     const page = await openPage({ url: mixerURL(['minimalismo']) });
     await page.locator('#mixer-search').fill('  SUICO  ');
     assert.equal(await page.locator('#mixer-options [data-style]:visible').count(), 1);
@@ -202,10 +284,29 @@ function contrast(a, b) {
     assert.equal(await page.locator('#mixer-options [data-style]:visible').count(), 0);
     await selected(page, ['minimalismo']);
     await page.locator('#mixer-search').fill('');
-    assert.equal(await page.locator('#mixer-options [data-style]:visible').count(), 6);
+    assert.equal(await page.locator('#mixer-options [data-style]:visible').count(), 8);
+    await page.locator('#mixer-group').selectOption('all');
+    await page.locator('#mixer-search').fill('minimal');
+    assert.deepEqual(await visibleMixerSlugs(page), ['minimalismo'], 'The English minimal alias finds Minimalismo');
+    await page.locator('#mixer-search').fill('illustrative');
+    assert((await visibleMixerSlugs(page)).includes('flat-organica'), 'The English illustrative alias finds Ilustração Flat Orgânica');
+    await page.locator('#mixer-search').fill('');
+    await page.locator('#mixer-visual-style').selectOption('retro-vintage');
+    assert.deepEqual((await visibleMixerSlugs(page)).sort(), ['neo-70s', 'vaporwave', 'y2k'], 'Retro & Vintage is a filter alias, not duplicate profiles');
+    await assertMixerFacetCounts(page);
+    await page.locator('#mixer-category').selectOption('portfolio');
+    await assertMixerFacetCounts(page);
+    assert((await visibleMixerSlugs(page)).every(slug => ['y2k', 'vaporwave'].includes(slug)), 'Category and visual style filters combine with AND semantics');
+    const filterURL = new URL(page.url());
+    assert.equal(filterURL.searchParams.has('category'), false, 'Category filters remain local UI state');
+    assert.equal(filterURL.searchParams.has('visual-style'), false, 'Visual-style filters remain local UI state');
+    await page.locator('#mixer-category').selectOption('all');
+    await page.locator('#mixer-visual-style').selectOption('all');
     await page.locator('#mixer-group').selectOption('A');
     await page.locator('#mixer-search').fill('gRiD');
-    assert.deepEqual(await page.locator('#mixer-options [data-style]:visible').evaluateAll(buttons => buttons.map(button => button.dataset.style)), ['minimalismo', 'estilo-suico']);
+    const gridMatches = await visibleMixerSlugs(page);
+    assert(gridMatches.includes('estilo-suico') && gridMatches.includes('grid-layout'), 'Search indexes names, tags and visual-style aliases');
+    await selected(page, ['minimalismo']);
     await page.context().close();
   });
 

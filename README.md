@@ -1,351 +1,196 @@
 # Design Styles Lib
 
-Biblioteca navegável de **47 estilos de web design**, cada um com uma demo funcional
-renderizada no navegador — não um print. Duas páginas estáticas autocontidas:
-`index.html` para explorar a biblioteca e `combinador.html` para criar sistemas de
-design a partir dela, sem build, sem dependência de aplicação e sem imagem externa.
+Biblioteca navegável de **59 estilos de web design**, cada um apresentado como uma demo funcional no navegador — nunca como uma imagem estática. O projeto é composto por duas páginas autocontidas:
 
-Abra o arquivo no navegador. É só isso.
+- `index.html` explora o catálogo e abre cada demo.
+- `combinador.html` combina de um a três estilos em um sistema de design copiável.
 
-```
+Não há build, servidor, conta, armazenamento ou imagem externa. Abra qualquer arquivo no navegador; o único recurso remoto é o pedido já existente ao Google Fonts.
+
+```sh
 open index.html        # macOS
 xdg-open index.html    # Linux
 ```
 
-## O que dá para fazer
+## Explorar o catálogo
 
-| Recurso | Como |
+Em desktop, a rota sem fragmento abre a grade de 59 cartelas; `#style=<slug>` abre uma única demo. Em telas menores que 1024px, a página mantém a apresentação contínua e as âncoras legadas (`#<slug>`) seguem disponíveis.
+
+| Recurso | Comportamento |
 |---|---|
-| Índice em grade | Em telas a partir de 1024px, a entrada sem fragmento mostra só o catálogo; uma cartela abre a demo individual |
-| Busca | `/` foca o campo, `Esc` limpa. Ignora acento: *retro* acha **Retrô/Y2K** |
-| Filtro por grupo | Chips A–H na barra do topo, combináveis com a busca |
-| Estilo individual | `index.html#style=vaporwave` mostra a demo e, abaixo, resumo, tags, paleta e receita |
-| Anterior / próximo | Percorrem os resultados filtrados; os controles ficam desabilitados nas extremidades |
-| Voltar ao catálogo | Restaura busca, grupo, rolagem e foco na cartela de origem |
-| Abrir em nova aba / compartilhar | As cartelas têm links próprios; um link aberto diretamente percorre a sequência completa dos 47 estilos |
-| Âncoras antigas e telas menores | `index.html#vaporwave` mantém o documento contínuo; abaixo de 1024px, `#style=vaporwave` vira `#vaporwave` |
-| Copiar cor | Clique num swatch da paleta e o hex vai para a área de transferência |
-| Prompt universal | `prompt universal` abre as diretrizes e regras completas do estilo para aplicar a qualquer projeto ou usar com IA, com botão de copiar |
-| Explorar as demos | Seletores, filtros e controles alteram conteúdo e estado localmente; não acionam serviços reais |
-| Combinar estilos | O link no topo abre o combinador, com até três estilos e tokens CSS copiáveis |
+| Busca | `/` foca a busca e `Esc` limpa. Nome, tags, categorias, facetas visuais e aliases em inglês ignoram acentos. |
+| Grupo | Os chips A–H filtram a grade. |
+| Categoria | O seletor usa as 20 categorias de projeto e combina por **AND** com busca, grupo e estilo. |
+| Estilo | O seletor usa 24 facetas visuais; aliases representam estilos existentes, sem criar demos duplicadas. |
+| Contagens | Cada opção mostra a quantidade compatível com os outros filtros ativos. |
+| Navegação | Anterior/próximo percorre apenas os resultados filtrados. Voltar/Avançar recupera busca, grupo, categoria, estilo, rolagem e foco. |
+| Paleta e receita | Swatches copiam o hex; cada `prompt universal` abre e copia a receita do estilo. |
+
+Os filtros do catálogo são estado local de navegação. O combinador também mantém busca e filtros locais: apenas escolhas de estilos e o tipo de prévia são compartilhados pela URL.
 
 ## Combinar sistemas de design
 
-Abra **Combinar estilos** na barra do catálogo ou abra `combinador.html` diretamente.
-Busque por nome ou tag, filtre pelos grupos A–H e selecione de um a três dos 47
-estilos, sem repetições. A primeira escolha é a **Base**; a segunda influencia
-**Tom e material**; a terceira acrescenta **Detalhe e movimento**. Ao remover a
-base, a próxima escolha assume esse papel.
+Abra **Combinar estilos** no topo do catálogo ou `combinador.html` diretamente. Selecione até três dos 59 estilos sem repetição:
 
-O resultado muda imediatamente e pode ser visto como **Painel de componentes** ou
-**Landing page**. As duas prévias usam o mesmo sistema, e a origem das escolhas
-visuais aparece junto do resultado. **Copiar tokens** exporta as variáveis CSS de
-cor, tipografia, espaçamento, forma, elevação e movimento.
+1. **Base** define estrutura e legibilidade.
+2. **Tom e material** ajusta superfície, acento e tipografia.
+3. **Detalhe e movimento** acrescenta formas, padrões e microinterações.
 
-A composição é local e determinística: cada estilo tem um perfil curado, e os
-papéis definem como suas características entram no sistema. Não há geração por IA,
-contas, histórico salvo, armazenamento ou servidor. O combinador não tenta mesclar
-o CSS completo das demos.
+O combinador oferece os mesmos filtros de grupo, categoria e estilo do catálogo. Cada perfil público em `window.MixerEngine.profiles` contém `categories` e `visualStyles`, além dos metadados, paleta e tokens curados. `window.MixerEngine.categories` e `window.MixerEngine.visualStyles` expõem os rótulos e aliases da taxonomia.
 
-**Compartilhar** usa o compartilhamento nativo quando disponível ou copia o link.
-As escolhas e a prévia ficam na URL:
+As escolhas são determinísticas, podem ser vistas como **Painel de componentes** ou **Landing page**, e exportam tokens CSS. A URL registra somente a composição:
 
 ```text
 combinador.html?base=minimalismo&influence=glassmorphism&influence=bauhaus&preview=components
 ```
 
-`preview` aceita `components` ou `landing`; os parâmetros `influence` são opcionais
-e seguem a ordem dos papéis. Abrir o link reconstrói a combinação. As duas páginas
-funcionam em `file://`, mas um link de arquivo só é útil em outro ambiente com o
-mesmo caminho local. Para compartilhar com outras pessoas, use a URL de uma cópia
-servida por HTTP ou HTTPS.
+`base` é obrigatório quando há uma combinação; até dois `influence` são opcionais, em ordem. `preview` aceita `components` ou `landing`.
 
-## Os 47 estilos
-
+## Os 59 estilos
 
 ### A · Fundamentos & Minimalismos
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 01 | **Minimalismo** ¹ | `#minimalismo` | whitespace, hierarquia, sans-serif light, monocromático |
-| 02 | **Flat Design** ¹ | `#flat-design` | zero skeuomorfismo, cores sólidas, ícones geométricos, blocos de cor |
-| 03 | **Estilo Suíço** | `#estilo-suico` | grid modular, helvetica, assimetria, vermelho |
-| 04 | **Wabi-sabi / Japandi** | `#wabi-sabi` | imperfeição, vazio, hairline, terra |
-| 05 | **Monocromático / Duotone** | `#duotone` | duas cores, mix-blend-mode, screen, multiply |
+Minimalismo · Flat Design · Estilo Suíço · Wabi-sabi / Japandi · Monocromático / Duotone · **Layout em Grade**
 
 ### B · Sistemas de Produto
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 06 | **Bento Grid** ¹ | `#bento-grid` | módulos span, radius 22px, gap constante, dashboard |
-| 07 | **Material You** | `#material-you` | material 3, superfície tonal, elevação, fab |
-| 08 | **Neumorfismo** | `#neumorfismo` | soft ui, extrusão, dupla sombra, monocromático |
-| 09 | **Claymorphic** ¹ | `#claymorphic` | argila, dupla sombra inset, radius extremo, pastel |
-| 10 | **Dados Densos** | `#dados-densos` | terminal financeiro, bloomberg, tabular nums, densidade |
-| 11 | **Isotype / Infográfico** | `#isotype` | pictograma, neurath, quantidade por repetição, infográfico |
+Bento Grid · Material You · Neumorfismo · Claymorphic · Dados Densos · Isotype / Infográfico · **Layout Horizontal** · **Layout Modular**
 
 ### C · Luz, Vidro & Superfície
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 12 | **Glassmorphism** ¹ | `#glassmorphism` | backdrop-filter, vidro fosco, orbs, blur |
-| 13 | **Liquid Glass** | `#liquid-glass` | vidro líquido, refração, lente, especular |
-| 14 | **Aurora / Mesh Gradient** | `#aurora-mesh` | mesh gradient, saas escuro, borda em gradiente, glow |
-| 15 | **Skeuomorfismo** | `#skeuomorfismo` | textura, linho, couro, bisel |
-| 16 | **Frutiger Aero** | `#frutiger-aero` | aero, vista, glossy, aqua |
+Glassmorphism · Liquid Glass · Aurora / Mesh Gradient · Skeuomorfismo · Frutiger Aero
 
 ### D · Brutalismos & Anti-design
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 17 | **Neobrutalismo** ¹ | `#neobrutalismo` | hard shadow, borda 4px, cores saturadas, grid exposto |
-| 18 | **Brutalismo Radical** ¹ | `#brutalismo-radical` | tipo esticado, assimetria, link azul default, sem grid confortável |
-| 19 | **Anti-design / Web 1.0** | `#anti-design` | geocities, tabela, comic sans, marquee |
-| 20 | **Punk / Fanzine** | `#punk-fanzine` | xerox, ransom note, colagem, fita crepe |
+Neobrutalismo · Brutalismo Radical · Anti-design / Web 1.0 · Punk / Fanzine · **Grunge**
 
 ### E · Tipografia & Editorial
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 21 | **Editorial de Revista** | `#editorial` | capitular, multi-coluna, serif display, olho |
-| 22 | **Jornal / Broadsheet** | `#jornal` | manchete condensada, papel jornal, colunas justificadas, olho |
-| 23 | **Luxo / Alta-costura** | `#luxo` | letterspacing, serif fina, dourado, preto |
-| 24 | **Terminal / ASCII** | `#terminal-ascii` | monoespaçado, fósforo verde, cursor, box drawing |
-| 25 | **Design Cinético** ¹ | `#cinetico` | split por caractere, repulsão do ponteiro, scroll velocity, parallax |
-| 26 | **Gótico / Blackletter** | `#blackletter` | blackletter, fraktur, capitular rubricada, pergaminho |
+Editorial de Revista · Jornal / Broadsheet · Luxo / Alta-costura · Terminal / ASCII · Design Cinético · Gótico / Blackletter · **Efeitos de Scroll** · **Tipografia Expressiva** · **Layout Estreito** · **Tipografia Pesada**
 
 ### F · Movimentos Históricos
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 27 | **Bauhaus** | `#bauhaus` | primárias, círculo quadrado triângulo, geométrico, weimar |
-| 28 | **Art Déco** | `#art-deco` | dourado, simetria, leque, chevron |
-| 29 | **Art Nouveau** | `#art-nouveau` | curva whiplash, floral, orgânico, mucha |
-| 30 | **Construtivismo Russo** | `#construtivismo` | diagonal, vermelho e preto, rodchenko, cartaz |
-| 31 | **Memphis 80s** | `#memphis` | sottsass, confete, squiggle, terrazzo |
-| 32 | **Neo-retrô Anos 70** | `#neo-70s` | mostarda, ferrugem, abacate, arco |
-| 33 | **Psicodélico Anos 60** | `#psicodelico` | arco-íris, textPath, tipo ondulado, swirl |
-| 34 | **Pop Art / Halftone** | `#pop-art` | ben-day, halftone, quadrinho, balão de fala |
+Bauhaus · Art Déco · Art Nouveau · Construtivismo Russo · Memphis 80s · Neo-retrô Anos 70 · Psicodélico Anos 60 · Pop Art / Halftone
 
 ### G · Nostalgia Digital
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 35 | **Retrô / Y2K** ¹ | `#y2k` | scanline, crt, grid em perspectiva, pixel font |
-| 36 | **Vaporwave** | `#vaporwave` | pôr do sol, grid, letterspacing, pastel neon |
-| 37 | **Acid / Chrome Líquido** | `#acid-chrome` | chrome, metálico, conic-gradient, ácido |
-| 38 | **Ciberpunk** ¹ | `#ciberpunk` | neon, glitch, clip-path chanfro, hud |
-| 39 | **HUD Espacial / Sci-Fi** | `#hud-espacial` | hud, cantoneira, anel orbital, spatial ui |
-| 40 | **Isométrico / 3D** | `#isometrico` | isométrico, rotateX rotateZ, preserve-3d, cubo |
+Retrô / Y2K · Vaporwave · Acid / Chrome Líquido · Ciberpunk · HUD Espacial / Sci-Fi · Isométrico / 3D · **Futurista** · **Pixel Art** · **Glitch**
 
 ### H · Orgânicos & Artesanais
 
-| # | Estilo | Âncora | Tags |
-|---|--------|--------|------|
-| 41 | **Maximalismo Tátil** ¹ | `#maximalismo-tatil` | papel de algodão, argila fosca, pigmento natural, tecido |
-| 42 | **Ilustração Flat Orgânica** ¹ | `#flat-organica` | svg autoral, silhueta orgânica, cor chapada, canteiros |
-| 43 | **Risografia** | `#risografia` | riso, tinta spot, separações, sobreimpressão |
-| 44 | **Corporate Memphis** | `#corporate-memphis` | alegria, proporções expressivas, figuras geométricas, flat |
-| 45 | **Cottagecore / Botânico** | `#cottagecore` | botânico, sazonalidade, horta doméstica, papel |
-| 46 | **Solarpunk** | `#solarpunk` | eco-futurismo, cooperativa, energia solar, ciclo da água |
-| 47 | **Paper Cut / Camadas** | `#paper-cut` | papel recortado, camadas opacas, luz direcional, recorte interno |
-¹ Os 12 estilos originários dos dois labs anteriores (`design-styles-lab.html` e
-`design-styles-lab-02.html`), aprofundados nesta biblioteca.
+Maximalismo Tátil · Ilustração Flat Orgânica · Risografia · Corporate Memphis · Cottagecore / Botânico · Solarpunk · Paper Cut / Camadas · **Lúdico**
 
-## Como isso é construído
+Os 12 nomes em negrito são as demos adicionadas nesta expansão. Seus slugs são, respectivamente: `grid-layout`, `horizontal-layout`, `modular-layout`, `grunge`, `scroll-effects`, `typographic`, `narrow-layout`, `bold`, `futuristic`, `pixel-art`, `glitch` e `fun`.
 
-**Catálogo autocontido, três blocos.** `index.html` tem `<head>` com um único `<link>` de fontes → `<style>` com
-o shell, os 47 estilos e os breakpoints → `<body>` com a barra, o catálogo, as 47
-seções e um `<script>` em IIFE.
+## Taxonomia de projeto
 
-**O DOM é a fonte de dados do catálogo.** O índice, a busca, o filtro e as contagens
-de grupo são gerados das seções no carregamento, sem uma lista paralela no script
-do catálogo.
+Cada demo tem de duas a cinco categorias curadas. Elas descrevem um contexto de uso, não uma inferência em tempo de execução.
 
-**Interações locais, uma raiz por demo.** A `.frame__body` original usa
-`data-demo="<slug>"`, e seus controles funcionais usam `data-act`. O registro
-`demo(slug, setup)` recebe essa raiz e inicializa seletores, listeners e estados
-somente nela, depois da montagem do catálogo. Os botões com `data-act` preservam
-seu próprio feedback; formulários demonstrativos não são enviados. As interações
-são reversíveis e locais, sem serviços reais ou persistência.
+| ID | Rótulo | Alias pesquisável |
+|---|---|---|
+| `portfolio` | Portfólio | portfolio |
+| `landing-page` | Landing Page | landing page |
+| `digital-product` | Produto digital | digital product |
+| `launching-soon` | Em breve | launching soon, coming soon |
+| `app` | Aplicativo | app, application |
+| `service` | Serviço | service |
+| `personal` | Pessoal | personal |
+| `event` | Evento | event |
+| `informational` | Informativo | informational |
+| `music-related` | Música | music related, music |
+| `experimental` | Experimental | experimental |
+| `restaurant` | Restaurante | restaurant |
+| `finance` | Finanças | finance |
+| `photography` | Fotografia | photography |
+| `startup` | Startup | startup |
+| `saas` | SaaS | saas, software as a service |
+| `game` | Jogos | game, gaming |
+| `physical-product` | Produto físico | physical product |
+| `ecommerce` | E-commerce | e-commerce, ecommerce |
+| `sport` | Esporte | sport, sports |
 
-**As miniaturas guardam o estado inicial.** Cada demo já contém uma composição
-completa no HTML/CSS antes de receber listeners. O catálogo clona esse conteúdo
-sem inicializar outra demo. `localizeIds(clone, i)` renomeia os IDs internos com
-um sufixo por cartão e reescreve suas referências, incluindo `url(#…)`, `href`,
-`for` e atributos ARIA. Assim, gradientes, máscaras, recortes e rótulos continuam
-ligados aos elementos da própria miniatura.
+## Facetas visuais e aliases
 
-**O combinador tem seu próprio adaptador de perfis.** `combinador.html` reúne o
-shell, as prévias, o motor de composição e um registro explícito dos 47 perfis,
-mantendo a abertura por `file://` sem buscar outro arquivo. Os metadados desse
-registro correspondem às seções de `index.html`; os atributos visuais são curados
-para cada papel. Os testes do combinador verificam a correspondência de metadados
-entre as duas páginas.
+As facetas abaixo são filtros e termos de busca. Elas não são uma segunda lista de rotas. Por exemplo, `illustrative` encontra a demo existente `flat-organica`; `retro-vintage` reúne `y2k`, `neo-70s` e `vaporwave`.
 
-**Duas formas de navegar, as mesmas seções.** A partir de 1024px, o endereço sem
-fragmento abre o catálogo e `#style=<slug>` mostra uma única seção, com a demo acima
-dos seus metadados. Anterior e próximo usam a lista de resultados que abriu o estilo;
-um acesso direto ou em nova aba usa os 47 estilos. A navegação intencional usa
-`history.pushState`, e `popstate` e `hashchange` restauram a visão correspondente.
-Voltar ao catálogo recupera busca, grupo, rolagem e foco. Rolar não cria entradas no
-histórico.
+| ID | Rótulo | Alias pesquisável |
+|---|---|---|
+| `illustrative` | Ilustrativo | illustrative |
+| `scroll-effects` | Efeitos de Scroll | scroll effects |
+| `minimal` | Minimalista | minimal |
+| `flat-design` | Flat Design | flat design |
+| `typographic` | Tipográfico | typographic |
+| `fun` | Lúdico | fun, playful |
+| `horizontal-layout` | Layout Horizontal | horizontal layout |
+| `retro-vintage` | Retrô & Vintage | retro vintage, vintage |
+| `three-d` | 3D | 3d, three dimensional |
+| `gradients` | Gradientes | gradients, gradient |
+| `brutalism` | Brutalismo | brutalism |
+| `narrow-layout` | Layout Estreito | narrow layout |
+| `grunge` | Grunge | grunge |
+| `modular-layout` | Layout Modular | modular layout |
+| `glassmorphism` | Glassmorphism | glassmorphism |
+| `futuristic` | Futurista | futuristic |
+| `pixel-art` | Pixel Art | pixel art |
+| `glitch` | Glitch | glitch |
+| `editorial` | Editorial | editorial |
+| `luxury` | Luxo | luxury |
+| `bold` | Tipografia Pesada | bold, heavy typography |
+| `skeuomorphism` | Skeuomorfismo | skeuomorphism |
+| `grid-layout` | Layout em Grade | grid layout |
+| `corporate` | Corporativo | corporate |
 
-Os endereços antigos `#<slug>` continuam abrindo o documento contínuo. Abaixo de
-1024px, essa também é a apresentação padrão, e uma rota `#style=<slug>` é convertida
-para a âncora antiga. A navegação reaproveita as demos e os metadados existentes no
-DOM, sem duplicar as seções ou criar uma lista paralela de estilos.
+Os seguintes pedidos não criam duplicatas: Illustrative → `flat-organica`; Minimal → `minimalismo`; Flat Design → `flat-design`; Retro & Vintage → `y2k` / `neo-70s` / `vaporwave`; 3D → `isometrico`; Gradients → `aurora-mesh`; Brutalism → `neobrutalismo` / `brutalismo-radical`; Glassmorphism → `glassmorphism`; Editorial → `editorial`; Luxury → `luxo`; Skeuomorphism → `skeuomorfismo`; Corporate → `corporate-memphis`.
 
-**Animação só roda na seção visível.** Com 47 demos animando ao mesmo tempo o scroll
-travaria. Um `IntersectionObserver` marca `.is-live` no que está perto da viewport, e
-o CSS pausa o resto:
+## Estrutura e interações
 
-```css
-html.js .lab-section:not(.is-live) *,
-html.js .lab-section:not(.is-live) *::before,
-html.js .lab-section:not(.is-live) *::after{animation-play-state:paused!important}
-```
+O DOM do catálogo é a fonte dos cartões. No carregamento, o registro inline de taxonomia associa cada `slug` a `data-categories` e `data-visual-styles`; tanto o catálogo quanto o combinador usam o mesmo conjunto canônico de IDs.
 
-Os pseudo-elementos precisam estar na regra: `*` não os alcança. O registro
-`onLive(slug, callback)` conecta timers e loops ao estado de visibilidade da demo;
-o `requestAnimationFrame` cinético também respeita esse estado. Voltar ao catálogo
-suspende as demos. `onMotion(callback)` recebe a preferência de movimento reduzido
-na inicialização e quando ela muda durante a sessão. Movimentos contínuos têm
-controle local de pausa, e a composição estática continua completa. A classe `.js`
-é adicionada pelo script; o gate por visibilidade depende dele, enquanto a regra
-CSS de movimento reduzido também atua sem JavaScript.
+Cada demo possui uma raiz `.frame__body[data-demo="<slug>"]`, CSS isolado e controles locais. O registro `demo(slug, setup)` recebe somente essa raiz; botões usam `data-act`, formulários demonstrativos não são enviados e nenhum controle aciona serviço real. A composição inicial é completa antes de qualquer listener, para que as miniaturas possam ser clonadas com segurança.
 
-**Sangramento é intencional.** Vários demos posicionam decoração fora dos limites
-(orbs, blobs, anéis, o tipo esticado do Brutalismo Radical). A `.frame` tem
-`overflow:hidden` e recorta — é o enquadramento, não um bug.
+Animações contínuas respeitam visibilidade e `prefers-reduced-motion`: `onLive()` conecta loops à seção visível e `onMotion()` reage à preferência do sistema. Todo movimento deve ter uma versão estática íntegra e, quando for contínuo, um controle de pausa.
 
-## Adicionar o 48º estilo
+## Adicionar o 60º estilo
 
-Escreva o CSS num namespace próprio e acrescente uma seção seguindo este contrato.
-O catálogo a reconhece automaticamente. Para também disponibilizar o estilo no
-combinador, acrescente seu perfil curado ao registro de `combinador.html` com os
-mesmos slug, nome, grupo e tags, e atualize as contagens documentadas e verificadas
-pelos testes:
+Para acrescentar uma demo sem quebrar o contrato:
+
+1. Crie uma seção com `id` e `data-slug` idênticos, `data-group` entre `A` e `H`, `data-name`, `data-tags`, paleta com `data-hex`, receita copiável e uma raiz `data-demo`.
+2. Mantenha CSS e seletores no namespace da demo. Inicialize a interação por `demo(slug, setup)`, prenda listeners à raiz recebida e use `data-act` nos controles.
+3. Registre o slug na taxonomia inline com 2–5 `categories` e as `visualStyles` diretas relevantes. Registre o mesmo conjunto no perfil de `MixerEngine`.
+4. Inclua paleta, tags, perfil visual e tokens com contraste AA no combinador. Não crie uma rota nova quando o pedido já for um alias de estilo existente.
+5. Atualize a contagem, a lista deste README e as expectativas de teste. Verifique unicidade de slug, rota, perfil e cobertura de taxonomia.
+
+Modelo mínimo de seção:
 
 ```html
 <section class="lab-section" id="meu-estilo"
          data-slug="meu-estilo" data-group="A" data-name="Meu Estilo"
-         data-tags="tag, outra tag, mais uma">
-  <div class="lab-head">
-    <div class="lab-head__l">
-      <span class="lab-head__id">48 · FUNDAMENTOS</span>
-      <h2>Meu Estilo</h2>
-      <div class="lab-tags"><span class="lab-tag">Tag</span></div>
-      <div class="lab-palette">
-        <button class="sw" data-hex="#112233" style="background:#112233"></button>
-      </div>
-    </div>
-    <div class="lab-head__r">
-      <p>O que define o estilo, e qual é o truque técnico dele.</p>
-      <details class="recipe"><summary>prompt universal</summary><div class="recipe__body">
-        <button class="recipe__copy">copiar</button>
-        <pre class="recipe__code">/* o mínimo que reproduz o estilo */</pre>
-      </div></details>
-    </div>
-  </div>
+         data-tags="tag, outra tag">
+  <div class="lab-head">...</div>
   <div class="frame">
-    <div class="frame__chrome">
-      <i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i>
-      <div class="frame__url">meusite.com</div>
-    </div>
-    <div class="frame__body meu" data-demo="meu-estilo">
-      <button type="button" data-act="meu-detalhe" aria-pressed="false">Ver detalhe</button>
-      <p data-meu-status role="status">Visão geral da peça.</p>
+    <div class="frame__body meu-estilo" data-demo="meu-estilo">
+      <button type="button" data-act="detalhe" aria-pressed="false">Ver detalhe</button>
     </div>
   </div>
 </section>
 ```
 
-No registro existente, antes da inicialização das demos:
-
-```js
-demo('meu-estilo', function(root){
-  var button = root.querySelector('[data-act="meu-detalhe"]');
-  var status = root.querySelector('[data-meu-status]');
-  on(button, 'click', function(){
-    var selected = button.getAttribute('aria-pressed') !== 'true';
-    button.setAttribute('aria-pressed', String(selected));
-    setText(status, selected ? 'Detalhe do material da peça.' : 'Visão geral da peça.');
-  });
-});
-```
-
-Regras que o contrato assume:
-
-- `id` e `data-slug` são iguais — é o que faz o deep-link funcionar
-- `data-group` é uma letra de `A` a `H`, e o divisor daquele grupo já existe no documento
-- a paleta usa `data-hex` (o clique copia esse valor, não o `style`)
-- seletores e listeners de interação ficam presos à raiz recebida por `demo()`;
-  use `data-act` nos controles e mantenha o estado inicial completo no HTML
-- timers e loops novos usam `onLive()` e `onMotion()`; movimento contínuo oferece
-  pausa, e os estilos visuais usam classes próprias que também funcionam nos clones
-- se o demo tiver navegação em `<ul>`, acrescente o seletor à lista que some no
-  `@media(max-width:760px)` — senão ela estoura a moldura no celular
-- o demo não carrega imagem: só CSS, SVG inline e `data:` URI
-
-## Fontes
-
-Dezenove famílias num único pedido ao Google Fonts, com `display=swap`. É o único
-recurso externo do arquivo. O Anti-design / Web 1.0 pede
-`"Comic Sans MS", "Comic Neue", cursive` de propósito, para pegar a fonte do sistema
-antes de baixar qualquer coisa.
+Use `onLive()` e `onMotion()` para timers, `requestAnimationFrame` ou animação contínua. SVG inline e `data:` URI são permitidos; a demo não deve carregar uma imagem externa.
 
 ## Verificação
 
-As verificações da biblioteca abrangem duas camadas:
-
-- **estrutural** — árvore de tags fechada, chaves do `<style>` balanceadas, 47 seções,
-  `data-slug` únicos e iguais ao `id`, contrato completo em toda seção, nenhum recurso
-  externo fora do Google Fonts
-- **runtime**, em Chromium — zero erro de script; catálogo com 47 cartelas; busca sem
-  acento; filtro por grupo; copiar hex e prompt universal pela área de transferência; deep-link;
-  nenhuma animação rodando fora da tela; e nenhum conteúdo em fluxo vazando da moldura
-  em 1440px, 768px e 390px
-
-Para executar os testes de navegação, use Node.js e uma instalação de Playwright com
-Chromium disponível no ambiente de teste. Essas ferramentas não são dependências
-para abrir a biblioteca no navegador:
+Os testes verificam estrutura, 59 slugs únicos, taxonomia, contagens dinâmicas, aliases, paridade entre catálogo e `MixerEngine`, navegação/histórico, cópia, responsividade, contraste e movimento reduzido.
 
 ```sh
 node tests/navigation.cjs
-```
-
-Por padrão, o script abre o `index.html` local. Para testar uma versão servida por
-HTTP, informe o endereço em `NAV_TEST_URL`:
-
-```sh
-NAV_TEST_URL=http://127.0.0.1:8000/index.html node tests/navigation.cjs
-```
-
-A suíte dedicada do combinador verifica os 47 perfis, a correspondência com os
-metadados do catálogo, seleções de um a três estilos, remoção e promoção da base,
-restauração pela URL, prévias, cópia, compartilhamento e interação responsiva:
-
-```sh
 node tests/combinador.cjs
 ```
 
-Por padrão, ela abre `combinador.html` por `file://`. Para uma versão servida:
+Por padrão os scripts usam os arquivos locais. Para testar uma cópia servida por HTTP:
 
 ```sh
+NAV_TEST_URL=http://127.0.0.1:8000/index.html node tests/navigation.cjs
 MIXER_TEST_URL=http://127.0.0.1:8000/combinador.html node tests/combinador.cjs
 ```
 
-`NAV_BASELINE=/caminho/para/index.html` é opcional e permite comparar as 47 seções e
-o layout mobile com uma cópia anterior. Se o `node` padrão falhar neste ambiente,
-use `/home/https/.config/nvm/versions/node/v24.14.0/bin/node` no lugar de `node`.
-
-Confira também no navegador: catálogo sem fragmento em 1440px; abertura de uma
-cartela; anterior/próximo dentro de um grupo filtrado e nos limites da lista; retorno
-com busca, grupo, rolagem e foco restaurados; Voltar/Avançar; edição manual do hash;
-link de estilo em nova aba; âncora antiga; e apresentação contínua em 768px e 390px.
-Na visão individual, confirme que a demo vem antes do resumo, tags, paleta e prompt universal,
-e que copiar cor/prompt universal e as interações originais continuam funcionando.
-
-Os comandos e cenários acima descrevem como verificar a navegação; não constituem
-um registro de aprovação dos testes desta revisão.
+`NAV_BASELINE=/caminho/para/index.html` é opcional: quando fornecido, a navegação confirma que os 47 slugs legados continuam disponíveis, ao lado das 12 novas demos.

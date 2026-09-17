@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DESIGN STYLES LIB — 47 estéticas web</title>
-<meta name="description" content="Biblioteca navegável de 47 estilos de web design, cada um com demo funcional, paleta e prompts universais para qualquer projeto.">
+<title>DESIGN STYLES LIB — 59 estéticas web</title>
+<meta name="description" content="Biblioteca navegável de 59 estilos de web design, cada um com demo funcional, paleta e prompts universais para qualquer projeto.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Bangers&family=Caveat:wght@400;700&family=Comic+Neue:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400;1,9..144,600&family=Inter:wght@200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;700&family=Nunito:wght@400;600;700;800;900&family=Orbitron:wght@400;600;800;900&family=Oswald:wght@400;500;600;700&family=Pirata+One&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Poiret+One&family=Poppins:wght@400;500;600;700;800&family=Press+Start+2P&family=Righteous&family=Roboto:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=VT323&display=swap" rel="stylesheet">
@@ -66,6 +66,18 @@ html.js .lab-section:not(.is-live) *::after{animation-play-state:paused!importan
   gap:6px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;
 }
 .lab-bar__row--b::-webkit-scrollbar{display:none}
+.lab-filter{
+  display:flex;align-items:center;gap:7px;flex:none;color:#777784;
+  font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;
+}
+.lab-filter select{
+  max-width:174px;min-height:30px;padding:5px 25px 5px 9px;border:1px solid rgba(255,255,255,.13);
+  border-radius:6px;background:#17171b;color:#d9d9e0;font:600 10.5px/1 'Inter',sans-serif;
+  cursor:pointer;outline:none;
+}
+.lab-filter select:hover,.lab-filter select:focus{border-color:#a78bfa;background:#211d2b}
+.lab-filter select:focus-visible{outline:2px solid #c4b5fd;outline-offset:2px}
+.lab-chips{display:flex;align-items:center;gap:6px;min-width:max-content}
 .lab-logo{
   font-size:11px;letter-spacing:.22em;font-weight:700;
   text-transform:uppercase;white-space:nowrap;
@@ -371,6 +383,7 @@ a.card{text-decoration:none}
 @media(min-width:1024px){
   :root{--lab-bar-height:112px}
   .lab-bar__row--b{height:auto;min-height:48px;padding-top:9px;padding-bottom:9px;flex-wrap:wrap;overflow:visible}
+  .lab-filter select{max-width:190px}
   .lab-desktop-only:not([hidden]){display:inline-flex}
   .lab-bar button,.view-toolbar button{min-height:36px}
   .cat{padding-top:calc(var(--lab-bar-height) + 32px)}
@@ -412,6 +425,8 @@ a.card{text-decoration:none}
 @media(max-width:640px){
   .lab-bar__row{gap:10px;padding:0 14px}
   .lab-bar__row--b{padding:0 14px}
+  .lab-filter{font-size:8px;letter-spacing:.08em}
+  .lab-filter select{max-width:132px;font-size:10px}
   .lab-logo{font-size:0;gap:0}
   .lab-logo span{width:9px;height:9px}
   .lab-search{max-width:none}
@@ -7054,6 +7069,52 @@ a.card{text-decoration:none}
  .solar__mast{padding:17px 18px;flex-wrap:wrap;gap:8px 15px}.solar__mast .solar__brand{font-size:21px}.solar__mast>span:not(.solar__demo-label){order:3;flex-basis:100%}.solar__mast .solar__demo-label{margin-left:auto}.solar__intro{grid-template-columns:1fr;padding:25px 18px;gap:17px}.solar__intro h1{font-size:39px}.solar__intro>p{font-size:12px;max-width:42ch}.solar__eyebrow{font-size:9px}.solar__explore-head{padding:0 18px 17px;gap:12px}.solar__systems{display:grid;grid-template-columns:repeat(3,1fr);width:100%;gap:6px}.solar__systems button{padding:11px 9px;justify-content:center;font-size:11px;min-height:47px}.solar__commons-grid{grid-template-columns:1fr;margin:0 18px 22px}.solar__map{min-height:240px}.solar__map-head{flex-direction:row;align-items:center;font-size:6.5px}.solar__map figcaption{font-size:10px}.solar__map figcaption small{font-size:8px}.solar__ledger{border-left:0;border-top:1px solid #c5d2b6;padding:21px 18px}.solar__ledger h2{font-size:28px}.solar__ledger>p:not(.solar__balance){font-size:11px}.solar__metrics dt{font-size:11px}.solar__metrics dt>b{max-width:none}.solar__metrics dd{font-size:26px}.solar__metrics dd small{font-size:11px}.solar__balance{font-size:10px}.solar__community{grid-template-columns:1fr;padding:0 18px 20px;gap:14px}.solar__community p{font-size:11px}.solar__community button{justify-self:start;font-size:11px}.solar__agenda{margin-left:18px;margin-right:18px;grid-template-columns:1fr;gap:9px}.solar__agenda p{font-size:11px}.solar__live-note{margin-left:18px;margin-right:18px;font-size:9px}.solar__commons-foot{padding:16px 18px;flex-direction:column;align-items:start;gap:4px}.solar__commons-foot>span:last-child{text-align:left;font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.cott--almanac button,.solar--commons button{transition:none}.cott--almanac button:active,.solar--commons button:active{transform:none}}
+
+/* ============================================================
+   48–59 · EXPANSÃO DO CATÁLOGO
+   Cada raiz nova mantém seu namespace e compartilha apenas a moldura nd__.
+   ============================================================ */
+.nd{--nd-bg:#f7f7f7;--nd-surface:#fff;--nd-ink:#202030;--nd-muted:#6d7080;--nd-accent:#5b5ce2;--nd-accent-2:#8fdef1;--nd-line:color-mix(in srgb,var(--nd-ink) 14%,transparent);background:var(--nd-bg);color:var(--nd-ink);font-family:'Inter',sans-serif;min-height:500px;overflow:hidden}
+.nd *{box-sizing:border-box}.nd button{font:inherit}.nd__top{min-height:58px;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--nd-line);font-size:11px;letter-spacing:.09em;text-transform:uppercase}.nd__brand{font-weight:800;letter-spacing:.03em}.nd__chip{padding:5px 8px;border:1px solid var(--nd-line);border-radius:100px;color:var(--nd-muted);font-size:9px;font-weight:700}.nd__body{padding:32px 28px 28px}.nd__eyebrow{display:block;margin-bottom:10px;color:var(--nd-accent);font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.nd h1,.nd h2,.nd p{margin:0}.nd h1{font-size:clamp(35px,5.3vw,66px);line-height:.95;letter-spacing:-.07em}.nd p{color:var(--nd-muted);font-size:13px;line-height:1.65}.nd__btn,.nd__controls button{min-height:38px;padding:8px 12px;border:1px solid var(--nd-line);border-radius:6px;background:var(--nd-surface);color:var(--nd-ink);font-size:11px;font-weight:700;cursor:pointer;transition:transform .18s ease,background .18s ease,color .18s ease,border-color .18s ease}.nd__btn:hover,.nd__controls button:hover{transform:translateY(-2px);border-color:var(--nd-accent)}.nd__controls button[aria-pressed="true"],.nd__btn[aria-pressed="true"]{background:var(--nd-accent);color:#fff;border-color:var(--nd-accent)}.nd__controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.nd__status{display:block;min-height:20px;margin-top:13px;color:var(--nd-muted);font-size:10px;line-height:1.45}.nd__rule{height:1px;margin:21px 0;background:var(--nd-line)}
+
+/* 48 · Efeitos de Scroll */
+.scrollfx{--nd-bg:#071b2b;--nd-surface:#0f3247;--nd-ink:#e9fbf7;--nd-muted:#9bc7d8;--nd-accent:#52d6c7;--nd-accent-2:#9bc7d8}.scrollfx__layout{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:center}.scrollfx__story{min-height:330px;position:relative;padding:16px 0 16px 25px}.scrollfx__rail{position:absolute;left:0;top:16px;bottom:16px;width:2px;background:#28546a}.scrollfx__rail i{position:absolute;top:0;width:2px;height:var(--scrollfx-progress,33%);background:var(--nd-accent);transition:height .35s ease}.scrollfx__step{position:relative;display:grid;gap:6px;margin:0 0 30px}.scrollfx__step b{font-size:12px}.scrollfx__step span{font-size:11px;color:var(--nd-muted);max-width:30ch}.scrollfx__step::before{content:'';position:absolute;left:-29px;top:3px;width:10px;height:10px;border:2px solid var(--nd-accent);border-radius:50%;background:var(--nd-bg)}.scrollfx__scene{min-height:330px;position:relative;overflow:hidden;border:1px solid #2c5970;border-radius:18px;background:linear-gradient(145deg,#143d54,#071b2b)}.scrollfx__orb{position:absolute;width:150px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#e9fbf7 0 4%,#52d6c7 5% 29%,#0f3247 30%);box-shadow:0 0 0 18px #52d6c71a;transition:transform .55s cubic-bezier(.2,.7,.2,1)}.scrollfx__orb--a{left:13%;top:18%}.scrollfx__orb--b{right:10%;bottom:13%;width:105px;background:radial-gradient(circle at 35% 30%,#e9fbf7 0 5%,#9bc7d8 6% 31%,#0f3247 32%)}.scrollfx[data-scroll-step="2"] .scrollfx__orb--a{transform:translate(170px,30px) scale(.74)}.scrollfx[data-scroll-step="3"] .scrollfx__orb--a{transform:translate(260px,145px) scale(.44)}.scrollfx[data-scroll-step="3"] .scrollfx__orb--b{transform:translate(-160px,-115px) scale(1.45)}.scrollfx__meter{position:absolute;right:20px;top:20px;color:#9bc7d8;font:700 10px 'JetBrains Mono',monospace}
+
+/* 49 · Tipografia Expressiva */
+.typefx{--nd-bg:#fff7ed;--nd-surface:#fff;--nd-ink:#24130b;--nd-muted:#7c2d12;--nd-accent:#e11d48;--nd-accent-2:#fb923c}.typefx__layout{display:grid;grid-template-columns:1.15fr .85fr;gap:23px;align-items:end}.typefx__word{font-family:'Archivo Black',sans-serif;text-transform:uppercase;font-size:clamp(56px,10vw,132px);line-height:.78;letter-spacing:-.105em;max-width:7ch;color:var(--nd-ink);text-shadow:8px 8px 0 #fda4af;transition:font-size .28s ease,letter-spacing .28s ease,transform .28s ease}.typefx[data-type-mode="spread"] .typefx__word{letter-spacing:.015em;transform:skewY(-5deg)}.typefx[data-type-mode="compact"] .typefx__word{font-size:clamp(48px,8vw,105px);letter-spacing:-.145em;transform:scaleX(.82);transform-origin:left}.typefx__specimen{border:1px solid #fecdd3;background:#fff;padding:22px;display:grid;gap:15px}.typefx__specimen b{font:800 15px/1.08 'Inter',sans-serif}.typefx__rule{height:12px;background:linear-gradient(90deg,var(--nd-accent) 0 40%,var(--nd-accent-2) 40% 78%,var(--nd-ink) 78%)}
+
+/* 50 · Layout Horizontal */
+.horizfx{--nd-bg:#f7f4ef;--nd-surface:#fffdf9;--nd-ink:#2b2118;--nd-muted:#7c6f64;--nd-accent:#b45309;--nd-accent-2:#f6c768}.horizfx__viewport{overflow:hidden;border-block:1px solid #ddcfc0}.horizfx__track{display:flex;width:300%;transition:transform .42s cubic-bezier(.2,.7,.2,1)}.horizfx__panel{width:33.333%;min-height:294px;padding:27px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;border-right:1px solid #ddcfc0}.horizfx__panel h2{font:700 clamp(33px,5vw,58px)/.96 'Fraunces',serif;letter-spacing:-.06em}.horizfx__number{color:var(--nd-accent);font:700 10px 'JetBrains Mono',monospace}.horizfx__object{height:190px;position:relative;border-radius:50% 50% 12px 12px;background:linear-gradient(145deg,#f2c27a,#b45309);box-shadow:inset 20px 15px #fff5,16px 16px #2b211826}.horizfx[data-horizontal-panel="2"] .horizfx__track{transform:translateX(-33.333%)}.horizfx[data-horizontal-panel="3"] .horizfx__track{transform:translateX(-66.666%)}.horizfx[data-horizontal-panel="2"] .horizfx__object{border-radius:14px;background:repeating-linear-gradient(90deg,#f7d899 0 20px,#b45309 20px 40px)}.horizfx[data-horizontal-panel="3"] .horizfx__object{border-radius:2px;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:#2b2118}
+
+/* 51 · Layout Modular */
+.modfx{--nd-bg:#f1f5f9;--nd-surface:#fff;--nd-ink:#0f172a;--nd-muted:#64748b;--nd-accent:#0f766e;--nd-accent-2:#5eead4}.modfx__grid{display:grid;grid-template-columns:1.35fr .8fr .8fr;grid-template-rows:115px 115px;gap:9px}.modfx__module{position:relative;display:flex;align-items:flex-end;padding:15px;border:1px solid #cbd5e1;border-radius:10px;background:var(--nd-surface);color:var(--nd-ink);text-align:left;cursor:pointer;overflow:hidden;transition:transform .2s ease,border-color .2s ease,background .2s ease}.modfx__module:first-child{grid-row:1/3;background:#0f766e;color:#fff}.modfx__module:nth-child(4){grid-column:2/4;background:#d1fae5}.modfx__module::after{content:'';position:absolute;top:13px;right:13px;width:23px;height:23px;border-radius:50%;background:currentColor;opacity:.12}.modfx__module:hover,.modfx__module[aria-pressed="true"]{border-color:var(--nd-accent);transform:translateY(-3px)}.modfx__module[aria-pressed="true"]::after{opacity:.4}.modfx__legend{display:flex;gap:10px;justify-content:space-between;margin-top:13px;font-size:11px;color:var(--nd-muted)}
+
+/* 52 · Grunge */
+.grungefx{--nd-bg:#e9e1d1;--nd-surface:#f6f0e4;--nd-ink:#171412;--nd-muted:#70665a;--nd-accent:#d1492e;--nd-accent-2:#28221e;background-image:repeating-linear-gradient(83deg,#17141208 0 1px,transparent 1px 5px),radial-gradient(circle at 80% 20%,#d1492e30 0 3px,transparent 4px)}.grungefx__poster{min-height:330px;padding:30px;position:relative;overflow:hidden;border:7px solid var(--nd-ink);background:#e9e1d1;box-shadow:12px 12px 0 #28221e}.grungefx__poster::before,.grungefx__poster::after{content:'';position:absolute;inset:-12px;background:repeating-linear-gradient(11deg,transparent 0 20px,#17141213 20px 21px);mix-blend-mode:multiply;pointer-events:none}.grungefx__poster::after{clip-path:polygon(0 8%,100% 0,92% 52%,100% 100%,0 91%,8% 48%);background:#d1492e30}.grungefx__poster h1{position:relative;z-index:1;max-width:7ch;font:900 clamp(50px,9vw,115px)/.77 'Archivo Black',sans-serif;text-transform:uppercase;letter-spacing:-.09em}.grungefx__poster p{position:relative;z-index:1;max-width:33ch;margin-top:26px;color:#28221e;font-weight:700}.grungefx__stamp{position:absolute;right:23px;bottom:22px;z-index:1;display:grid;place-items:center;width:106px;aspect-ratio:1;border:3px solid var(--nd-accent);border-radius:50%;color:var(--nd-accent);font:700 12px 'JetBrains Mono',monospace;transform:rotate(-14deg)}.grungefx[data-grunge="raw"] .grungefx__poster{filter:contrast(1.25) saturate(.72)}.grungefx[data-grunge="raw"] .grungefx__poster h1{transform:translateX(-5px)}
+
+/* 53 · Layout Estreito */
+.narrowfx{--nd-bg:#f8f6f1;--nd-surface:#fff;--nd-ink:#24231f;--nd-muted:#5b5a56;--nd-accent:#c2410c;--nd-accent-2:#f4c19d}.narrowfx__reading{width:min(100%,510px);margin:0 auto;padding:20px 0}.narrowfx__reading h1{font:600 clamp(41px,6vw,72px)/.98 'Fraunces',serif;letter-spacing:-.06em}.narrowfx__reading p{margin-top:19px;font-size:15px;line-height:1.78}.narrowfx__reading p:first-of-type::first-letter{float:left;margin:0 8px 0 0;color:var(--nd-accent);font:900 68px/.68 'Fraunces',serif}.narrowfx__reading hr{border:0;border-top:1px solid #dedbd4;margin:23px 0}.narrowfx[data-narrow="focus"] .narrowfx__reading{width:min(100%,390px)}.narrowfx[data-narrow="focus"] .narrowfx__reading p{font-size:16px}.narrowfx__measure{display:flex;justify-content:center;gap:4px;margin-top:18px}.narrowfx__measure i{width:8px;height:8px;border-radius:50%;background:#dedbd4}.narrowfx[data-narrow="focus"] .narrowfx__measure i{background:var(--nd-accent)}
+
+/* 54 · Futurista */
+.futurefx{--nd-bg:#070b1b;--nd-surface:#101b3d;--nd-ink:#e8efff;--nd-muted:#93a5d4;--nd-accent:#7c8cff;--nd-accent-2:#58e8d4;background-image:radial-gradient(circle at 77% 25%,#7c8cff25 0 3%,transparent 29%),linear-gradient(125deg,#070b1b,#101b3d)}.futurefx__console{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.futurefx__readout{min-height:310px;padding:25px;border:1px solid #7c8cff66;clip-path:polygon(0 0,92% 0,100% 8%,100% 100%,8% 100%,0 92%);background:#101b3dcc}.futurefx__readout h1{font:600 clamp(42px,6vw,72px)/.9 'Orbitron',sans-serif;letter-spacing:-.08em}.futurefx__readout p{margin-top:19px;color:#b8c7ef}.futurefx__code{display:block;margin-top:22px;color:#58e8d4;font:11px/1.8 'JetBrains Mono',monospace}.futurefx__radar{display:grid;place-items:center;min-height:310px;position:relative;overflow:hidden;border:1px solid #58e8d466;background:radial-gradient(circle,#58e8d41a 0 1px,transparent 1px 51px),repeating-linear-gradient(0deg,transparent 0 30px,#7c8cff25 31px 32px),repeating-linear-gradient(90deg,transparent 0 30px,#7c8cff25 31px 32px)}.futurefx__radar::before{content:'';width:190px;aspect-ratio:1;border:1px solid #58e8d4;border-radius:50%;box-shadow:0 0 0 41px #58e8d412,0 0 0 82px #58e8d40b}.futurefx__radar::after{content:'';position:absolute;width:46%;height:1px;background:#58e8d4;transform-origin:left;transform:rotate(var(--future-angle,24deg));transition:transform .45s ease}.futurefx[data-future="orbit"]{--future-angle:116deg}.futurefx[data-future="signal"]{--future-angle:228deg}.futurefx__radar b{position:absolute;color:#58e8d4;font:700 10px 'JetBrains Mono',monospace}
+
+/* 55 · Pixel Art */
+.pixelfx{--nd-bg:#1a1233;--nd-surface:#30245a;--nd-ink:#fff8df;--nd-muted:#cbbfe6;--nd-accent:#70e000;--nd-accent-2:#f6c945;font-family:'Press Start 2P',monospace}.pixelfx .nd__top,.pixelfx .nd__body{font-family:'Press Start 2P',monospace}.pixelfx__screen{min-height:322px;position:relative;overflow:hidden;border:6px solid #fff8df;background:linear-gradient(#30245a 0 70%,#19253c 70%);image-rendering:pixelated}.pixelfx__screen::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,#ffffff05 0 4px,transparent 4px 8px);pointer-events:none}.pixelfx__moon{position:absolute;right:12%;top:14%;width:76px;aspect-ratio:1;border-radius:50%;background:#f6c945;box-shadow:13px 13px 0 #e29e30}.pixelfx__ground{position:absolute;left:0;right:0;bottom:0;height:45px;background:repeating-linear-gradient(90deg,#70e000 0 13px,#4ba90b 13px 26px)}.pixelfx__sprite{position:absolute;left:calc(var(--pixel-x,45%) - 25px);bottom:42px;width:52px;height:68px;background:linear-gradient(90deg,transparent 0 12px,#fff8df 12px 40px,transparent 40px),linear-gradient(90deg,transparent 0 4px,#70e000 4px 48px,transparent 48px),linear-gradient(90deg,transparent 0 10px,#70e000 10px 42px,transparent 42px);clip-path:polygon(35% 0,65% 0,65% 10%,82% 10%,82% 30%,100% 30%,100% 58%,80% 58%,80% 100%,58% 100%,58% 78%,42% 78%,42% 100%,20% 100%,20% 58%,0 58%,0 30%,18% 30%,18% 10%,35% 10%);filter:drop-shadow(5px 5px #120c25);transition:left .28s steps(3)}.pixelfx__hud{position:absolute;left:14px;top:14px;color:#fff8df;font-size:10px;line-height:1.75}.pixelfx__hud b{color:#70e000}.pixelfx .nd__controls button{font-size:9px;border-radius:0}.pixelfx[data-pixel="left"]{--pixel-x:22%}.pixelfx[data-pixel="right"]{--pixel-x:76%}
+
+/* 56 · Glitch */
+.glitchfx{--nd-bg:#0b0b12;--nd-surface:#171725;--nd-ink:#f7f7ff;--nd-muted:#b0b0c9;--nd-accent:#00e5ff;--nd-accent-2:#ff2ea6}.glitchfx__signal{min-height:320px;position:relative;display:grid;place-items:center;overflow:hidden;background:repeating-linear-gradient(0deg,#fff1 0 1px,transparent 1px 5px),#171725}.glitchfx__signal::before,.glitchfx__signal::after{content:'SINAL';position:absolute;font:900 clamp(56px,11vw,130px)/.8 'Archivo Black',sans-serif;letter-spacing:-.1em}.glitchfx__signal::before{color:var(--nd-accent);transform:translate(-5px,1px);clip-path:inset(0 0 52% 0)}.glitchfx__signal::after{color:var(--nd-accent-2);transform:translate(6px,-1px);clip-path:inset(48% 0 0 0)}.glitchfx__signal b{position:relative;z-index:2;font:900 clamp(56px,11vw,130px)/.8 'Archivo Black',sans-serif;letter-spacing:-.1em}.glitchfx[data-glitch="on"] .glitchfx__signal::before{animation:glitch-shift .18s steps(2) 4}.glitchfx[data-glitch="on"] .glitchfx__signal::after{animation:glitch-shift .15s steps(2) 4 reverse}.glitchfx__code{position:absolute;left:17px;bottom:16px;color:#00e5ff;font:10px 'JetBrains Mono',monospace}.glitchfx__code i{color:#ff2ea6;font-style:normal}@keyframes glitch-shift{0%,100%{transform:translate(-5px,1px)}50%{transform:translate(12px,-7px)}}
+
+/* 57 · Tipografia Pesada */
+.boldfx{--nd-bg:#111827;--nd-surface:#1f2937;--nd-ink:#f8fafc;--nd-muted:#a5b4fc;--nd-accent:#facc15;--nd-accent-2:#a5b4fc}.boldfx__campaign{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:end}.boldfx__campaign h1{font:900 clamp(58px,11vw,139px)/.71 'Archivo Black',sans-serif;text-transform:uppercase;letter-spacing:-.105em;color:#f8fafc}.boldfx__campaign h1 em{display:block;color:#facc15;font-style:normal}.boldfx__side{padding:18px;border-left:5px solid #facc15;background:#1f2937}.boldfx__side b{display:block;margin-bottom:10px;font-size:20px;line-height:1}.boldfx[data-bold="poster"] .boldfx__campaign h1{transform:scaleY(1.13);transform-origin:bottom}.boldfx[data-bold="poster"] .boldfx__side{background:#facc15;color:#111827}.boldfx[data-bold="poster"] .boldfx__side p{color:#111827}
+
+/* 58 · Layout em Grade */
+.gridfx{--nd-bg:#f6f7fb;--nd-surface:#fff;--nd-ink:#111827;--nd-muted:#9ca3af;--nd-accent:#1d4ed8;--nd-accent-2:#93c5fd;background-image:linear-gradient(#1d4ed808 1px,transparent 1px),linear-gradient(90deg,#1d4ed808 1px,transparent 1px);background-size:24px 24px}.gridfx__board{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:52px;gap:8px}.gridfx__cell{display:flex;align-items:center;padding:12px;border:1px solid #cbd5e1;background:#fff;color:#64748b;font-size:11px;font-weight:700;transition:background .24s,color .24s,transform .24s}.gridfx__cell--hero{grid-column:span 7;grid-row:span 3;background:#1d4ed8;color:#fff;font-size:clamp(25px,3.4vw,42px);line-height:.94;letter-spacing:-.06em}.gridfx__cell--side{grid-column:span 5;grid-row:span 2}.gridfx__cell--wide{grid-column:span 4;grid-row:span 2}.gridfx__cell--small{grid-column:span 4}.gridfx[data-grid="compact"] .gridfx__cell--hero{grid-column:span 5}.gridfx[data-grid="compact"] .gridfx__cell--side{grid-column:span 7}.gridfx[data-grid="focus"] .gridfx__cell--hero{grid-column:span 12;background:#111827}.gridfx[data-grid="focus"] .gridfx__cell:not(.gridfx__cell--hero){opacity:.42;transform:scale(.96)}
+
+/* 59 · Lúdico */
+.funfx{--nd-bg:#fff7cc;--nd-surface:#fff;--nd-ink:#20203a;--nd-muted:#605f79;--nd-accent:#ff6b6b;--nd-accent-2:#4d96ff}.funfx__playground{min-height:325px;position:relative;overflow:hidden;border:3px solid #20203a;border-radius:20px;background:linear-gradient(135deg,#fff 0 48%,#b8e0ff 48%)}.funfx__shape{position:absolute;display:grid;place-items:center;cursor:pointer;border:3px solid #20203a;box-shadow:5px 5px 0 #20203a;font:900 20px 'Nunito',sans-serif;transition:transform .2s ease}.funfx__shape:hover,.funfx__shape[aria-pressed="true"]{transform:translate(-4px,-4px) rotate(-5deg)}.funfx__shape--circle{left:12%;top:19%;width:102px;aspect-ratio:1;border-radius:50%;background:#ff6b6b}.funfx__shape--square{right:16%;top:16%;width:91px;aspect-ratio:1;background:#4d96ff;transform:rotate(13deg)}.funfx__shape--triangle{left:40%;bottom:16%;width:0;height:0;border-left:65px solid transparent;border-right:65px solid transparent;border-bottom:105px solid #70e000;box-shadow:none;background:none;color:#20203a}.funfx__shape--triangle span{position:absolute;top:48px;left:-8px}.funfx[data-fun="circle"] .funfx__shape--circle,.funfx[data-fun="square"] .funfx__shape--square,.funfx[data-fun="triangle"] .funfx__shape--triangle{outline:5px solid #f6c945;outline-offset:5px}.funfx__note{position:absolute;right:18px;bottom:17px;max-width:23ch;padding:10px;background:#fff;border:2px solid #20203a;font:700 10px/1.35 'Nunito',sans-serif}
+
+@media(max-width:700px){.nd__top{padding:14px 17px}.nd__body{padding:23px 17px}.scrollfx__layout,.typefx__layout,.futurefx__console,.boldfx__campaign{grid-template-columns:1fr}.scrollfx__story{min-height:215px}.scrollfx__scene{min-height:245px}.horizfx__panel{min-height:255px;padding:20px;grid-template-columns:1fr}.horizfx__object{display:none}.modfx__grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.modfx__module:first-child{grid-row:span 2}.modfx__module:nth-child(4){grid-column:1/3}.futurefx__readout,.futurefx__radar{min-height:235px}.gridfx__board{grid-auto-rows:45px;gap:5px}.gridfx__cell--hero{grid-column:span 12}.gridfx__cell--side,.gridfx__cell--wide,.gridfx__cell--small{grid-column:span 6}.gridfx[data-grid="compact"] .gridfx__cell--hero,.gridfx[data-grid="compact"] .gridfx__cell--side{grid-column:span 12}.funfx__shape--circle{left:8%}.funfx__shape--square{right:9%}.funfx__shape--triangle{left:34%}.pixelfx__screen{min-height:260px}.nd__controls button{min-height:42px}}
+@media(prefers-reduced-motion:reduce){.nd *,.nd *::before,.nd *::after{animation:none!important;transition:none!important}.scrollfx__orb,.horizfx__track,.pixelfx__sprite{transform:none!important}}
 </style>
 </head>
 <body>
@@ -7066,11 +7127,19 @@ a.card{text-decoration:none}
       <input id="q" type="search" placeholder="buscar estilo, tag ou técnica…" autocomplete="off" spellcheck="false" aria-label="Buscar estilo">
       <kbd>/</kbd>
     </div>
-    <div class="lab-now"><b id="nowName">Catálogo</b><i id="nowCount">— / 47</i></div>
+    <div class="lab-now"><b id="nowName">Catálogo</b><i id="nowCount">— / 59</i></div>
     <a class="lab-mixer-link" href="combinador.html">Combinar estilos</a>
     <button class="lab-top" id="toIndex">↑ índice</button>
   </div>
-  <div class="lab-bar__row lab-bar__row--b" id="chips" role="group" aria-label="Filtrar por grupo"></div>
+  <div class="lab-bar__row lab-bar__row--b">
+    <label class="lab-filter" for="categoryFilter">Categoria
+      <select id="categoryFilter" aria-label="Filtrar por categoria de projeto"></select>
+    </label>
+    <label class="lab-filter" for="styleFilter">Estilo
+      <select id="styleFilter" aria-label="Filtrar por faceta visual"></select>
+    </label>
+    <div class="lab-chips" id="chips" role="group" aria-label="Filtrar por grupo"></div>
+  </div>
 </header>
 
 <!-- ═══════════════════════ CATÁLOGO ═══════════════════════ -->
@@ -8040,6 +8109,27 @@ Aplique rigorosamente os tokens e princípios de "Monocromático / Duotone" à i
       </div>
     </div>
   </div>
+</section>
+
+<!-- Layout em Grade -->
+<section class="lab-section" id="grid-layout" data-slug="grid-layout" data-group="A" data-name="Layout em Grade" data-tags="grade 12 colunas, módulos, alinhamento, dashboard, layout, grid">
+  <div class="lab-head">
+    <div class="lab-head__l">
+      <span class="lab-head__id">06 · FUNDAMENTOS &amp; MINIMALISMOS</span>
+      <h2>Layout em Grade</h2>
+      <div class="lab-tags"><span class="lab-tag">12 colunas</span><span class="lab-tag">Alinhamento</span><span class="lab-tag">Módulos</span></div>
+      <div class="lab-palette">
+        <button class="sw" data-hex="#f6f7fb" style="background:#f6f7fb"></button><button class="sw" data-hex="#ffffff" style="background:#ffffff"></button><button class="sw" data-hex="#1d4ed8" style="background:#1d4ed8"></button><button class="sw" data-hex="#9ca3af" style="background:#9ca3af"></button><button class="sw" data-hex="#111827" style="background:#111827"></button>
+      </div>
+    </div>
+    <div class="lab-head__r"><p>Uma grade explícita torna o alinhamento visível e permite redistribuir prioridade sem perder ritmo. Alterne a composição para ver o mesmo conteúdo se ajustar a uma pauta compacta ou a um foco editorial.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Layout em Grade. Use uma grade de 12 colunas responsiva, com espaçamento consistente, hierarquia por spans e módulos que preservem alinhamentos entre telas. Comece pelo conteúdo prioritário, dê à área principal a maior extensão e faça cartões secundários ocuparem múltiplos coerentes. Mantenha linhas, contraste e foco de teclado visíveis; nunca use a grade só como decoração.</pre></div></details></div>
+  </div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">grid.local/board</span></div><div class="frame__body nd gridfx" data-demo="grid-layout" data-grid="balanced">
+    <div class="nd__top"><span class="nd__brand">GRID / 12</span><span class="nd__chip">pauta responsiva</span></div><div class="nd__body">
+      <div class="gridfx__board" aria-label="Composição demonstrativa em grade de doze colunas"><div class="gridfx__cell gridfx__cell--hero">Uma decisão encontra seu lugar.</div><div class="gridfx__cell gridfx__cell--side">Resumo / 04</div><div class="gridfx__cell gridfx__cell--side">Sistema / 12</div><div class="gridfx__cell gridfx__cell--wide">Métrica</div><div class="gridfx__cell gridfx__cell--wide">Notas</div><div class="gridfx__cell gridfx__cell--wide">Arquivo</div><div class="gridfx__cell gridfx__cell--small">01</div><div class="gridfx__cell gridfx__cell--small">02</div><div class="gridfx__cell gridfx__cell--small">03</div></div>
+      <div class="nd__controls" role="group" aria-label="Composição da grade"><button type="button" data-act="grid-mode" data-grid-mode="balanced" aria-pressed="true">Equilibrada</button><button type="button" data-act="grid-mode" data-grid-mode="compact" aria-pressed="false">Compacta</button><button type="button" data-act="grid-mode" data-grid-mode="focus" aria-pressed="false">Foco</button></div><span class="nd__status" data-grid-status aria-live="polite">Grade equilibrada: módulo principal ocupa sete colunas.</span>
+    </div>
+  </div></div>
 </section>
 
 <!-- ═════════════ GRUPO B ═════════════ -->
@@ -9129,6 +9219,16 @@ Aplique rigorosamente os tokens e princípios de "Isotype / Infográfico" à int
     </div>
   </div>
 </section>
+
+<!-- Layout Horizontal -->
+<section class="lab-section" id="horizontal-layout" data-slug="horizontal-layout" data-group="B" data-name="Layout Horizontal" data-tags="scroll horizontal, painéis, narrativa lateral, sequência, trilho, viewport">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">13 · SISTEMAS DE PRODUTO</span><h2>Layout Horizontal</h2><div class="lab-tags"><span class="lab-tag">Sequência lateral</span><span class="lab-tag">Trilho</span><span class="lab-tag">Painéis</span></div><div class="lab-palette"><button class="sw" data-hex="#f7f4ef" style="background:#f7f4ef"></button><button class="sw" data-hex="#fffdf9" style="background:#fffdf9"></button><button class="sw" data-hex="#b45309" style="background:#b45309"></button><button class="sw" data-hex="#7c6f64" style="background:#7c6f64"></button><button class="sw" data-hex="#2b2118" style="background:#2b2118"></button></div></div><div class="lab-head__r"><p>Um trilho transforma capítulos em movimento lateral sem esconder a posição do leitor. Os botões abaixo deslocam a viewport local e tornam a sequência reversível por teclado.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Layout Horizontal. Construa uma narrativa em painéis horizontais com um viewport acessível, uma indicação de capítulo e controles explícitos de ida e volta. Use cada quadro como unidade completa de informação; preserve leitura linear e ofereça uma alternativa responsiva em uma coluna para telas pequenas.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">via.local/chapters</span></div><div class="frame__body nd horizfx" data-demo="horizontal-layout" data-horizontal-panel="1"><div class="nd__top"><span class="nd__brand">VIA / capítulos</span><span class="nd__chip" data-horizontal-count>01 / 03</span></div><div class="horizfx__viewport"><div class="horizfx__track"><article class="horizfx__panel"><div><span class="horizfx__number">01 — ORIGEM</span><h2>Comece pelo percurso.</h2><p>Uma página pode avançar de lado quando a história tem etapas comparáveis.</p></div><div class="horizfx__object" aria-hidden="true"></div></article><article class="horizfx__panel"><div><span class="horizfx__number">02 — RITMO</span><h2>Mostre a mudança.</h2><p>O painel seguinte preserva o contexto e altera somente o assunto.</p></div><div class="horizfx__object" aria-hidden="true"></div></article><article class="horizfx__panel"><div><span class="horizfx__number">03 — CHEGADA</span><h2>Feche a sequência.</h2><p>A narrativa termina com uma decisão e permite voltar para qualquer etapa.</p></div><div class="horizfx__object" aria-hidden="true"></div></article></div></div><div class="nd__body"><div class="nd__controls" role="group" aria-label="Capítulos horizontais"><button type="button" data-act="horizontal-panel" data-horizontal-panel="1" aria-pressed="true">Origem</button><button type="button" data-act="horizontal-panel" data-horizontal-panel="2" aria-pressed="false">Ritmo</button><button type="button" data-act="horizontal-panel" data-horizontal-panel="3" aria-pressed="false">Chegada</button></div><span class="nd__status" data-horizontal-status aria-live="polite">Capítulo 1 de 3: Origem.</span></div></div></div></section>
+
+<!-- Layout Modular -->
+<section class="lab-section" id="modular-layout" data-slug="modular-layout" data-group="B" data-name="Layout Modular" data-tags="módulos, dashboard, cartões, grid responsivo, blocos, sistema">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">14 · SISTEMAS DE PRODUTO</span><h2>Layout Modular</h2><div class="lab-tags"><span class="lab-tag">Cartões</span><span class="lab-tag">Sistema</span><span class="lab-tag">Prioridade</span></div><div class="lab-palette"><button class="sw" data-hex="#f1f5f9" style="background:#f1f5f9"></button><button class="sw" data-hex="#ffffff" style="background:#ffffff"></button><button class="sw" data-hex="#0f766e" style="background:#0f766e"></button><button class="sw" data-hex="#64748b" style="background:#64748b"></button><button class="sw" data-hex="#0f172a" style="background:#0f172a"></button></div></div><div class="lab-head__r"><p>Módulos tornam a densidade controlável: cada bloco carrega uma tarefa e pode aumentar de importância sem desmontar o sistema. Selecione um módulo para destacar a informação que está em foco.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Layout Modular. Organize a interface em cartões com função clara, espaçamento regular e uma hierarquia visível por tamanho, cor e posição. Permita que a prioridade mude sem quebrar a grade. Cada módulo deve ter rótulo, foco de teclado e contraste suficiente para operar sem depender de cor isolada.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">module.local/home</span></div><div class="frame__body nd modfx" data-demo="modular-layout"><div class="nd__top"><span class="nd__brand">MÓDULO / casa</span><span class="nd__chip">04 blocos</span></div><div class="nd__body"><div class="modfx__grid" aria-label="Painel modular"><button class="modfx__module" type="button" data-act="module-select" data-module="Resumo" aria-pressed="true">Resumo semanal</button><button class="modfx__module" type="button" data-act="module-select" data-module="Agenda" aria-pressed="false">Agenda</button><button class="modfx__module" type="button" data-act="module-select" data-module="Equipe" aria-pressed="false">Equipe</button><button class="modfx__module" type="button" data-act="module-select" data-module="Sinais" aria-pressed="false">Sinais do projeto</button></div><div class="modfx__legend"><span data-module-name>Resumo</span><span>selecionado</span></div><span class="nd__status" data-module-status aria-live="polite">Resumo selecionado: prioridade alta no primeiro módulo.</span></div></div></div></section>
 
 <!-- ═════════════ GRUPO C ═════════════ -->
 <div class="lab-group" data-group="C"><h3><b>C</b>Luz, Vidro &amp; Superfície</h3><i></i><span data-count></span></div>
@@ -10626,6 +10726,11 @@ Aplique rigorosamente os tokens e princípios de "Punk / Fanzine" à interface s
   </div>
 </section>
 
+<!-- Grunge -->
+<section class="lab-section" id="grunge" data-slug="grunge" data-group="D" data-name="Grunge" data-tags="textura xerox, ruído, rasgo, contraste sujo, cartaz, diy">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">24 · BRUTALISMOS &amp; ANTI-DESIGN</span><h2>Grunge</h2><div class="lab-tags"><span class="lab-tag">Xerox</span><span class="lab-tag">Ruído</span><span class="lab-tag">DIY</span></div><div class="lab-palette"><button class="sw" data-hex="#e9e1d1" style="background:#e9e1d1"></button><button class="sw" data-hex="#28221e" style="background:#28221e"></button><button class="sw" data-hex="#d1492e" style="background:#d1492e"></button><button class="sw" data-hex="#70665a" style="background:#70665a"></button><button class="sw" data-hex="#171412" style="background:#171412"></button></div></div><div class="lab-head__r"><p>Grunge trabalha com erro controlado: desgaste, rasgo e contraste dão origem a uma peça que parece ter passado por cópia, cola e repetição. A alternância intensifica a impressão sem tornar o texto ilegível.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Grunge. Combine tipografia contundente, textura de xerox, falhas de registro e uma cor de choque sobre papel gasto. Use ruído como camada de material, nunca como obstáculo à leitura. Mantenha contraste alto, controles claros e uma versão reduzida para pessoas que preferem menos movimento visual.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">press.local/issue-04</span></div><div class="frame__body nd grungefx" data-demo="grunge" data-grunge="clean"><div class="nd__top"><span class="nd__brand">cópia / 04</span><span class="nd__chip">cartaz de rua</span></div><div class="nd__body"><div class="grungefx__poster"><h1>faça barulho.</h1><p>Uma tiragem curta para ideias que não precisam caber em uma caixa perfeita.</p><span class="grungefx__stamp">SEM<br>POLIR</span></div><div class="nd__controls"><button type="button" data-act="grunge-mode" data-grunge-mode="clean" aria-pressed="true">Tiragem limpa</button><button type="button" data-act="grunge-mode" data-grunge-mode="raw" aria-pressed="false">Mais desgaste</button></div><span class="nd__status" data-grunge-status aria-live="polite">Tiragem limpa: ruído leve, título nítido.</span></div></div></div></section>
+
 <!-- ═════════════ GRUPO E ═════════════ -->
 <div class="lab-group" data-group="E"><h3><b>E</b>Tipografia &amp; Editorial</h3><i></i><span data-count></span></div>
 
@@ -11548,6 +11653,26 @@ Aplique rigorosamente os tokens e princípios de "Gótico / Blackletter" à inte
     </div>
   </div>
 </section>
+
+<!-- Efeitos de Scroll -->
+<section class="lab-section" id="scroll-effects" data-slug="scroll-effects" data-group="E" data-name="Efeitos de Scroll" data-tags="scrollytelling, progress, parallax, narrativa, camadas, sequência">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">31 · TIPOGRAFIA &amp; EDITORIAL</span><h2>Efeitos de Scroll</h2><div class="lab-tags"><span class="lab-tag">Scrollytelling</span><span class="lab-tag">Progresso</span><span class="lab-tag">Camadas</span></div><div class="lab-palette"><button class="sw" data-hex="#071b2b" style="background:#071b2b"></button><button class="sw" data-hex="#0f3247" style="background:#0f3247"></button><button class="sw" data-hex="#52d6c7" style="background:#52d6c7"></button><button class="sw" data-hex="#9bc7d8" style="background:#9bc7d8"></button><button class="sw" data-hex="#e9fbf7" style="background:#e9fbf7"></button></div></div><div class="lab-head__r"><p>O efeito segue a narrativa: cada etapa move a cena apenas o bastante para explicar o próximo ponto. Os controles simulam o avanço de um scrollytelling e mantêm uma alternativa estática, previsível e reversível.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Efeitos de Scroll. Faça o movimento revelar uma sequência de conteúdo, com progresso percebido, camadas discretas e estados completos sem animação. Respeite prefers-reduced-motion; toda informação deve permanecer acessível por controles e nunca existir apenas durante o deslocamento.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">atlas.local/scroll</span></div><div class="frame__body nd scrollfx" data-demo="scroll-effects" data-scroll-step="1"><div class="nd__top"><span class="nd__brand">ATLAS / percurso</span><span class="nd__chip" data-scroll-counter>01 / 03</span></div><div class="nd__body"><div class="scrollfx__layout"><div class="scrollfx__story"><div class="scrollfx__rail"><i></i></div><div class="scrollfx__step"><b>01 · Observar</b><span>Um ponto de entrada mostra a escala da história.</span></div><div class="scrollfx__step"><b>02 · Aproximar</b><span>Uma mudança de plano apresenta a relação.</span></div><div class="scrollfx__step"><b>03 · Conectar</b><span>A última camada fecha a leitura.</span></div></div><div class="scrollfx__scene" aria-label="Cena em camadas controlada pelo progresso"><i class="scrollfx__orb scrollfx__orb--a"></i><i class="scrollfx__orb scrollfx__orb--b"></i><span class="scrollfx__meter" data-scroll-meter>33%</span></div></div><div class="nd__controls" role="group" aria-label="Etapas da narrativa"><button type="button" data-act="scroll-step" data-scroll-step="1" aria-pressed="true">Observar</button><button type="button" data-act="scroll-step" data-scroll-step="2" aria-pressed="false">Aproximar</button><button type="button" data-act="scroll-step" data-scroll-step="3" aria-pressed="false">Conectar</button></div><span class="nd__status" data-scroll-status aria-live="polite">Etapa 1 de 3: a cena estabelece o ponto de entrada.</span></div></div></div></section>
+
+<!-- Tipografia Expressiva -->
+<section class="lab-section" id="typographic" data-slug="typographic" data-group="E" data-name="Tipografia Expressiva" data-tags="display expressivo, escala extrema, tracking, contraste, composição, headline">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">32 · TIPOGRAFIA &amp; EDITORIAL</span><h2>Tipografia Expressiva</h2><div class="lab-tags"><span class="lab-tag">Display</span><span class="lab-tag">Tracking</span><span class="lab-tag">Escala</span></div><div class="lab-palette"><button class="sw" data-hex="#fff7ed" style="background:#fff7ed"></button><button class="sw" data-hex="#ffffff" style="background:#ffffff"></button><button class="sw" data-hex="#e11d48" style="background:#e11d48"></button><button class="sw" data-hex="#7c2d12" style="background:#7c2d12"></button><button class="sw" data-hex="#24130b" style="background:#24130b"></button></div></div><div class="lab-head__r"><p>A letra deixa de ser só portadora de conteúdo e vira a composição. Os dois controles mudam o ritmo do mesmo título sem abandonar contraste, medida ou leitura de apoio.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Tipografia Expressiva. Escolha uma família display com personalidade e use escala, peso, tracking e quebra de linha como elementos de composição. Reserve o corpo para leitura tranquila, mantenha contraste AA e use o exagero somente na hierarquia que realmente precisa chamar atenção.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">type.local/voice</span></div><div class="frame__body nd typefx" data-demo="typographic" data-type-mode="impact"><div class="nd__top"><span class="nd__brand">VOZ / display</span><span class="nd__chip">edição 12</span></div><div class="nd__body"><div class="typefx__layout"><div><span class="nd__eyebrow">uma frase, três ritmos</span><div class="typefx__word" data-type-word>fale alto.</div></div><aside class="typefx__specimen"><b>O tipo conduz o olhar antes de explicar a frase.</b><div class="typefx__rule"></div><p>Uma coluna auxiliar segura a informação que não precisa disputar a capa.</p></aside></div><div class="nd__controls"><button type="button" data-act="type-mode" data-type-mode="impact" aria-pressed="true">Impacto</button><button type="button" data-act="type-mode" data-type-mode="spread" aria-pressed="false">Aberto</button><button type="button" data-act="type-mode" data-type-mode="compact" aria-pressed="false">Compacto</button></div><span class="nd__status" data-type-status aria-live="polite">Impacto: escala máxima e sombra coral.</span></div></div></div></section>
+
+<!-- Layout Estreito -->
+<section class="lab-section" id="narrow-layout" data-slug="narrow-layout" data-group="E" data-name="Layout Estreito" data-tags="medida estreita, leitura focada, coluna única, editorial, tipografia, respiro">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">33 · TIPOGRAFIA &amp; EDITORIAL</span><h2>Layout Estreito</h2><div class="lab-tags"><span class="lab-tag">Coluna única</span><span class="lab-tag">Medida</span><span class="lab-tag">Leitura</span></div><div class="lab-palette"><button class="sw" data-hex="#f8f6f1" style="background:#f8f6f1"></button><button class="sw" data-hex="#ffffff" style="background:#ffffff"></button><button class="sw" data-hex="#5b5a56" style="background:#5b5a56"></button><button class="sw" data-hex="#c2410c" style="background:#c2410c"></button><button class="sw" data-hex="#24231f" style="background:#24231f"></button></div></div><div class="lab-head__r"><p>Uma coluna estreita reduz ruído periférico e torna a cadência do texto tangível. Alternar a medida mostra que foco não é sinônimo de apertar letras: é definir uma largura deliberada para cada leitura.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Layout Estreito. Construa uma coluna de leitura com 45 a 65 caracteres, contraste confortável, entrelinha generosa e margens que criem silêncio visual. Use uma única largura para o argumento principal e permita expandir apenas conteúdos que realmente exigem comparação ou detalhe técnico.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">caderno.local/nota</span></div><div class="frame__body nd narrowfx" data-demo="narrow-layout" data-narrow="reading"><div class="nd__top"><span class="nd__brand">CADERNO / 19</span><span class="nd__chip">leitura lenta</span></div><div class="nd__body"><article class="narrowfx__reading"><span class="nd__eyebrow">ensaio breve</span><h1>O espaço ajuda a frase a respirar.</h1><p>Uma página estreita trata a atenção como material de projeto. A palavra não corre atrás de outra coluna; ela encontra uma pausa, um retorno e uma medida estável.</p><hr><p>Quando a largura muda, muda também o jeito de acompanhar o argumento. A interface pode tornar essa decisão visível sem transformar a leitura em efeito.</p><div class="narrowfx__measure" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div></article><div class="nd__controls"><button type="button" data-act="narrow-mode" data-narrow-mode="reading" aria-pressed="true">Leitura</button><button type="button" data-act="narrow-mode" data-narrow-mode="focus" aria-pressed="false">Foco estreito</button></div><span class="nd__status" data-narrow-status aria-live="polite">Medida de leitura regular: uma coluna confortável.</span></div></div></div></section>
+
+<!-- Tipografia Pesada -->
+<section class="lab-section" id="bold" data-slug="bold" data-group="E" data-name="Tipografia Pesada" data-tags="tipo pesada, escala extrema, alto contraste, poster, headline, display">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">34 · TIPOGRAFIA &amp; EDITORIAL</span><h2>Tipografia Pesada</h2><div class="lab-tags"><span class="lab-tag">Poster</span><span class="lab-tag">Peso máximo</span><span class="lab-tag">Contraste</span></div><div class="lab-palette"><button class="sw" data-hex="#111827" style="background:#111827"></button><button class="sw" data-hex="#1f2937" style="background:#1f2937"></button><button class="sw" data-hex="#facc15" style="background:#facc15"></button><button class="sw" data-hex="#a5b4fc" style="background:#a5b4fc"></button><button class="sw" data-hex="#f8fafc" style="background:#f8fafc"></button></div></div><div class="lab-head__r"><p>Peso e escala precisam de uma ideia clara para não virarem só volume. Aqui a headline sustenta a peça e o painel lateral dá o contexto essencial; o modo poster muda a proporção mantendo a mesma mensagem.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Tipografia Pesada. Use uma família de peso alto com poucas palavras e uma hierarquia inequívoca. Crie contraste por escala e cor, não por excesso de elementos. Proteja a leitura em telas pequenas, mantenha texto alternativo para a mensagem e preserve estados de foco em todos os controles.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">impacto.local/abertura</span></div><div class="frame__body nd boldfx" data-demo="bold" data-bold="headline"><div class="nd__top"><span class="nd__brand">IMPACTO / 01</span><span class="nd__chip">headline</span></div><div class="nd__body"><div class="boldfx__campaign"><h1>vá<em>inteiro.</em></h1><aside class="boldfx__side"><b>Uma ideia por cartaz.</b><p>Texto menor apoia a chamada sem tentar competir com ela.</p></aside></div><div class="nd__controls"><button type="button" data-act="bold-mode" data-bold-mode="headline" aria-pressed="true">Headline</button><button type="button" data-act="bold-mode" data-bold-mode="poster" aria-pressed="false">Modo poster</button></div><span class="nd__status" data-bold-status aria-live="polite">Headline: contraste escuro, amarelo como acento.</span></div></div></div></section>
 
 <!-- ═════════════ GRUPO F ═════════════ -->
 <div class="lab-group" data-group="F"><h3><b>F</b>Movimentos Históricos</h3><i></i><span data-count></span></div>
@@ -13761,6 +13886,21 @@ Aplique rigorosamente os tokens e princípios de "Isométrico / 3D" à interface
   </div>
 </section>
 
+<!-- Futurista -->
+<section class="lab-section" id="futuristic" data-slug="futuristic" data-group="G" data-name="Futurista" data-tags="interface sci-fi, radar, telemetria, neon frio, orbitron, sistema">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">49 · NOSTALGIA DIGITAL</span><h2>Futurista</h2><div class="lab-tags"><span class="lab-tag">Telemetria</span><span class="lab-tag">Radar</span><span class="lab-tag">Sistema</span></div><div class="lab-palette"><button class="sw" data-hex="#070b1b" style="background:#070b1b"></button><button class="sw" data-hex="#101b3d" style="background:#101b3d"></button><button class="sw" data-hex="#7c8cff" style="background:#7c8cff"></button><button class="sw" data-hex="#58e8d4" style="background:#58e8d4"></button><button class="sw" data-hex="#e8efff" style="background:#e8efff"></button></div></div><div class="lab-head__r"><p>Futurismo útil comunica o estado de um sistema em vez de empilhar ornamentos tecnológicos. O radar muda de orientação por comando e o painel traduz essa variação em uma leitura curta, legível e local.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Futurista. Modele uma interface técnica com superfícies escuras, grade discreta, tipografia precisa e sinais cromáticos limitados para estado e ação. Use linguagem de telemetria com significado real, mantenha contraste AA e ofereça controles estáveis em vez de animações decorativas contínuas.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">orbital.local/console</span></div><div class="frame__body nd futurefx" data-demo="futuristic" data-future="approach"><div class="nd__top"><span class="nd__brand">ORBITAL / 7A</span><span class="nd__chip">sistema estável</span></div><div class="nd__body"><div class="futurefx__console"><article class="futurefx__readout"><span class="nd__eyebrow">telemetria de passagem</span><h1 data-future-title>APROX.</h1><p data-future-copy>Uma leitura clara para uma única trajetória em observação.</p><code class="futurefx__code" data-future-code>LOCK / 07 · VELOCIDADE 0.42c</code></article><div class="futurefx__radar" aria-label="Radar de trajetória"><b data-future-radar>APROX.</b></div></div><div class="nd__controls"><button type="button" data-act="future-mode" data-future-mode="approach" aria-pressed="true">Aproximar</button><button type="button" data-act="future-mode" data-future-mode="orbit" aria-pressed="false">Orbitar</button><button type="button" data-act="future-mode" data-future-mode="signal" aria-pressed="false">Sinal</button></div><span class="nd__status" data-future-status aria-live="polite">Aproximação selecionada: trajetória a 24 graus.</span></div></div></div></section>
+
+<!-- Pixel Art -->
+<section class="lab-section" id="pixel-art" data-slug="pixel-art" data-group="G" data-name="Pixel Art" data-tags="sprite, 8-bit, pixelado, game ui, grade, chiptune">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">50 · NOSTALGIA DIGITAL</span><h2>Pixel Art</h2><div class="lab-tags"><span class="lab-tag">Sprite</span><span class="lab-tag">8-bit</span><span class="lab-tag">Grade</span></div><div class="lab-palette"><button class="sw" data-hex="#1a1233" style="background:#1a1233"></button><button class="sw" data-hex="#30245a" style="background:#30245a"></button><button class="sw" data-hex="#70e000" style="background:#70e000"></button><button class="sw" data-hex="#f6c945" style="background:#f6c945"></button><button class="sw" data-hex="#fff8df" style="background:#fff8df"></button></div></div><div class="lab-head__r"><p>Pixel art assume a unidade da grade: cada bloco é uma decisão e a paleta é deliberadamente curta. Os botões deslocam um sprite estático por passos discretos, sem simular controle de jogo real.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Pixel Art. Desenhe em uma grade visível, com paleta pequena, sombras em degraus e sprites reconhecíveis sem suavização. Use contraste suficiente para HUD e controles. Se a estética for aplicada a produto, preserve tipografia legível e não force uma fonte pixelada em textos longos.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">moon.local/level-01</span></div><div class="frame__body nd pixelfx" data-demo="pixel-art" data-pixel="center"><div class="nd__top"><span class="nd__brand">MOON RUN</span><span class="nd__chip">01-01</span></div><div class="nd__body"><div class="pixelfx__screen" aria-label="Cena pixelada noturna com sprite em posição central"><div class="pixelfx__moon"></div><div class="pixelfx__hud"><b>HP</b> ███<br>COINS 08</div><div class="pixelfx__sprite" aria-hidden="true"></div><div class="pixelfx__ground"></div></div><div class="nd__controls" role="group" aria-label="Posição do sprite"><button type="button" data-act="pixel-position" data-pixel-position="left" aria-pressed="false">← Esquerda</button><button type="button" data-act="pixel-position" data-pixel-position="center" aria-pressed="true">Centro</button><button type="button" data-act="pixel-position" data-pixel-position="right" aria-pressed="false">Direita →</button></div><span class="nd__status" data-pixel-status aria-live="polite">Sprite no centro da fase 01-01.</span></div></div></div></section>
+
+<!-- Glitch -->
+<section class="lab-section" id="glitch" data-slug="glitch" data-group="G" data-name="Glitch" data-tags="interferência, rgb split, scanline, distorção, sinal, cyber">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">51 · NOSTALGIA DIGITAL</span><h2>Glitch</h2><div class="lab-tags"><span class="lab-tag">RGB split</span><span class="lab-tag">Scanline</span><span class="lab-tag">Sinal</span></div><div class="lab-palette"><button class="sw" data-hex="#0b0b12" style="background:#0b0b12"></button><button class="sw" data-hex="#171725" style="background:#171725"></button><button class="sw" data-hex="#00e5ff" style="background:#00e5ff"></button><button class="sw" data-hex="#ff2ea6" style="background:#ff2ea6"></button><button class="sw" data-hex="#f7f7ff" style="background:#f7f7ff"></button></div></div><div class="lab-head__r"><p>Interferência é um evento, não ruído permanente. O botão dispara uma falha breve e explicitamente informada; a composição volta ao estado legível sem depender de tempo, mouse ou rede.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Glitch. Trate a distorção como sinal de uma transição ou falha intencional, com duração limitada e texto ainda compreensível. Use divisão cromática e scanlines em poucas áreas. Respeite prefers-reduced-motion e mantenha a interface operacional quando o efeito estiver desligado.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">signal.local/channel-4</span></div><div class="frame__body nd glitchfx" data-demo="glitch" data-glitch="off"><div class="nd__top"><span class="nd__brand">CANAL / 04</span><span class="nd__chip">sincronizado</span></div><div class="nd__body"><div class="glitchfx__signal" aria-label="Sinal em estado estável"><b>SINAL</b><span class="glitchfx__code">FRAME <i data-glitch-frame>000</i> / READY</span></div><div class="nd__controls"><button class="nd__btn" type="button" data-act="glitch-trigger" aria-pressed="false">Disparar interferência</button></div><span class="nd__status" data-glitch-status aria-live="polite">Sinal estável. A interferência é opcional.</span></div></div></div></section>
+
 <!-- ═════════════ GRUPO H ═════════════ -->
 <div class="lab-group" data-group="H"><h3><b>H</b>Orgânicos &amp; Artesanais</h3><i></i><span data-count></span></div>
 
@@ -14829,9 +14969,14 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
   </div>
 </section>
 
+<!-- Lúdico -->
+<section class="lab-section" id="fun" data-slug="fun" data-group="H" data-name="Lúdico" data-tags="formas lúdicas, cores primárias, interação, figuras geométricas, playful, jogo">
+  <div class="lab-head"><div class="lab-head__l"><span class="lab-head__id">59 · ORGÂNICOS &amp; ARTESANAIS</span><h2>Lúdico</h2><div class="lab-tags"><span class="lab-tag">Formas</span><span class="lab-tag">Jogo</span><span class="lab-tag">Cor</span></div><div class="lab-palette"><button class="sw" data-hex="#fff7cc" style="background:#fff7cc"></button><button class="sw" data-hex="#ffffff" style="background:#ffffff"></button><button class="sw" data-hex="#ff6b6b" style="background:#ff6b6b"></button><button class="sw" data-hex="#4d96ff" style="background:#4d96ff"></button><button class="sw" data-hex="#20203a" style="background:#20203a"></button></div></div><div class="lab-head__r"><p>Uma interface lúdica dá curiosidade e retorno imediato, mas não perde orientação. Escolha uma forma: a seleção deixa uma marca visível, descreve a mudança e pode ser desfeita por qualquer outra escolha.</p><details class="recipe"><summary>prompt universal</summary><div class="recipe__body"><button class="recipe__copy" type="button" aria-label="Copiar prompt universal">copiar prompt</button><pre class="recipe__code"># Prompt universal: Lúdico. Use formas reconhecíveis, cor vibrante, feedback imediato e pequenas surpresas que não escondam o propósito da ação. Todos os elementos interativos precisam de rótulo, foco visível e estado selecionado que não dependa apenas de cor. Preserve simplicidade e alegria em telas pequenas.</pre></div></details></div></div>
+  <div class="frame"><div class="frame__chrome"><i class="dot dot--r"></i><i class="dot dot--y"></i><i class="dot dot--g"></i><span class="frame__url">brinca.local/play</span></div><div class="frame__body nd funfx" data-demo="fun" data-fun="circle"><div class="nd__top"><span class="nd__brand">BRINCA / formas</span><span class="nd__chip">escolha uma</span></div><div class="nd__body"><div class="funfx__playground"><button class="funfx__shape funfx__shape--circle" type="button" data-act="fun-shape" data-fun-shape="circle" aria-pressed="true" aria-label="Escolher círculo">○</button><button class="funfx__shape funfx__shape--square" type="button" data-act="fun-shape" data-fun-shape="square" aria-pressed="false" aria-label="Escolher quadrado">□</button><button class="funfx__shape funfx__shape--triangle" type="button" data-act="fun-shape" data-fun-shape="triangle" aria-pressed="false" aria-label="Escolher triângulo"><span>△</span></button><span class="funfx__note" data-fun-note>Círculo: começo suave, cheio de impulso.</span></div><span class="nd__status" data-fun-status aria-live="polite">Círculo selecionado.</span></div></div></div></section>
+
 <!-- ═══════════════════════ RODAPÉ ═══════════════════════ -->
 <footer class="lab-foot">
-  <span><b>Design Styles Lib</b> · 47 estilos · arquivo único, autocontido</span>
+  <span><b>Design Styles Lib</b> · 59 estilos · arquivo único, autocontido</span>
   <span>Os controles das demos respondem localmente e não acionam serviços reais.</span>
   <span>Atalhos: <b>/</b> busca · <b>Esc</b> limpa · clique no swatch copia o hex</span>
 </footer>
@@ -14854,6 +14999,8 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
   var grid     = doc.getElementById('catGrid');
   var chipsBox = doc.getElementById('chips');
   var input    = doc.getElementById('q');
+  var categoryFilter = doc.getElementById('categoryFilter');
+  var styleFilter = doc.getElementById('styleFilter');
   var nowName  = doc.getElementById('nowName');
   var nowCount = doc.getElementById('nowCount');
   var catCount = doc.getElementById('catCount');
@@ -14871,11 +15018,149 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
   var navStatus = doc.getElementById('navStatus');
   var initialTitle = doc.title;
   var view = 'legacy', focused = null, initialized = false;
-  var term = '', activeGroup = 'all', sequence = [];
+  var term = '', activeGroup = 'all', activeCategory = 'all', activeStyle = 'all', sequence = [];
   var lastCatalog = { y: 0, focus: '' };
   var routeFrame = 0, lastHandledHash = '', hashTimer;
   var bySlug = Object.create(null);
   sections.forEach(function(s){ bySlug[s.dataset.slug] = s; });
+
+  /* ---------- taxonomia curada ----------
+     A navegação continua autocontida: IDs canônicos, rótulos PT-BR e aliases
+     em inglês ficam neste documento e são aplicados como data attributes. */
+  var taxonomy = {
+    categories: {
+      portfolio:{label:'Portfólio',aliases:['portfolio']},
+      'landing-page':{label:'Landing Page',aliases:['landing page']},
+      'digital-product':{label:'Produto digital',aliases:['digital product']},
+      'launching-soon':{label:'Em breve',aliases:['launching soon','coming soon']},
+      app:{label:'Aplicativo',aliases:['app','application']},
+      service:{label:'Serviço',aliases:['service']},
+      personal:{label:'Pessoal',aliases:['personal']},
+      event:{label:'Evento',aliases:['event']},
+      informational:{label:'Informativo',aliases:['informational']},
+      'music-related':{label:'Música',aliases:['music related','music']},
+      experimental:{label:'Experimental',aliases:['experimental']},
+      restaurant:{label:'Restaurante',aliases:['restaurant']},
+      finance:{label:'Finanças',aliases:['finance']},
+      photography:{label:'Fotografia',aliases:['photography']},
+      startup:{label:'Startup',aliases:['startup']},
+      saas:{label:'SaaS',aliases:['saas','software as a service']},
+      game:{label:'Jogos',aliases:['game','gaming']},
+      'physical-product':{label:'Produto físico',aliases:['physical product']},
+      ecommerce:{label:'E-commerce',aliases:['e-commerce','ecommerce']},
+      sport:{label:'Esporte',aliases:['sport','sports']}
+    },
+    visualStyles: {
+      illustrative:{label:'Ilustrativo',aliases:['illustrative']},
+      'scroll-effects':{label:'Efeitos de Scroll',aliases:['scroll effects']},
+      minimal:{label:'Minimalista',aliases:['minimal']},
+      'flat-design':{label:'Flat Design',aliases:['flat design']},
+      typographic:{label:'Tipográfico',aliases:['typographic']},
+      fun:{label:'Lúdico',aliases:['fun','playful']},
+      'horizontal-layout':{label:'Layout Horizontal',aliases:['horizontal layout']},
+      'retro-vintage':{label:'Retrô & Vintage',aliases:['retro vintage','vintage']},
+      'three-d':{label:'3D',aliases:['3d','three dimensional']},
+      gradients:{label:'Gradientes',aliases:['gradients','gradient']},
+      brutalism:{label:'Brutalismo',aliases:['brutalism']},
+      'narrow-layout':{label:'Layout Estreito',aliases:['narrow layout']},
+      grunge:{label:'Grunge',aliases:['grunge']},
+      'modular-layout':{label:'Layout Modular',aliases:['modular layout']},
+      glassmorphism:{label:'Glassmorphism',aliases:['glassmorphism']},
+      futuristic:{label:'Futurista',aliases:['futuristic']},
+      'pixel-art':{label:'Pixel Art',aliases:['pixel art']},
+      glitch:{label:'Glitch',aliases:['glitch']},
+      editorial:{label:'Editorial',aliases:['editorial']},
+      luxury:{label:'Luxo',aliases:['luxury']},
+      bold:{label:'Tipografia Pesada',aliases:['bold','heavy typography']},
+      skeuomorphism:{label:'Skeuomorfismo',aliases:['skeuomorphism']},
+      'grid-layout':{label:'Layout em Grade',aliases:['grid layout']},
+      corporate:{label:'Corporativo',aliases:['corporate']}
+    },
+    bySlug: {
+      minimalismo:{categories:['portfolio','landing-page','personal','digital-product'],visualStyles:['minimal']},
+      'flat-design':{categories:['app','digital-product','service','sport'],visualStyles:['flat-design']},
+      'estilo-suico':{categories:['portfolio','informational','event','photography'],visualStyles:[]},
+      'wabi-sabi':{categories:['restaurant','personal','physical-product','portfolio'],visualStyles:[]},
+      duotone:{categories:['portfolio','photography','music-related','event'],visualStyles:[]},
+      'grid-layout':{categories:['digital-product','finance','informational','startup'],visualStyles:['grid-layout']},
+
+      'bento-grid':{categories:['app','digital-product','saas','sport'],visualStyles:[]},
+      'material-you':{categories:['app','digital-product','service','startup'],visualStyles:[]},
+      neumorfismo:{categories:['app','digital-product','personal','service'],visualStyles:[]},
+      claymorphic:{categories:['app','game','personal','startup'],visualStyles:[]},
+      'dados-densos':{categories:['finance','digital-product','saas','startup'],visualStyles:[]},
+      isotype:{categories:['informational','finance','sport','service'],visualStyles:[]},
+      'horizontal-layout':{categories:['portfolio','landing-page','service','digital-product'],visualStyles:['horizontal-layout']},
+      'modular-layout':{categories:['app','digital-product','saas','finance'],visualStyles:['modular-layout']},
+
+      glassmorphism:{categories:['landing-page','startup','saas','digital-product'],visualStyles:['glassmorphism']},
+      'liquid-glass':{categories:['app','digital-product','startup','saas'],visualStyles:[]},
+      'aurora-mesh':{categories:['landing-page','launching-soon','saas','startup'],visualStyles:['gradients']},
+      skeuomorfismo:{categories:['app','personal','service','physical-product'],visualStyles:['skeuomorphism']},
+      'frutiger-aero':{categories:['app','personal','informational','sport'],visualStyles:[]},
+
+      neobrutalismo:{categories:['portfolio','personal','event','game'],visualStyles:['brutalism']},
+      'brutalismo-radical':{categories:['portfolio','event','music-related','experimental'],visualStyles:['brutalism']},
+      'anti-design':{categories:['personal','experimental','music-related','event'],visualStyles:[]},
+      'punk-fanzine':{categories:['music-related','event','personal','experimental'],visualStyles:[]},
+      grunge:{categories:['music-related','event','personal','experimental'],visualStyles:['grunge']},
+
+      editorial:{categories:['informational','photography','personal','portfolio'],visualStyles:['editorial']},
+      jornal:{categories:['informational','finance','event','photography'],visualStyles:[]},
+      luxo:{categories:['physical-product','portfolio','photography','ecommerce'],visualStyles:['luxury']},
+      'terminal-ascii':{categories:['digital-product','app','saas','experimental'],visualStyles:[]},
+      cinetico:{categories:['portfolio','event','music-related','experimental'],visualStyles:[]},
+      blackletter:{categories:['event','music-related','personal','experimental'],visualStyles:[]},
+      'scroll-effects':{categories:['portfolio','landing-page','launching-soon','sport'],visualStyles:['scroll-effects']},
+      typographic:{categories:['portfolio','informational','event','restaurant'],visualStyles:['typographic']},
+      'narrow-layout':{categories:['personal','informational','photography','portfolio'],visualStyles:['narrow-layout']},
+      bold:{categories:['landing-page','launching-soon','event','restaurant'],visualStyles:['bold']},
+
+      bauhaus:{categories:['portfolio','event','physical-product','informational'],visualStyles:[]},
+      'art-deco':{categories:['physical-product','ecommerce','portfolio','restaurant'],visualStyles:[]},
+      'art-nouveau':{categories:['physical-product','restaurant','personal','portfolio'],visualStyles:[]},
+      construtivismo:{categories:['event','informational','portfolio','experimental'],visualStyles:[]},
+      memphis:{categories:['personal','game','event','physical-product'],visualStyles:[]},
+      'neo-70s':{categories:['music-related','personal','event','physical-product'],visualStyles:['retro-vintage']},
+      psicodelico:{categories:['music-related','event','personal','experimental'],visualStyles:[]},
+      'pop-art':{categories:['event','music-related','personal','game'],visualStyles:[]},
+
+      y2k:{categories:['personal','game','music-related','portfolio'],visualStyles:['retro-vintage']},
+      vaporwave:{categories:['music-related','personal','portfolio','experimental'],visualStyles:['retro-vintage']},
+      'acid-chrome':{categories:['portfolio','music-related','experimental','launching-soon'],visualStyles:[]},
+      ciberpunk:{categories:['game','digital-product','app','experimental'],visualStyles:[]},
+      'hud-espacial':{categories:['app','digital-product','game','finance'],visualStyles:[]},
+      isometrico:{categories:['digital-product','app','saas','startup'],visualStyles:['three-d']},
+      futuristic:{categories:['startup','saas','digital-product','launching-soon'],visualStyles:['futuristic']},
+      'pixel-art':{categories:['game','personal','event','music-related'],visualStyles:['pixel-art']},
+      glitch:{categories:['music-related','event','experimental','launching-soon'],visualStyles:['glitch']},
+
+      'maximalismo-tatil':{categories:['physical-product','portfolio','personal','ecommerce'],visualStyles:[]},
+      'flat-organica':{categories:['service','personal','informational','startup'],visualStyles:['illustrative']},
+      risografia:{categories:['event','music-related','physical-product','personal'],visualStyles:[]},
+      'corporate-memphis':{categories:['saas','startup','service','digital-product'],visualStyles:['corporate']},
+      cottagecore:{categories:['personal','restaurant','physical-product','ecommerce'],visualStyles:[]},
+      solarpunk:{categories:['service','informational','startup','physical-product'],visualStyles:[]},
+      'paper-cut':{categories:['personal','event','physical-product','informational'],visualStyles:[]},
+      fun:{categories:['game','personal','app','event'],visualStyles:['fun']}
+    }
+  };
+  sections.forEach(function(s){
+    var record = taxonomy.bySlug[s.dataset.slug];
+    if(!record) record = {categories:[],visualStyles:[]};
+    s.dataset.categories = record.categories.join(' ');
+    s.dataset.visualStyles = record.visualStyles.join(' ');
+    var terms = [];
+    record.categories.forEach(function(id){
+      var item = taxonomy.categories[id];
+      if(item) terms.push(id, item.label, item.aliases.join(' '));
+    });
+    record.visualStyles.forEach(function(id){
+      var item = taxonomy.visualStyles[id];
+      if(item) terms.push(id, item.label, item.aliases.join(' '));
+    });
+    s.dataset.taxonomySearch = terms.join(' ');
+  });
 
   /* ---------- registro das demos ----------
      Cada estilo registra sua inicialização por slug. O setup recebe a raiz
@@ -14997,6 +15282,16 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
     if(cnt) cnt.textContent = plural(n);
   });
 
+  function syncSectionOrdinals(){
+    sections.forEach(function(s, i){
+      var ordinal = s.querySelector('.lab-head__id');
+      if(!ordinal) return;
+      var prefix = (i + 1 < 10 ? '0' : '') + (i + 1);
+      ordinal.textContent = prefix + ' · ' + (groupLabel[s.dataset.group] || '').toUpperCase();
+    });
+  }
+  syncSectionOrdinals();
+
   var chips = [];
   function addChip(value, label, letter){
     var b = doc.createElement('button');
@@ -15012,6 +15307,22 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
   groups.forEach(function(g){
     addChip(g.dataset.group, groupLabel[g.dataset.group], g.dataset.group);
   });
+
+  function addTaxonomyOptions(select, items, allLabel){
+    if(!select) return;
+    var all = doc.createElement('option');
+    all.value = 'all'; all.dataset.count = '0'; all.textContent = allLabel;
+    select.appendChild(all);
+    Object.keys(items).forEach(function(id){
+      var option = doc.createElement('option');
+      option.value = id;
+      option.dataset.count = '0';
+      option.textContent = items[id].label;
+      select.appendChild(option);
+    });
+  }
+  addTaxonomyOptions(categoryFilter, taxonomy.categories, 'Todas as categorias');
+  addTaxonomyOptions(styleFilter, taxonomy.visualStyles, 'Todos os estilos visuais');
 
   /* IDs dentro do clone: renomeados, nunca removidos, para que gradientes,
      máscaras, recortes e filtros continuem resolvendo dentro da miniatura. */
@@ -15148,12 +15459,45 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
     s.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' });
   }
 
-  /* ---------- busca + filtro ---------- */
-  function matches(s){
-    var hay = norm(s.dataset.name + ' ' + (s.dataset.tags || '') + ' ' + groupLabel[s.dataset.group]);
-    return (activeGroup === 'all' || s.dataset.group === activeGroup) && (!term || hay.indexOf(term) > -1);
+  /* ---------- busca + filtros combinados ---------- */
+  function sectionHas(s, field, value){
+    if(value === 'all') return true;
+    return (s.dataset[field] || '').split(/\s+/).indexOf(value) > -1;
+  }
+  function matches(s, ignored){
+    var hay = norm(s.dataset.name + ' ' + (s.dataset.tags || '') + ' ' + groupLabel[s.dataset.group] + ' ' + (s.dataset.taxonomySearch || ''));
+    return (activeGroup === 'all' || s.dataset.group === activeGroup) &&
+      (!term || hay.indexOf(term) > -1) &&
+      (ignored === 'category' || sectionHas(s, 'categories', activeCategory)) &&
+      (ignored === 'style' || sectionHas(s, 'visualStyles', activeStyle));
   }
   function matchingSections(){ return sections.filter(matches); }
+
+  function setOptionCount(option, label, count){
+    if(!option) return;
+    option.dataset.count = String(count);
+    option.textContent = label + ' (' + count + ')';
+  }
+  function refreshTaxonomyCounts(){
+    var categoryBase = sections.filter(function(s){ return matches(s, 'category'); });
+    var styleBase = sections.filter(function(s){ return matches(s, 'style'); });
+    if(categoryFilter){
+      setOptionCount(categoryFilter.options[0], 'Todas as categorias', categoryBase.length);
+      Object.keys(taxonomy.categories).forEach(function(id, index){
+        setOptionCount(categoryFilter.options[index + 1], taxonomy.categories[id].label,
+          categoryBase.filter(function(s){ return sectionHas(s, 'categories', id); }).length);
+      });
+      categoryFilter.value = activeCategory;
+    }
+    if(styleFilter){
+      setOptionCount(styleFilter.options[0], 'Todos os estilos visuais', styleBase.length);
+      Object.keys(taxonomy.visualStyles).forEach(function(id, index){
+        setOptionCount(styleFilter.options[index + 1], taxonomy.visualStyles[id].label,
+          styleBase.filter(function(s){ return sectionHas(s, 'visualStyles', id); }).length);
+      });
+      styleFilter.value = activeStyle;
+    }
+  }
 
   function applyFilter(){
     var shown = 0;
@@ -15164,17 +15508,19 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
       if(show) shown++;
     });
     groups.forEach(function(g){
-      var any = sections.some(function(s){
-        return s.dataset.group === g.dataset.group && !s.classList.contains('is-hidden');
-      });
+      var visible = sections.filter(function(s){ return s.dataset.group === g.dataset.group && !s.classList.contains('is-hidden'); });
+      var any = visible.length > 0;
       g.classList.toggle('is-hidden', !any);
+      var groupCount = g.querySelector('[data-count]');
+      if(groupCount) groupCount.textContent = plural(visible.length);
     });
+    refreshTaxonomyCounts();
     empty.hidden = shown !== 0;
     catCount.textContent = plural(shown);
-    catTitle.textContent = activeGroup === 'all'
-      ? (term ? 'Resultados' : 'Todos os estilos')
-      : groupLabel[activeGroup];
-    clearFilters.hidden = !term && activeGroup === 'all';
+    catTitle.textContent = activeGroup !== 'all' ? groupLabel[activeGroup] :
+      (activeCategory !== 'all' ? taxonomy.categories[activeCategory].label :
+        (activeStyle !== 'all' ? taxonomy.visualStyles[activeStyle].label : (term ? 'Resultados' : 'Todos os estilos')));
+    clearFilters.hidden = !term && activeGroup === 'all' && activeCategory === 'all' && activeStyle === 'all';
     chips.forEach(function(c){
       var selected = c.dataset.value === activeGroup;
       c.classList.toggle('is-on', selected);
@@ -15203,6 +15549,14 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
       if(!desktop.matches) input.blur();
     }
   });
+  if(categoryFilter) categoryFilter.addEventListener('change', function(){
+    activeCategory = taxonomy.categories[this.value] ? this.value : 'all';
+    applyFilter(); onFilterChange();
+  });
+  if(styleFilter) styleFilter.addEventListener('change', function(){
+    activeStyle = taxonomy.visualStyles[this.value] ? this.value : 'all';
+    applyFilter(); onFilterChange();
+  });
   doc.addEventListener('keydown', function(e){
     var editing = e.target.closest && e.target.closest('input,textarea,select,[contenteditable="true"]');
     if(e.key === '/' && !editing && !e.ctrlKey && !e.metaKey && !e.altKey){
@@ -15211,7 +15565,7 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
   });
 
   clearFilters.addEventListener('click', function(){
-    input.value = ''; term = ''; activeGroup = 'all';
+    input.value = ''; term = ''; activeGroup = 'all'; activeCategory = 'all'; activeStyle = 'all';
     applyFilter(); onFilterChange(); input.focus({ preventScroll: true });
   });
   doc.querySelectorAll('.lab-section .sw[data-hex]').forEach(function(sw){
@@ -15221,7 +15575,7 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
 
   /* ---------- rotas desktop, histórico e contexto do catálogo ---------- */
   function currentState(){
-    return { version: 1, query: input.value, group: activeGroup,
+    return { version: 2, query: input.value, group: activeGroup, category: activeCategory, style: activeStyle,
       catalog: { y: lastCatalog.y, focus: lastCatalog.focus }, sequence: sequence.slice() };
   }
   function writeHistory(hash, replace){
@@ -15239,15 +15593,17 @@ Aplique rigorosamente os tokens e princípios de "Paper Cut / Camadas" à interf
   }
   function restoreState(){
     var saved = history.state && history.state.dslNav;
-    if(saved && saved.version === 1){
+    if(saved && (saved.version === 1 || saved.version === 2)){
       input.value = typeof saved.query === 'string' ? saved.query : '';
       activeGroup = groupLabel[saved.group] ? saved.group : 'all';
+      activeCategory = taxonomy.categories[saved.category] ? saved.category : 'all';
+      activeStyle = taxonomy.visualStyles[saved.style || saved.visualStyle] ? (saved.style || saved.visualStyle) : 'all';
       lastCatalog = saved.catalog && typeof saved.catalog.y === 'number'
         ? { y: Math.max(0, saved.catalog.y), focus: saved.catalog.focus || '' }
         : { y: 0, focus: '' };
       sequence = Array.isArray(saved.sequence) ? saved.sequence.filter(function(slug){ return !!bySlug[slug]; }) : [];
     } else {
-      input.value = ''; activeGroup = 'all'; sequence = [];
+      input.value = ''; activeGroup = 'all'; activeCategory = 'all'; activeStyle = 'all'; sequence = [];
       lastCatalog = { y: 0, focus: '' };
     }
     term = norm(input.value.trim());
@@ -18004,6 +18360,189 @@ demo('risografia', function(root){
       agendaButton.setAttribute('aria-expanded', String(expanded));
       agenda.hidden = !expanded;
       setText(agendaButton.querySelector('span'), expanded ? '−' : '↗');
+    });
+  });
+
+  /* ---------- 48–59 · interações locais da expansão ---------- */
+  demo('grid-layout', function(root){
+    var messages = {
+      balanced: 'Grade equilibrada: módulo principal ocupa sete colunas.',
+      compact: 'Grade compacta: os módulos laterais ganham mais presença.',
+      focus: 'Grade em foco: a área principal ocupa as doze colunas.'
+    };
+    choice(qa(root, '[data-act="grid-mode"]'), function(button){
+      var mode = button.dataset.gridMode;
+      root.dataset.grid = mode;
+      setText(root.querySelector('[data-grid-status]'), messages[mode]);
+    });
+  });
+
+  demo('horizontal-layout', function(root){
+    var chapters = {
+      '1': 'Capítulo 1 de 3: Origem.',
+      '2': 'Capítulo 2 de 3: Ritmo.',
+      '3': 'Capítulo 3 de 3: Chegada.'
+    };
+    choice(qa(root, '[data-act="horizontal-panel"]'), function(button){
+      var panel = button.dataset.horizontalPanel;
+      root.dataset.horizontalPanel = panel;
+      setText(root.querySelector('[data-horizontal-count]'), '0' + panel + ' / 03');
+      setText(root.querySelector('[data-horizontal-status]'), chapters[panel]);
+    });
+  });
+
+  demo('modular-layout', function(root){
+    var messages = {
+      Resumo: 'Resumo selecionado: prioridade alta no primeiro módulo.',
+      Agenda: 'Agenda selecionada: a próxima decisão fica em evidência.',
+      Equipe: 'Equipe selecionada: as pessoas entram no foco do painel.',
+      Sinais: 'Sinais do projeto selecionados: mudanças pedem atenção.'
+    };
+    choice(qa(root, '[data-act="module-select"]'), function(button){
+      var module = button.dataset.module;
+      setText(root.querySelector('[data-module-name]'), module);
+      setText(root.querySelector('[data-module-status]'), messages[module]);
+    });
+  });
+
+  demo('grunge', function(root){
+    var messages = {
+      clean: 'Tiragem limpa: ruído leve, título nítido.',
+      raw: 'Mais desgaste: contraste intenso com a mensagem preservada.'
+    };
+    choice(qa(root, '[data-act="grunge-mode"]'), function(button){
+      var mode = button.dataset.grungeMode;
+      root.dataset.grunge = mode;
+      setText(root.querySelector('[data-grunge-status]'), messages[mode]);
+    });
+  });
+
+  demo('scroll-effects', function(root){
+    var messages = {
+      '1': 'Etapa 1 de 3: a cena estabelece o ponto de entrada.',
+      '2': 'Etapa 2 de 3: as camadas se aproximam para mostrar a relação.',
+      '3': 'Etapa 3 de 3: a cena conecta os elementos e conclui a sequência.'
+    };
+    choice(qa(root, '[data-act="scroll-step"]'), function(button){
+      var step = button.dataset.scrollStep;
+      root.dataset.scrollStep = step;
+      root.style.setProperty('--scrollfx-progress', (Number(step) * 100 / 3) + '%');
+      setText(root.querySelector('[data-scroll-counter]'), '0' + step + ' / 03');
+      setText(root.querySelector('[data-scroll-meter]'), Math.round(Number(step) * 100 / 3) + '%');
+      setText(root.querySelector('[data-scroll-status]'), messages[step]);
+    });
+  });
+
+  demo('typographic', function(root){
+    var messages = {
+      impact: 'Impacto: escala máxima e sombra coral.',
+      spread: 'Aberto: mais respiro entre as letras e inclinação editorial.',
+      compact: 'Compacto: ritmo condensado para uma chamada mais densa.'
+    };
+    choice(qa(root, '[data-act="type-mode"]'), function(button){
+      var mode = button.dataset.typeMode;
+      root.dataset.typeMode = mode;
+      setText(root.querySelector('[data-type-status]'), messages[mode]);
+    });
+  });
+
+  demo('narrow-layout', function(root){
+    var messages = {
+      reading: 'Medida de leitura regular: uma coluna confortável.',
+      focus: 'Foco estreito: a medida reduz o ruído e aumenta a concentração.'
+    };
+    choice(qa(root, '[data-act="narrow-mode"]'), function(button){
+      var mode = button.dataset.narrowMode;
+      root.dataset.narrow = mode;
+      setText(root.querySelector('[data-narrow-status]'), messages[mode]);
+    });
+  });
+
+  demo('bold', function(root){
+    var messages = {
+      headline: 'Headline: contraste escuro, amarelo como acento.',
+      poster: 'Modo poster: escala ampliada e contexto em bloco amarelo.'
+    };
+    choice(qa(root, '[data-act="bold-mode"]'), function(button){
+      var mode = button.dataset.boldMode;
+      root.dataset.bold = mode;
+      setText(root.querySelector('[data-bold-status]'), messages[mode]);
+    });
+  });
+
+  demo('futuristic', function(root){
+    var modes = {
+      approach: {
+        title: 'APROX.', copy: 'Uma leitura clara para uma única trajetória em observação.',
+        code: 'LOCK / 07 · VELOCIDADE 0.42c',
+        status: 'Aproximação selecionada: trajetória a 24 graus.'
+      },
+      orbit: {
+        title: 'ÓRBITA', copy: 'A trajetória mantém distância e transforma o ângulo em contexto.',
+        code: 'ORBIT / 12 · VETOR 116°',
+        status: 'Órbita selecionada: leitura circular a 116 graus.'
+      },
+      signal: {
+        title: 'SINAL', copy: 'Um pulso entra no sistema sem esconder os dados essenciais.',
+        code: 'PING / 03 · CANAL ABERTO',
+        status: 'Sinal selecionado: canal aberto a 228 graus.'
+      }
+    };
+    choice(qa(root, '[data-act="future-mode"]'), function(button){
+      var mode = button.dataset.futureMode, values = modes[mode];
+      root.dataset.future = mode;
+      setText(root.querySelector('[data-future-title]'), values.title);
+      setText(root.querySelector('[data-future-copy]'), values.copy);
+      setText(root.querySelector('[data-future-code]'), values.code);
+      setText(root.querySelector('[data-future-radar]'), values.title);
+      setText(root.querySelector('[data-future-status]'), values.status);
+    });
+  });
+
+  demo('pixel-art', function(root){
+    var messages = {
+      left: 'Sprite à esquerda da fase 01-01.',
+      center: 'Sprite no centro da fase 01-01.',
+      right: 'Sprite à direita da fase 01-01.'
+    };
+    choice(qa(root, '[data-act="pixel-position"]'), function(button){
+      var position = button.dataset.pixelPosition;
+      root.dataset.pixel = position;
+      setText(root.querySelector('[data-pixel-status]'), messages[position]);
+    });
+  });
+
+  demo('glitch', function(root){
+    var trigger = root.querySelector('[data-act="glitch-trigger"]');
+    var status = root.querySelector('[data-glitch-status]');
+    var frame = root.querySelector('[data-glitch-frame]');
+    var timer, count = 0;
+    on(trigger, 'click', function(){
+      clearTimeout(timer);
+      count += 1;
+      root.dataset.glitch = 'on';
+      trigger.setAttribute('aria-pressed', 'true');
+      setText(frame, ('00' + count).slice(-3));
+      setText(status, reduce ? 'Interferência registrada sem animação. Sinal será restaurado.' : 'Interferência aplicada: separação RGB curta e controlada.');
+      timer = setTimeout(function(){
+        root.dataset.glitch = 'off';
+        trigger.setAttribute('aria-pressed', 'false');
+        setText(status, 'Sinal restaurado. A interferência continua opcional.');
+      }, reduce ? 0 : 720);
+    });
+  });
+
+  demo('fun', function(root){
+    var notes = {
+      circle: 'Círculo: começo suave, cheio de impulso.',
+      square: 'Quadrado: uma pausa firme para reorganizar o jogo.',
+      triangle: 'Triângulo: uma direção nova para experimentar.'
+    };
+    choice(qa(root, '[data-act="fun-shape"]'), function(button){
+      var shape = button.dataset.funShape;
+      root.dataset.fun = shape;
+      setText(root.querySelector('[data-fun-note]'), notes[shape]);
+      setText(root.querySelector('[data-fun-status]'), shape === 'circle' ? 'Círculo selecionado.' : (shape === 'square' ? 'Quadrado selecionado.' : 'Triângulo selecionado.'));
     });
   });
 

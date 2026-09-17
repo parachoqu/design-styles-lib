@@ -194,10 +194,12 @@ a{color:inherit}
         <label class="mixer-label" for="mixer-search">Buscar estilo ou técnica</label>
         <input class="mixer-input" id="mixer-search" type="search" placeholder="Ex.: suíço, vidro, editorial…" autocomplete="off" spellcheck="false">
         <div class="mixer-filter"><label class="mixer-label" for="mixer-group">Grupo</label><select class="mixer-select" id="mixer-group"><option value="all">Todos os grupos</option></select></div>
+        <div class="mixer-filter"><label class="mixer-label" for="mixer-category">Categoria</label><select class="mixer-select" id="mixer-category"><option value="all">Todas as categorias</option></select></div>
+        <div class="mixer-filter"><label class="mixer-label" for="mixer-visual-style">Estilo</label><select class="mixer-select" id="mixer-visual-style"><option value="all">Todos os estilos</option></select></div>
         <p class="mixer-results-count" id="mixer-results-count" role="status" aria-live="polite" aria-atomic="true"></p>
       </div>
       <div class="mixer-options" id="mixer-options" role="group" aria-label="Estilos disponíveis" aria-describedby="mixer-limit"></div>
-      <p class="mixer-no-results" id="mixer-no-results" hidden>Nenhum estilo encontrado. Experimente outro termo ou grupo.</p>
+      <p class="mixer-no-results" id="mixer-no-results" hidden>Nenhum estilo encontrado. Experimente outra busca ou filtro.</p>
       <p class="mixer-limit" id="mixer-limit">O primeiro estilo define a base. Os próximos acrescentam personalidade.</p>
     </aside>
     <section class="mixer-output" aria-label="Sistema de design gerado">
@@ -248,7 +250,7 @@ a{color:inherit}
       <p class="mixer-status" id="mixer-status" role="status" aria-live="polite" aria-atomic="true"></p>
     </section>
   </div>
-  <footer class="mixer-footer"><span>47 referências. Uma direção que é sua.</span><a href="index.html">Explore os estilos originais na biblioteca</a></footer>
+  <footer class="mixer-footer"><span>59 referências. Uma direção que é sua.</span><a href="index.html">Explore os estilos originais na biblioteca</a></footer>
 </main>
 <script id="mixer-engine">
 (function (root) {
@@ -263,6 +265,131 @@ a{color:inherit}
     F: 'Movimentos Históricos',
     G: 'Nostalgia Digital',
     H: 'Orgânicos & Artesanais'
+  });
+  function taxonomyItem(label, aliases) {
+    return Object.freeze({ label: label, aliases: Object.freeze(aliases.slice()) });
+  }
+  var categories = Object.freeze({
+    portfolio: taxonomyItem('Portfólio', ['portfolio']),
+    'landing-page': taxonomyItem('Landing Page', ['landing page']),
+    'digital-product': taxonomyItem('Produto digital', ['digital product']),
+    'launching-soon': taxonomyItem('Em breve', ['launching soon', 'coming soon']),
+    app: taxonomyItem('Aplicativo', ['app', 'application']),
+    service: taxonomyItem('Serviço', ['service']),
+    personal: taxonomyItem('Pessoal', ['personal']),
+    event: taxonomyItem('Evento', ['event']),
+    informational: taxonomyItem('Informativo', ['informational']),
+    'music-related': taxonomyItem('Música', ['music related', 'music']),
+    experimental: taxonomyItem('Experimental', ['experimental']),
+    restaurant: taxonomyItem('Restaurante', ['restaurant']),
+    finance: taxonomyItem('Finanças', ['finance']),
+    photography: taxonomyItem('Fotografia', ['photography']),
+    startup: taxonomyItem('Startup', ['startup']),
+    saas: taxonomyItem('SaaS', ['saas', 'software as a service']),
+    game: taxonomyItem('Jogos', ['game', 'gaming']),
+    'physical-product': taxonomyItem('Produto físico', ['physical product']),
+    ecommerce: taxonomyItem('E-commerce', ['e-commerce', 'ecommerce']),
+    sport: taxonomyItem('Esporte', ['sport', 'sports'])
+  });
+  var visualStyles = Object.freeze({
+    illustrative: taxonomyItem('Ilustrativo', ['illustrative']),
+    'scroll-effects': taxonomyItem('Efeitos de Scroll', ['scroll effects']),
+    minimal: taxonomyItem('Minimalista', ['minimal']),
+    'flat-design': taxonomyItem('Flat Design', ['flat design']),
+    typographic: taxonomyItem('Tipográfico', ['typographic']),
+    fun: taxonomyItem('Lúdico', ['fun', 'playful']),
+    'horizontal-layout': taxonomyItem('Layout Horizontal', ['horizontal layout']),
+    'retro-vintage': taxonomyItem('Retrô & Vintage', ['retro vintage', 'vintage']),
+    'three-d': taxonomyItem('3D', ['3d', 'three dimensional']),
+    gradients: taxonomyItem('Gradientes', ['gradients', 'gradient']),
+    brutalism: taxonomyItem('Brutalismo', ['brutalism']),
+    'narrow-layout': taxonomyItem('Layout Estreito', ['narrow layout']),
+    grunge: taxonomyItem('Grunge', ['grunge']),
+    'modular-layout': taxonomyItem('Layout Modular', ['modular layout']),
+    glassmorphism: taxonomyItem('Glassmorphism', ['glassmorphism']),
+    futuristic: taxonomyItem('Futurista', ['futuristic']),
+    'pixel-art': taxonomyItem('Pixel Art', ['pixel art']),
+    glitch: taxonomyItem('Glitch', ['glitch']),
+    editorial: taxonomyItem('Editorial', ['editorial']),
+    luxury: taxonomyItem('Luxo', ['luxury']),
+    bold: taxonomyItem('Tipografia Pesada', ['bold', 'heavy typography']),
+    skeuomorphism: taxonomyItem('Skeuomorfismo', ['skeuomorphism']),
+    'grid-layout': taxonomyItem('Layout em Grade', ['grid layout']),
+    corporate: taxonomyItem('Corporativo', ['corporate'])
+  });
+  function profileTaxonomy(categoriesForProfile, visualStylesForProfile) {
+    return Object.freeze({
+      categories: Object.freeze(categoriesForProfile.slice()),
+      visualStyles: Object.freeze(visualStylesForProfile.slice())
+    });
+  }
+  var taxonomyBySlug = Object.freeze({
+    minimalismo: profileTaxonomy(['portfolio', 'landing-page', 'personal', 'digital-product'], ['minimal']),
+    'flat-design': profileTaxonomy(['app', 'digital-product', 'service', 'sport'], ['flat-design']),
+    'estilo-suico': profileTaxonomy(['portfolio', 'informational', 'event', 'photography'], []),
+    'wabi-sabi': profileTaxonomy(['restaurant', 'personal', 'physical-product', 'portfolio'], []),
+    duotone: profileTaxonomy(['portfolio', 'photography', 'music-related', 'event'], []),
+    'grid-layout': profileTaxonomy(['digital-product', 'finance', 'informational', 'startup'], ['grid-layout']),
+
+    'bento-grid': profileTaxonomy(['app', 'digital-product', 'saas', 'sport'], []),
+    'material-you': profileTaxonomy(['app', 'digital-product', 'service', 'startup'], []),
+    neumorfismo: profileTaxonomy(['app', 'digital-product', 'personal', 'service'], []),
+    claymorphic: profileTaxonomy(['app', 'game', 'personal', 'startup'], []),
+    'dados-densos': profileTaxonomy(['finance', 'digital-product', 'saas', 'startup'], []),
+    isotype: profileTaxonomy(['informational', 'finance', 'sport', 'service'], []),
+    'horizontal-layout': profileTaxonomy(['portfolio', 'landing-page', 'service', 'digital-product'], ['horizontal-layout']),
+    'modular-layout': profileTaxonomy(['app', 'digital-product', 'saas', 'finance'], ['modular-layout']),
+
+    glassmorphism: profileTaxonomy(['landing-page', 'startup', 'saas', 'digital-product'], ['glassmorphism']),
+    'liquid-glass': profileTaxonomy(['app', 'digital-product', 'startup', 'saas'], []),
+    'aurora-mesh': profileTaxonomy(['landing-page', 'launching-soon', 'saas', 'startup'], ['gradients']),
+    skeuomorfismo: profileTaxonomy(['app', 'personal', 'service', 'physical-product'], ['skeuomorphism']),
+    'frutiger-aero': profileTaxonomy(['app', 'personal', 'informational', 'sport'], []),
+
+    neobrutalismo: profileTaxonomy(['portfolio', 'personal', 'event', 'game'], ['brutalism']),
+    'brutalismo-radical': profileTaxonomy(['portfolio', 'event', 'music-related', 'experimental'], ['brutalism']),
+    'anti-design': profileTaxonomy(['personal', 'experimental', 'music-related', 'event'], []),
+    'punk-fanzine': profileTaxonomy(['music-related', 'event', 'personal', 'experimental'], []),
+    grunge: profileTaxonomy(['music-related', 'event', 'personal', 'experimental'], ['grunge']),
+
+    editorial: profileTaxonomy(['informational', 'photography', 'personal', 'portfolio'], ['editorial']),
+    jornal: profileTaxonomy(['informational', 'finance', 'event', 'photography'], []),
+    luxo: profileTaxonomy(['physical-product', 'portfolio', 'photography', 'ecommerce'], ['luxury']),
+    'terminal-ascii': profileTaxonomy(['digital-product', 'app', 'saas', 'experimental'], []),
+    cinetico: profileTaxonomy(['portfolio', 'event', 'music-related', 'experimental'], []),
+    blackletter: profileTaxonomy(['event', 'music-related', 'personal', 'experimental'], []),
+    'scroll-effects': profileTaxonomy(['portfolio', 'landing-page', 'launching-soon', 'sport'], ['scroll-effects']),
+    typographic: profileTaxonomy(['portfolio', 'informational', 'event', 'restaurant'], ['typographic']),
+    'narrow-layout': profileTaxonomy(['personal', 'informational', 'photography', 'portfolio'], ['narrow-layout']),
+    bold: profileTaxonomy(['landing-page', 'launching-soon', 'event', 'restaurant'], ['bold']),
+
+    bauhaus: profileTaxonomy(['portfolio', 'event', 'physical-product', 'informational'], []),
+    'art-deco': profileTaxonomy(['physical-product', 'ecommerce', 'portfolio', 'restaurant'], []),
+    'art-nouveau': profileTaxonomy(['physical-product', 'restaurant', 'personal', 'portfolio'], []),
+    construtivismo: profileTaxonomy(['event', 'informational', 'portfolio', 'experimental'], []),
+    memphis: profileTaxonomy(['personal', 'game', 'event', 'physical-product'], []),
+    'neo-70s': profileTaxonomy(['music-related', 'personal', 'event', 'physical-product'], ['retro-vintage']),
+    psicodelico: profileTaxonomy(['music-related', 'event', 'personal', 'experimental'], []),
+    'pop-art': profileTaxonomy(['event', 'music-related', 'personal', 'game'], []),
+
+    y2k: profileTaxonomy(['personal', 'game', 'music-related', 'portfolio'], ['retro-vintage']),
+    vaporwave: profileTaxonomy(['music-related', 'personal', 'portfolio', 'experimental'], ['retro-vintage']),
+    'acid-chrome': profileTaxonomy(['portfolio', 'music-related', 'experimental', 'launching-soon'], []),
+    ciberpunk: profileTaxonomy(['game', 'digital-product', 'app', 'experimental'], []),
+    'hud-espacial': profileTaxonomy(['app', 'digital-product', 'game', 'finance'], []),
+    isometrico: profileTaxonomy(['digital-product', 'app', 'saas', 'startup'], ['three-d']),
+    futuristic: profileTaxonomy(['startup', 'saas', 'digital-product', 'launching-soon'], ['futuristic']),
+    'pixel-art': profileTaxonomy(['game', 'personal', 'event', 'music-related'], ['pixel-art']),
+    glitch: profileTaxonomy(['music-related', 'event', 'experimental', 'launching-soon'], ['glitch']),
+
+    'maximalismo-tatil': profileTaxonomy(['physical-product', 'portfolio', 'personal', 'ecommerce'], []),
+    'flat-organica': profileTaxonomy(['service', 'personal', 'informational', 'startup'], ['illustrative']),
+    risografia: profileTaxonomy(['event', 'music-related', 'physical-product', 'personal'], []),
+    'corporate-memphis': profileTaxonomy(['saas', 'startup', 'service', 'digital-product'], ['corporate']),
+    cottagecore: profileTaxonomy(['personal', 'restaurant', 'physical-product', 'ecommerce'], []),
+    solarpunk: profileTaxonomy(['service', 'informational', 'startup', 'physical-product'], []),
+    'paper-cut': profileTaxonomy(['personal', 'event', 'physical-product', 'informational'], []),
+    fun: profileTaxonomy(['game', 'personal', 'app', 'event'], ['fun'])
   });
   var fonts = {
     sans: "'Inter', system-ui, sans-serif",
@@ -315,9 +442,12 @@ a{color:inherit}
   };
 
   function profile(slug, name, group, tags, palette, principle, options) {
+    var taxonomy = taxonomyBySlug[slug];
+    if (!taxonomy) throw new Error('Perfil sem taxonomia: ' + slug);
     var p = Object.assign({
       slug: slug, name: name, group: group, tags: tags,
       palette: palette.split(' '), principle: principle,
+      categories: taxonomy.categories.slice(), visualStyles: taxonomy.visualStyles.slice(),
       bg: '#f7f7f5', surface: '#ffffff', text: '#202022', muted: '#626267',
       accent: '#32323b', line: '#77777b', body: fonts.sans, display: fonts.sans,
       unit: 6, size: 15, columns: 3, radius: 8, border: 1, weight: 700,
@@ -328,6 +458,8 @@ a{color:inherit}
       detail: 'Geometria simples e movimento breve.'
     }, options);
     Object.freeze(p.palette);
+    Object.freeze(p.categories);
+    Object.freeze(p.visualStyles);
     return Object.freeze(p);
   }
 
@@ -352,17 +484,22 @@ a{color:inherit}
         bg: '#f4f1ea', surface: '#e8e2d7', text: '#33302a', muted: '#6d6254', accent: '#a8604a', line: '#c3b49a', body: fonts.serif, display: fonts.serif, unit: 8, columns: 2, radius: 3, weight: 400, pattern: patterns.paper, duration: 420, distance: 1,
         structure: 'Ritmo amplo, duas colunas e corpo em serifa leve com medida curta.', material: 'Papel washi, argila fosca e um só acento de terra queimada.', detail: 'Fio de 1 px, grão sutil e movimento lento.'
       }),
-    profile('duotone', 'Monocromático / Duotone', 'A', 'duas tintas, monocromático, mix-blend-mode, multiply, figura e fundo, retícula', '#0f1436 #ff3d68 #7b8ada #a6adcf',
+    profile('duotone', 'Monocromático / Duotone', 'A', 'duas tintas, monocromático, mix-blend-mode, multiply, figura e fundo, retícula', '#0f1436 #ff3d68 #7b8ada #ff9b3d #3ddca8 #a6adcf',
       'Dois slots de cor com função fixa: sombra e luz. Matizes opostos dão duotone; a mesma família dá monocromático.', {
         bg: '#0f1436', surface: '#1b2450', text: '#f6f4ff', muted: '#a6adcf', accent: '#ff3d68', line: '#7b8ada', display: fonts.geometric, radius: 0, weight: 700, pattern: patterns.halftone, duration: 200, distance: 3,
         structure: 'Fundo de tinta escura, cartaz assimétrico e grade de três colunas.', material: 'Duas tintas por função — a terceira só nasce da sobreposição em multiply.', detail: 'Retícula de linha, recortes retos e figura contra fundo cheio.'
+      }),
+    profile('grid-layout', 'Layout em Grade', 'A', 'grade 12 colunas, módulos, alinhamento, dashboard, layout, grid', '#f6f7fb #ffffff #1d4ed8 #9ca3af #111827',
+      'Uma grade explícita torna alinhamento, prioridade e redistribuição de conteúdo decisões verificáveis em qualquer largura.', {
+        bg: '#f6f7fb', surface: '#ffffff', text: '#111827', muted: '#5c6678', accent: '#1d4ed8', line: '#8992a2', display: fonts.geometric, unit: 6, columns: 3, radius: 4, weight: 700, shadow: '0 3px 10px rgba(17, 24, 39, .06)', pattern: patterns.geometric, duration: 160, distance: 2,
+        structure: 'Doze colunas, goteira constante e módulos que declaram prioridade por span.', material: 'Superfícies brancas sobre base fria, azul de decisão e linhas de alinhamento discretas.', detail: 'Cantos curtos, foco azul e mudança de composição sem romper a pauta.'
       }),
     profile('bento-grid', 'Bento Grid', 'B', 'módulos span, radius 22px, gap constante, painel, período selecionável, marmita', '#f2f2f4 #0071e3 #d8f24a #e8e4dd #111114',
       'Cada compartimento tem uma função; o tamanho declara a prioridade e o espaçamento nunca muda.', {
         bg: '#f2f2f4', surface: '#ffffff', text: '#111114', muted: '#62626b', accent: '#0071e3', line: '#85858e', unit: 6, radius: 22, weight: 600, shadow: '0 4px 18px rgba(17, 17, 20, .055)', duration: 230, distance: 3,
         structure: 'Módulos de tamanhos diferentes na mesma grade, com goteira constante.', material: 'Superfícies brancas, um módulo grafite dominante e acento azul.', detail: 'Cantos de 22 px, elevação leve e deslocamento suave no hover.'
       }),
-    profile('material-you', 'Material You', 'B', 'material 3, papéis de cor, superfície tonal, elevação, fab, cor de origem, roboto', '#fef7ff #e8def8 #6750a4 #21005d #386a20',
+    profile('material-you', 'Material You', 'B', 'material 3, papéis de cor, superfície tonal, elevação, fab, cor de origem, roboto', '#fef7ff #e8def8 #6750a4 #21005d #386a20 #9c4234',
       'Cada elemento ocupa um papel de cor; uma origem preenche todos de uma vez, com o contraste preservado.', {
         bg: '#fef7ff', surface: '#e8def8', text: '#21005d', muted: '#625474', accent: '#6750a4', line: '#81718f', body: "'Roboto', 'Arial', sans-serif", display: "'Roboto', 'Arial', sans-serif", radius: 28, weight: 500, shadow: '0 3px 8px rgba(103, 80, 164, .14)', duration: 280, distance: 2,
         structure: 'Grade confortável, corpo Roboto e ação principal destacada por forma.', material: 'Superfícies lilás, roxo tonal e elevação por tom, não por sombra dura.', detail: 'Formas amplas de 28 px, camada de estado translúcida e movimento acolhedor.'
@@ -382,10 +519,20 @@ a{color:inherit}
         bg: '#0a0a0a', surface: '#171715', text: '#d8d8d0', muted: '#aaa99d', accent: '#ff9500', line: '#77776c', body: fonts.mono, display: fonts.mono, unit: 4, size: 13, radius: 0, weight: 700, tracking: '-0.03em', scale: .84, duration: 90, distance: 0,
         structure: 'Tabela densa com cabeçalho ordenável, corpo pequeno e números monoespaçados.', material: 'Preto de terminal, laranja de sinalização e linha selecionada com marca à esquerda.', detail: 'Cantos retos, filete de 1 px e resposta imediata.'
       }),
-    profile('isotype', 'Isotype / Infográfico', 'B', 'pictograma, neurath, quantidade por repetição, viena, legenda explícita, didático', '#f0ebe0 #d94f3d #f2c14e #4a7b9d #25231f',
+    profile('isotype', 'Isotype / Infográfico', 'B', 'pictograma, neurath, quantidade por repetição, viena, legenda explícita, didático', '#f0ebe0 #4a7b9d #d94f3d #f2c14e #25231f',
       'Quantidade maior significa mais signos, nunca signo maior — e a legenda declara a unidade e o arredondamento.', {
         bg: '#f0ebe0', surface: '#faf6ed', text: '#25231f', muted: '#665e52', accent: '#d94f3d', line: '#857763', display: fonts.geometric, radius: 2, weight: 700, duration: 160, distance: 2,
         structure: 'Linhas alinhadas à esquerda, unidade constante e legenda ao pé.', material: 'Papel quente, vermelho tijolo, filete grosso e títulos geométricos.', detail: 'Signos de peso uniforme, meia unidade recortada e transições curtas.'
+      }),
+    profile('horizontal-layout', 'Layout Horizontal', 'B', 'scroll horizontal, painéis, narrativa lateral, sequência, trilho, viewport', '#f7f4ef #fffdf9 #b45309 #7c6f64 #2b2118',
+      'Uma sequência lateral preserva contexto entre capítulos quando cada painel é uma unidade completa de informação.', {
+        bg: '#f7f4ef', surface: '#fffdf9', text: '#2b2118', muted: '#655b52', accent: '#b45309', line: '#8d8176', body: fonts.sans, display: fonts.serif, unit: 7, columns: 2, radius: 8, weight: 600, shadow: '0 4px 14px rgba(43, 33, 24, .08)', pattern: patterns.paper, duration: 240, distance: 3,
+        structure: 'Viewport lateral, painéis de largura estável e indicador explícito de capítulo.', material: 'Papel quente, superfícies claras e terracota como direção, não como ruído.', detail: 'Controles de ida e volta, trilho de leitura e retorno seguro para o primeiro painel.'
+      }),
+    profile('modular-layout', 'Layout Modular', 'B', 'módulos, dashboard, cartões, grid responsivo, blocos, sistema', '#f1f5f9 #ffffff #0f766e #64748b #0f172a',
+      'Módulos tornam densidade e prioridade ajustáveis: cada bloco responde por uma tarefa sem desmontar o sistema.', {
+        bg: '#f1f5f9', surface: '#ffffff', text: '#0f172a', muted: '#526173', accent: '#0f766e', line: '#718096', body: fonts.sans, display: fonts.geometric, unit: 6, columns: 3, radius: 10, weight: 700, shadow: '0 4px 14px rgba(15, 23, 42, .07)', pattern: patterns.none, duration: 180, distance: 2,
+        structure: 'Cartões responsivos em grade regular, com tamanho e cor revelando prioridade.', material: 'Base azulada, cartões brancos e verde-petróleo para a ação em foco.', detail: 'Seleção por contorno, elevação breve e leitura estável em qualquer módulo.'
       }),
     profile('glassmorphism', 'Glassmorphism', 'C', 'backdrop-filter, vidro fosco, cena de fundo, camadas, tonalização, translúcido', '#1a0f2e #ff2d78 #00d4ff #ffb800 #f3ecff',
       'Vidro fosco só existe sobre uma cena: desfoque, tonalização, quina e sombra separam os planos.', {
@@ -402,7 +549,7 @@ a{color:inherit}
         bg: '#06060c', surface: '#171526', text: '#f2f0ff', muted: '#aaa5c2', accent: '#8d80ff', line: '#7f799b', display: fonts.geometric, radius: 16, weight: 600, shadow: '0 8px 32px rgba(67, 56, 202, .20)', pattern: patterns.mesh, duration: 420, distance: 4,
         structure: 'Fundo quase preto, grade tecnológica esmaecida e zona calma sob o título.', material: 'Violeta luminoso, borda em gradiente e superfícies profundas.', detail: 'Malha de luz difusa, movimento lento e transições prolongadas.'
       }),
-    profile('skeuomorfismo', 'Skeuomorfismo', 'C', 'couro, papel pautado, lombada, divisórias, bisel, led, marca de uso', '#c9bda8 #4a3220 #fffdf5 #ddd2b8 #f0b8b0 #5ac8fa',
+    profile('skeuomorfismo', 'Skeuomorfismo', 'C', 'couro, papel pautado, lombada, divisórias, bisel, led, marca de uso', '#c9bda8 #4a3220 #fffdf5 #ddd2b8 #f0b8b0 #3a2f24',
       'O objeto físico inteiro: lombada, divisória e pauta, com uma só direção de luz sobre tudo.', {
         bg: '#ddd2b8', surface: '#fffdf5', text: '#382718', muted: '#68543d', accent: '#4a3220', line: '#927858', body: fonts.serif, display: fonts.serif, radius: 7, border: 2, weight: 600, shadow: '0 4px 8px rgba(74, 50, 32, .24), inset 0 2px 0 rgba(255, 255, 255, .80)', pattern: patterns.linen, duration: 180, distance: 1,
         structure: 'Papel pautado com margem, divisórias no topo e lombada à esquerda.', material: 'Couro marrom, bisel de luz vinda de cima e sombras curtas.', detail: 'Trama de linho, marcas de uso discretas e cantos de objeto físico.'
@@ -431,6 +578,11 @@ a{color:inherit}
       'Papel de fotocópia, preto saturado e uma só cor de intervenção; a irregularidade fica em volta do miolo legível.', {
         bg: '#e6e4df', surface: '#e2d6aa', text: '#111111', muted: '#565048', accent: '#ff2f00', line: '#111111', body: fonts.mono, display: fonts.heavy, unit: 5, columns: 2, radius: 0, border: 2, weight: 900, shadow: '4px 4px 0 rgba(17, 17, 17, .85)', pattern: patterns.xerox, duration: 100, distance: 2,
         structure: 'Composição principal ao centro, miniaturas de página em volta e corpo de máquina.', material: 'Papel de xerox, vermelho de intervenção e títulos montados letra a letra.', detail: 'Trama de fotocópia, margens cortadas e grampo na dobra.'
+      }),
+    profile('grunge', 'Grunge', 'D', 'textura xerox, ruído, rasgo, contraste sujo, cartaz, diy', '#e9e1d1 #28221e #d1492e #70665a #171412',
+      'Desgaste, rasgo e textura são material controlado: a peça pode ser crua sem tornar a leitura descartável.', {
+        bg: '#e9e1d1', surface: '#f6f0e4', text: '#171412', muted: '#63594e', accent: '#d1492e', line: '#73685c', body: fonts.sans, display: fonts.heavy, unit: 6, columns: 2, radius: 0, border: 2, weight: 900, tracking: '-.055em', scale: 1.12, shadow: '7px 7px 0 #28221e', pattern: patterns.xerox, duration: 120, distance: 3,
+        structure: 'Cartaz dominante, campos compactos e controles que alternam o nível de desgaste.', material: 'Papel gasto, preto sujo e vermelho de choque com ruído em camadas periféricas.', detail: 'Rasgos contidos, registro imperfeito e modo cru reversível sem flashes contínuos.'
       }),
     profile('editorial', 'Editorial de Revista', 'E', 'revista, capitular, colunas, pull quote, índice da edição, medida de linha', '#f7f4ec #ddd7c8 #b03a2e #6b6558 #141310',
       'Abertura, medida de linha e ritmo de coluna: a página se organiza como uma revista, não como um blog.', {
@@ -462,6 +614,26 @@ a{color:inherit}
         bg: '#0a0908', surface: '#251e18', text: '#ded6c4', muted: '#b2a28c', accent: '#c96458', line: '#8c785d', body: fonts.serif, display: fonts.gothic, unit: 7, columns: 2, radius: 0, border: 2, weight: 400, tracking: '.015em', scale: 1.15, pattern: patterns.gothic, duration: 350, distance: 1,
         structure: 'Mancha justificada em serifa sobre preto de tinta, com nota na margem e fólio ao pé.', material: 'Vermelho de rubrica, pergaminho quente e textura quadrata no título e na capitular.', detail: 'Ornamento periférico discreto, bordas retas e virada de fólio lenta.'
       }),
+    profile('scroll-effects', 'Efeitos de Scroll', 'E', 'scrollytelling, progress, parallax, narrativa, camadas, sequência', '#071b2b #0f3247 #52d6c7 #9bc7d8 #e9fbf7',
+      'Movimento revela uma sequência: cada etapa preserva contexto, mostra progresso e também existe como estado estático controlável.', {
+        bg: '#071b2b', surface: '#0f3247', text: '#e9fbf7', muted: '#a9d1dc', accent: '#52d6c7', line: '#6f9eab', body: fonts.sans, display: fonts.geometric, unit: 7, columns: 2, radius: 12, weight: 700, shadow: '0 8px 24px rgba(2, 13, 23, .25)', pattern: patterns.telemetry, duration: 260, distance: 3,
+        structure: 'Narrativa em três etapas, trilho de progresso e uma cena de camadas que acompanha o estado.', material: 'Azul profundo, ciano aquático e superfícies de leitura opacas.', detail: 'Parallax mínimo, controles explícitos e redução completa de movimento quando solicitada.'
+      }),
+    profile('typographic', 'Tipografia Expressiva', 'E', 'display expressivo, escala extrema, tracking, contraste, composição, headline', '#fff7ed #ffffff #e11d48 #7c2d12 #24130b',
+      'Escala, peso, tracking e quebra de linha fazem da letra a composição, enquanto o corpo reserva espaço para leitura tranquila.', {
+        bg: '#fff7ed', surface: '#ffffff', text: '#24130b', muted: '#6f452c', accent: '#e11d48', line: '#a66c53', body: fonts.sans, display: fonts.heavy, unit: 7, columns: 2, radius: 2, weight: 900, tracking: '-.065em', scale: 1.25, shadow: '5px 5px 0 rgba(225, 29, 72, .16)', pattern: patterns.none, duration: 180, distance: 2,
+        structure: 'Headline dominante, coluna auxiliar e mudanças de ritmo sem alterar a mensagem.', material: 'Papel quente, branco de respiro e coral reservado ao contraste de composição.', detail: 'Display de peso alto, tracking variável e alternâncias que mantêm foco e legibilidade.'
+      }),
+    profile('narrow-layout', 'Layout Estreito', 'E', 'medida estreita, leitura focada, coluna única, editorial, tipografia, respiro', '#f8f6f1 #ffffff #5b5a56 #c2410c #24231f',
+      'Uma coluna deliberadamente estreita reduz ruído periférico e transforma medida, entrelinha e margem em partes da leitura.', {
+        bg: '#f8f6f1', surface: '#ffffff', text: '#24231f', muted: '#5b5a56', accent: '#c2410c', line: '#8c8981', body: fonts.serif, display: fonts.serif, unit: 8, columns: 1, radius: 3, weight: 600, shadow: '0 3px 12px rgba(36, 35, 31, .05)', pattern: patterns.paper, duration: 180, distance: 1,
+        structure: 'Uma coluna de 45 a 65 caracteres, margens silenciosas e conteúdos largos apenas quando indispensáveis.', material: 'Papel claro, tinta quente e terracota usada para orientar sem interromper o texto.', detail: 'Largura alternável, régua de medida e nenhum efeito concorrendo com a frase.'
+      }),
+    profile('bold', 'Tipografia Pesada', 'E', 'tipo pesada, escala extrema, alto contraste, poster, headline, display', '#111827 #1f2937 #facc15 #a5b4fc #f8fafc',
+      'Poucas palavras, peso máximo e uma escala inequívoca fazem a headline sustentar a peça sem perder seu contexto.', {
+        bg: '#111827', surface: '#1f2937', text: '#f8fafc', muted: '#c5cedb', accent: '#facc15', line: '#8d9ab0', body: fonts.sans, display: fonts.heavy, unit: 7, columns: 2, radius: 0, border: 2, weight: 900, tracking: '-.075em', scale: 1.32, shadow: '6px 6px 0 rgba(250, 204, 21, .32)', pattern: patterns.none, duration: 140, distance: 2,
+        structure: 'Cartaz tipográfico com uma mensagem dominante e um painel lateral de contexto essencial.', material: 'Azul quase preto, amarelo de impacto e lavanda apenas para informação secundária.', detail: 'Peso extremo, modo poster reversível e foco nítido em todos os controles.'
+      }),
     profile('bauhaus', 'Bauhaus', 'F', 'círculo quadrado triângulo, primárias, oficina, forma e função, geometria, 1919', '#f0ece2 #d62828 #1d4ed8 #f2b705 #111111',
       'Arte e ofício na mesma mesa: a forma elementar serve à produção em série, não à vitrine.', {
         bg: '#f0ece2', surface: '#faf6ed', text: '#111111', muted: '#58534a', accent: '#d62828', line: '#111111', body: fonts.geometric, display: fonts.geometric, radius: 0, border: 3, weight: 700, scale: 1.08, pattern: patterns.geometric, duration: 180, distance: 2,
@@ -477,7 +649,7 @@ a{color:inherit}
         bg: '#f3ecd9', surface: '#e8dec0', text: '#3f3518', muted: '#6b5a24', accent: '#a34a2a', line: '#8a7440', body: fonts.serif, display: fonts.editorial, unit: 7, columns: 2, radius: 30, border: 2, weight: 400, pattern: patterns.botanical, duration: 420, distance: 3,
         structure: 'Ritmo calmo, corpo em serifa e superfície de leitura lisa dentro da moldura.', material: 'Oliva, terracota e vitral confinado a uma área.', detail: 'Curvas contínuas de espessura constante e encontros desenhados nos cantos.'
       }),
-    profile('construtivismo', 'Construtivismo Russo', 'F', 'diagonal, vermelho e preto, fotomontagem, serigrafia, escala, agitprop', '#e8e2d4 #c9231c #8a1610 #151513',
+    profile('construtivismo', 'Construtivismo Russo', 'F', 'diagonal, vermelho e preto, fotomontagem, serigrafia, escala, agitprop', '#e8e2d4 #c9231c #151513 #8a1610',
       'Um ângulo só, repetido em tudo que é estrutura, apontando para a palavra de maior escala.', {
         bg: '#efe9dc', surface: '#faf6ed', text: '#151513', muted: '#575247', accent: '#c9231c', line: '#151513', body: fonts.geometric, display: fonts.condensed, unit: 5, columns: 2, radius: 0, border: 3, weight: 700, tracking: '-0.035em', scale: 1.16, pattern: patterns.diagonal, duration: 130, distance: 3,
         structure: 'Planos inclinados no mesmo ângulo, com os dados práticos sempre na horizontal.', material: 'Vermelho de serigrafia, preto e papel cru; a terceira cor vem da sobreposição.', detail: 'Escala em conflito entre a palavra dominante e o texto de apoio.'
@@ -487,7 +659,7 @@ a{color:inherit}
         bg: '#fdf6e8', surface: '#fce7ec', text: '#262138', muted: '#665672', accent: '#3ddad7', line: '#42364d', body: fonts.geometric, display: fonts.bubble, unit: 7, radius: 14, border: 2, weight: 400, shadow: '5px 5px 0 rgba(178, 141, 255, .8)', pattern: patterns.confetti, duration: 220, distance: 5,
         structure: 'Grade espaçada, objeto em destaque e motivos confinados às bordas.', material: 'Laminado estampado, cores saturadas e contorno preto em toda peça.', detail: 'Padrões em duas escalas, pé cônico e esfera que não sustenta nada.'
       }),
-    profile('neo-70s', 'Neo-retrô Anos 70', 'F', 'tipografia arredondada, faixas cromáticas, vinil, mostarda e laranja, releitura contemporânea', '#f7e7c8 #e98a20 #c75b2c #d9a520 #6b3a20',
+    profile('neo-70s', 'Neo-retrô Anos 70', 'F', 'tipografia arredondada, faixas cromáticas, vinil, mostarda e laranja, releitura contemporânea', '#f7e7c8 #e98a20 #c75b2c #d9a520 #6b3a20 #3a2418',
       'Releitura contemporânea dos anos 70: arco, faixa quente em quatro tempos e creme como papel.', {
         bg: '#f4e3c1', surface: '#ecd3a2', text: '#493022', muted: '#72533b', accent: '#d4552b', line: '#947148', body: fonts.rounded, display: fonts.bubble, unit: 7, columns: 2, radius: 34, border: 2, weight: 400, shadow: '3px 4px 0 rgba(122, 139, 58, .45)', pattern: patterns.seventies, duration: 320, distance: 3,
         structure: 'Arco dominante, faixa cromática horizontal e duas colunas de leitura calorosa.', material: 'Creme de papel, laranja e mostarda em degradê, com marrom de contorno.', detail: 'Sulco, selo central e cantos generosos.'
@@ -532,6 +704,21 @@ a{color:inherit}
         bg: '#0f1020', surface: '#242744', text: '#f0efff', muted: '#b2b4d9', accent: '#7c83ff', line: '#8a90ba', display: fonts.geometric, unit: 7, radius: 10, weight: 700, shadow: '4px 5px 0 #383d6e, 8px 10px 0 rgba(20, 23, 49, .8)', pattern: patterns.isometric, duration: 280, distance: 5,
         structure: 'Fundo azul profundo, pilha de camadas rotuladas e leitura em três colunas.', material: 'Violeta com iluminação de um só lado e sombra sólida deslocada, nunca desfocada.', detail: 'Eixos paralelos, oclusão coerente e afastamento controlado na vista explodida.'
       }),
+    profile('futuristic', 'Futurista', 'G', 'interface sci-fi, radar, telemetria, neon frio, orbitron, sistema', '#070b1b #101b3d #7c8cff #58e8d4 #e8efff',
+      'A interface de ficção científica vira instrumento quando radar, telemetria e estados têm unidade, escala e prioridade legíveis.', {
+        bg: '#070b1b', surface: '#101b3d', text: '#e8efff', muted: '#a9b7d8', accent: '#7c8cff', line: '#7184aa', body: fonts.mono, display: fonts.technical, unit: 6, size: 14, columns: 3, radius: 3, border: 1, weight: 800, tracking: '.035em', scale: 1.04, shadow: '0 0 22px rgba(88, 232, 212, .12)', pattern: patterns.telemetry, duration: 180, distance: 2,
+        structure: 'Painéis de instrumento, radar e métricas com unidade declarada em uma grade precisa.', material: 'Azul espacial, violeta de sistema e verde frio reservado aos estados confirmados.', detail: 'Cantoneiras discretas, varredura curta por evento e foco de alto contraste.'
+      }),
+    profile('pixel-art', 'Pixel Art', 'G', 'sprite, 8-bit, pixelado, game ui, grade, chiptune', '#1a1233 #30245a #70e000 #f6c945 #fff8df',
+      'Uma grade discreta, poucos tons e sprites com escala inteira dão identidade de jogo sem sacrificar a operação da interface.', {
+        bg: '#1a1233', surface: '#30245a', text: '#fff8df', muted: '#d1c7aa', accent: '#70e000', line: '#9a91bd', body: fonts.pixel, display: fonts.pixel, unit: 5, size: 16, columns: 3, radius: 0, border: 2, weight: 400, tracking: '.035em', scale: 1.08, shadow: '4px 4px 0 rgba(246, 201, 69, .42)', pattern: patterns.grid, duration: 120, distance: 2,
+        structure: 'HUD compacto, células da grade e uma área de jogo onde cada bloco usa escala de pixel inteira.', material: 'Roxo profundo, verde de vida e amarelo de pontuação sobre superfícies rígidas.', detail: 'Sprite selecionável, bordas escalonadas e resposta curta sem animação contínua.'
+      }),
+    profile('glitch', 'Glitch', 'G', 'interferência, rgb split, scanline, distorção, sinal, cyber', '#0b0b12 #171725 #00e5ff #ff2ea6 #f7f7ff',
+      'A interferência é um evento controlado, não um fundo permanente: o sinal falha brevemente e retorna com a informação intacta.', {
+        bg: '#0b0b12', surface: '#171725', text: '#f7f7ff', muted: '#b8b8d0', accent: '#00e5ff', line: '#7b89aa', body: fonts.mono, display: fonts.technical, unit: 5, size: 14, columns: 2, radius: 2, border: 1, weight: 800, tracking: '.025em', scale: 1.06, shadow: '3px 0 0 rgba(255, 46, 166, .3), -3px 0 0 rgba(0, 229, 255, .22)', pattern: patterns.scanline, duration: 110, distance: 2,
+        structure: 'Canal de sinal, leitura central e status que explicam quando a distorção foi aplicada.', material: 'Preto azulado, ciano de sinal e magenta de interferência em superfícies opacas.', detail: 'RGB split curto, disparo reversível e respeito total a prefers-reduced-motion.'
+      }),
     profile('maximalismo-tatil', 'Maximalismo Tátil', 'H', 'papel de algodão, argila fosca, pigmento natural, tecido, colagem, serif + manuscrita', '#f3e6d0 #e8734a #3f7d5c #e8b83a #2e1f12',
       'Uma peça domina a bancada; borda, espessura e luz distinguem papel, barro, tecido e pigmento.', {
         bg: '#f3e6d0', surface: '#fff8e9', text: '#2e1f12', muted: '#72543c', accent: '#3f7d5c', line: '#987248', body: "'Inter', 'Arial', sans-serif", display: fonts.serif, unit: 6, columns: 2, radius: 20, border: 2, weight: 800, tracking: '-.025em', scale: 1.15, shadow: '2px 3px 0 #c7af86, 7px 10px 16px rgba(46, 31, 18, .14)', pattern: patterns.paper, duration: 180, distance: 2,
@@ -566,11 +753,23 @@ a{color:inherit}
       'Folhas opacas, recortes internos e sombras coerentes com uma fonte de luz constroem a profundidade.', {
         bg: '#fdf6ec', surface: '#fffaf4', text: '#2f2a3a', muted: '#655768', accent: '#397fae', line: '#958198', body: fonts.rounded, display: fonts.serif, unit: 7, columns: 2, radius: 3, weight: 600, shadow: '3px 4px 0 #d8c3d9, 5px 7px 12px rgba(47, 42, 58, .12)', pattern: patterns.paperCut, duration: 350, distance: 3,
         structure: 'Introdução curta ao lado da paisagem e bancada de seleção sob a cena.', material: 'Papéis foscos creme, violeta, azul e coral; bordas nítidas e espessura aparente.', detail: 'Recorte interno, seleção por contorno e afastamento breve das camadas; luz alta à esquerda projeta sombra para baixo e direita.'
+      }),
+    profile('fun', 'Lúdico', 'H', 'formas lúdicas, cores primárias, interação, figuras geométricas, playful, jogo', '#fff7cc #ffffff #ff6b6b #4d96ff #20203a',
+      'Formas simples e cores diretas convidam à exploração quando cada interação devolve uma resposta clara, reversível e acessível.', {
+        bg: '#fff7cc', surface: '#ffffff', text: '#20203a', muted: '#585772', accent: '#ff6b6b', line: '#7a7895', body: fonts.rounded, display: fonts.bubble, unit: 7, columns: 3, radius: 22, border: 2, weight: 700, tracking: '-.02em', scale: 1.1, shadow: '4px 5px 0 rgba(77, 150, 255, .45)', pattern: patterns.confetti, duration: 180, distance: 3,
+        structure: 'Peças geométricas em grade leve, com uma ação por bloco e bastante espaço para experimentar.', material: 'Amarelo macio, branco de respiro, coral e azul em objetos chapados e táteis.', detail: 'Estados brincalhões, movimentos curtos e alternativa imóvel para movimento reduzido.'
       })
   ]);
 
   var bySlug = Object.create(null);
   profiles.forEach(function (p) { bySlug[p.slug] = p; });
+  if (Object.keys(taxonomyBySlug).length !== profiles.length) throw new Error('Taxonomia e perfis estão fora de sincronia.');
+  profiles.forEach(function (profile) {
+    if (profile.categories.length !== 4) throw new Error('Categorias incompletas: ' + profile.slug);
+    profile.categories.concat(profile.visualStyles).forEach(function (id) {
+      if (!categories[id] && !visualStyles[id]) throw new Error('Faceta desconhecida: ' + id);
+    });
+  });
 
   function normalize(slugs) {
     if (!Array.isArray(slugs)) return [];
@@ -704,7 +903,15 @@ a{color:inherit}
     };
   }
 
-  var api = Object.freeze({profiles: profiles, groups: groups, compose: compose, normalize: normalize});
+  var api = Object.freeze({
+    profiles: profiles,
+    groups: groups,
+    categories: categories,
+    visualStyles: visualStyles,
+    taxonomy: Object.freeze({ categories: categories, visualStyles: visualStyles, bySlug: taxonomyBySlug }),
+    compose: compose,
+    normalize: normalize
+  });
   if (typeof module === 'object' && module.exports) module.exports = api;
   if (root) root.MixerEngine = api;
 })(typeof window !== 'undefined' ? window : typeof globalThis !== 'undefined' ? globalThis : this);
@@ -715,11 +922,12 @@ a{color:inherit}
   var engine = window.MixerEngine;
   if(!engine) return;
   var get = function(id){ return document.getElementById('mixer-' + id); };
-  var state = { slugs: [], preview: 'components' }, system = null, css = '';
+  var state = { slugs: [], preview: 'components' }, system = null, css = '', promptText = '';
   var profiles = engine.profiles, bySlug = new Map(profiles.map(function(p){ return [p.slug, p]; }));
   var roles = ['Base', 'Tom e material', 'Detalhe e movimento'];
   var roleHelp = ['Estrutura, ritmo e legibilidade', 'Acento, tipografia e superfícies', 'Formas, padrões e microinterações'];
   var optionButtons = [];
+  var categoryOptions = new Map(), visualStyleOptions = new Map();
   function node(tag, className, text){
     var el = document.createElement(tag);
     if(className) el.className = className;
@@ -754,6 +962,14 @@ a{color:inherit}
     var option = node('option', '', key + ' · ' + engine.groups[key]);
     option.value = key; get('group').appendChild(option);
   });
+  function populateTaxonomy(selectId, registry, optionMap){
+    Object.keys(registry).forEach(function(id){
+      var item = registry[id], option = node('option', '', item.label + ' (0)');
+      option.value = id; option.dataset.count = '0'; get(selectId).appendChild(option); optionMap.set(id, option);
+    });
+  }
+  populateTaxonomy('category', engine.categories, categoryOptions);
+  populateTaxonomy('visual-style', engine.visualStyles, visualStyleOptions);
   profiles.forEach(function(profile){
     var button = node('button', 'mixer-option');
     button.type = 'button'; button.dataset.style = profile.slug;
@@ -774,11 +990,47 @@ a{color:inherit}
     });
     get('options').appendChild(button); optionButtons.push(button);
   });
+  function searchableText(profile){
+    var categoryTerms = profile.categories.map(function(id){
+      var item = engine.categories[id]; return item.label + ' ' + item.aliases.join(' ');
+    }).join(' ');
+    var visualStyleTerms = profile.visualStyles.map(function(id){
+      var item = engine.visualStyles[id]; return item.label + ' ' + item.aliases.join(' ');
+    }).join(' ');
+    return profile.name + ' ' + profile.tags + ' ' + engine.groups[profile.group] + ' ' + categoryTerms + ' ' + visualStyleTerms;
+  }
+  function matchesProfile(profile, query, group, category, visualStyle, ignoredFilter){
+    return (ignoredFilter === 'group' || group === 'all' || group === profile.group) &&
+      (ignoredFilter === 'category' || category === 'all' || profile.categories.indexOf(category) !== -1) &&
+      (ignoredFilter === 'visualStyle' || visualStyle === 'all' || profile.visualStyles.indexOf(visualStyle) !== -1) &&
+      (!query || norm(searchableText(profile)).includes(query));
+  }
+  function setTaxonomyOptionCount(option, label, count){
+    option.dataset.count = String(count); option.textContent = label + ' (' + count + ')';
+  }
+  function updateTaxonomyCounts(query, group, category, visualStyle){
+    var categoryBase = profiles.filter(function(profile){
+      return matchesProfile(profile, query, group, category, visualStyle, 'category');
+    });
+    var visualStyleBase = profiles.filter(function(profile){
+      return matchesProfile(profile, query, group, category, visualStyle, 'visualStyle');
+    });
+    setTaxonomyOptionCount(get('category').options[0], 'Todas as categorias', categoryBase.length);
+    categoryOptions.forEach(function(option, id){
+      setTaxonomyOptionCount(option, engine.categories[id].label, categoryBase.filter(function(profile){ return profile.categories.indexOf(id) !== -1; }).length);
+    });
+    setTaxonomyOptionCount(get('visual-style').options[0], 'Todos os estilos', visualStyleBase.length);
+    visualStyleOptions.forEach(function(option, id){
+      setTaxonomyOptionCount(option, engine.visualStyles[id].label, visualStyleBase.filter(function(profile){ return profile.visualStyles.indexOf(id) !== -1; }).length);
+    });
+  }
   function filter(){
-    var query = norm(get('search').value.trim()), group = get('group').value, visible = 0;
+    var query = norm(get('search').value.trim()), group = get('group').value;
+    var category = get('category').value, visualStyle = get('visual-style').value, visible = 0;
+    updateTaxonomyCounts(query, group, category, visualStyle);
     optionButtons.forEach(function(button){
       var p = bySlug.get(button.dataset.style);
-      var match = (group === 'all' || group === p.group) && norm(p.name + ' ' + p.tags + ' ' + engine.groups[p.group]).includes(query);
+      var match = matchesProfile(p, query, group, category, visualStyle, '');
       button.hidden = !match; if(match) visible++;
     });
     get('results-count').textContent = visible + (visible === 1 ? ' estilo disponível' : ' estilos disponíveis');
@@ -886,7 +1138,7 @@ a{color:inherit}
       el.append(node('dt','',item[0]),node('dd','',value)); get('token-facts').appendChild(el);
     });
     css = exportCSS(); get('tokens').textContent = css;
-    promptText = exportPrompt(); get('mixer-prompt').textContent = promptText;
+    promptText = exportPrompt(); get('prompt').textContent = promptText;
     get('link').value = makeURL();
     document.title = state.slugs.map(function(slug){ return bySlug.get(slug).name; }).join(' + ') + ' — Combinador';
   }
@@ -925,6 +1177,7 @@ a{color:inherit}
   });
   get('link').addEventListener('click', function(){ this.select(); });
   get('search').addEventListener('input', filter); get('group').addEventListener('change', filter);
+  get('category').addEventListener('change', filter); get('visual-style').addEventListener('change', filter);
   get('search').addEventListener('keydown', function(event){ if(event.key === 'Escape'){ this.value = ''; filter(); } });
   document.addEventListener('keydown', function(event){
     if(event.key === '/' && !event.ctrlKey && !event.metaKey && !event.altKey && !event.target.closest('input,textarea,select,[contenteditable]')){ event.preventDefault(); get('search').focus(); }
