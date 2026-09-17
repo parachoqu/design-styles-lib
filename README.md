@@ -36,7 +36,21 @@ Abra **Combinar estilos** no topo do catálogo ou `combinador.html` diretamente.
 2. **Tom e material** ajusta superfície, acento e tipografia.
 3. **Detalhe e movimento** acrescenta formas, padrões e microinterações.
 
-O combinador oferece os mesmos filtros de grupo, categoria e estilo do catálogo. Cada perfil público em `window.MixerEngine.profiles` contém `categories` e `visualStyles`, além dos metadados, paleta e tokens curados. `window.MixerEngine.categories` e `window.MixerEngine.visualStyles` expõem os rótulos e aliases da taxonomia.
+Os papéis são declarativos: cada perfil expõe uma receita de estrutura, material e movimento. `MixerEngine.compose()` continua retornando os campos já usados pelo combinador e acrescenta `layers`, com os três papéis, o estilo que os preenche e sua proveniência (`selected` ou fallback), e `behaviorPlan`, com módulos permitidos, módulos suprimidos, fallback estático e a origem, easing e intensidade do movimento. Os tokens exportados também incluem `--ds-motion-easing` e `--ds-motion-intensity`, além de `--ds-motion-duration` e `--ds-motion-distance`.
+
+O combinador oferece os mesmos filtros de grupo, categoria e estilo do catálogo. Cada perfil público em `window.MixerEngine.profiles` contém `categories`, `visualStyles` e a receita de composição, além dos metadados, paleta e tokens curados. `window.MixerEngine.categories` e `window.MixerEngine.visualStyles` expõem os rótulos e aliases da taxonomia.
+
+### Composição estrutural da prévia
+
+A prévia de landing page não se limita a trocar cores e fontes: a camada **base** também decide o arranjo. Cada grupo A–H resolve um arquétipo em `structure.layout` — `editorial-grid`, `product-shelf`, `layered-glass`, `diagonal-block`, `narrative-stack`, `poster-centered`, `hud-panel` e `bento-organic` —, e quatro perfis sobrescrevem o arquétipo do próprio grupo (`minimalismo`, `bento-grid`, `dados-densos` e `terminal-ascii`). O arquétipo resolvido vira `data-layout` em `#mixer-landing` e altera o grid do hero, as formas decorativas do painel de arte e a disposição das features. A camada **material** publica `data-geometry`, que achata os raios decorativos quando o estilo trava geometria quadrada; a camada **detalhe** continua agindo por `--ds-pattern` e `--ds-shadow`.
+
+A riqueza da composição acompanha o número de estilos escolhidos, exposto em `data-depth`: um estilo mostra o arquétipo limpo (uma forma, duas features), dois estilos acrescentam a segunda e a terceira forma junto da terceira feature, e três estilos liberam a quarta forma e a quarta feature. Os tokens exportados não mudam com isso — o arquétipo é descrito em texto no prompt universal, na seção de composição por camadas.
+
+### Movimento na prévia
+
+O plano declarativo não executa módulos diretamente. Na borda das duas prévias, uma tabela fechada converte apenas os módulos permitidos em quatro primitivas seguras: revelar ao entrar na vista, resposta a ponteiro, faixa de velocidade e progresso de rolagem. A faixa responde à velocidade e à direção da rolagem, modulada pela intensidade declarada. Módulos desconhecidos não recebem comportamento implícito. A superfície “Comportamento da composição” mostra as camadas, módulos e primitivas resolvidas para a prévia visível com rótulos compreensíveis, sem expor identificadores internos como explicação principal.
+
+Quando há primitivas permitidas, existe um único botão nativo para pausar ou retomar o movimento daquela prévia. Essa pausa é transitória: não muda tokens, não é persistida e não participa do link compartilhável. Em `prefers-reduced-motion: reduce`, a prévia fica estática, o controle permanece explicado e desabilitado, e não é mantido runtime ativo. Em ponteiro coarse/toque, a resposta dependente de ponteiro é omitida; os comportamentos seguros de rolagem que o plano autorizou continuam disponíveis. O prompt universal exportado inclui as regras de uso relevantes dos tokens e do movimento, preservando a mesma preferência por movimento reduzido.
 
 As escolhas são determinísticas, podem ser vistas como **Painel de componentes** ou **Landing page**, e exportam tokens CSS. A URL registra somente a composição:
 
@@ -44,7 +58,7 @@ As escolhas são determinísticas, podem ser vistas como **Painel de componentes
 combinador.html?base=minimalismo&influence=glassmorphism&influence=bauhaus&preview=components
 ```
 
-`base` é obrigatório quando há uma combinação; até dois `influence` são opcionais, em ordem. `preview` aceita `components` ou `landing`.
+`base` é obrigatório quando há uma combinação; até dois `influence` são opcionais, em ordem. `preview` aceita `components` ou `landing`. Pausa, filtros de busca, grupo, categoria e estilo são estado local: não há parâmetros de pausa ou filtros no link, nem conta, banco ou persistência local.
 
 ## Os 59 estilos
 
@@ -179,7 +193,7 @@ Use `onLive()` e `onMotion()` para timers, `requestAnimationFrame` ou animação
 
 ## Verificação
 
-Os testes verificam estrutura, 59 slugs únicos, taxonomia, contagens dinâmicas, aliases, paridade entre catálogo e `MixerEngine`, navegação/histórico, cópia, responsividade, contraste e movimento reduzido.
+Os testes verificam estrutura, 59 slugs únicos, taxonomia, contagens dinâmicas, aliases, paridade entre catálogo e `MixerEngine`, navegação/histórico, cópia, responsividade, contraste e movimento reduzido. A suíte do combinador também cobre receitas e proveniência das três camadas, o contrato aditivo `layers`/`behaviorPlan`, mapeamento limitado de primitivas, pausa local, redução de movimento e a omissão de resposta a ponteiro em contexto coarse. Os arquétipos estruturais são verificados por grupo e por override, junto da diferença real de grade entre arquétipos, da graduação por profundidade, do travamento de geometria pelo material e da ausência de overflow nos três breakpoints para um representante de cada grupo.
 
 ```sh
 node tests/navigation.cjs

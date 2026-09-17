@@ -45,8 +45,11 @@ function mixerURL(slugs = [], preview = 'components') {
   return url.href;
 }
 
-async function openPage({ width = 1440, height = 900, url = target.href, reducedMotion = 'reduce', mixer = true } = {}) {
-  const context = await browser.newContext({ viewport: { width, height }, reducedMotion });
+async function openPage({ width = 1440, height = 900, url = target.href, reducedMotion = 'reduce', coarsePointer = false, mixer = true } = {}) {
+  const context = await browser.newContext({
+    viewport: { width, height }, reducedMotion,
+    isMobile: coarsePointer, hasTouch: coarsePointer,
+  });
   // Local functionality must not depend on remote font availability.
   await context.route('**/*', route => {
     const requestURL = new URL(route.request().url());
@@ -438,6 +441,228 @@ function contrast(a, b) {
     await page.context().close();
   });
 
+  await run('declarative layer recipes preserve material locks and produce deterministic behavior plans', async () => {
+    const page = await openPage();
+    const result = await page.evaluate(() => {
+      const engine = window.MixerEngine;
+      const profileMetadata = engine.profiles.map(profile => ({
+        slug: profile.slug,
+        hasComposition: Boolean(profile.composition),
+        frozen: Boolean(profile.composition) && Object.isFrozen(profile.composition) &&
+          Object.isFrozen(profile.composition.structure) && Object.isFrozen(profile.composition.material) &&
+          Object.isFrozen(profile.composition.material.constraints) && Object.isFrozen(profile.composition.motion) &&
+          Object.isFrozen(profile.composition.motion.modules),
+      }));
+      return {
+        profileMetadata,
+        minimal: engine.profiles.find(profile => profile.slug === 'minimalismo').composition,
+        brutal: engine.profiles.find(profile => profile.slug === 'brutalismo-radical').composition,
+        cinetico: engine.profiles.find(profile => profile.slug === 'cinetico').composition,
+        scroll: engine.profiles.find(profile => profile.slug === 'scroll-effects').composition,
+        locked: engine.compose(['minimalismo', 'brutalismo-radical', 'cinetico']),
+        lockedRepeat: engine.compose(['minimalismo', 'brutalismo-radical', 'cinetico']),
+        hardShadow: engine.compose(['minimalismo', 'neobrutalismo', 'cinetico']),
+        static: engine.compose(['minimalismo', 'brutalismo-radical']),
+        oneSelection: engine.compose(['cinetico']),
+      };
+    });
+    assert.equal(result.profileMetadata.length, STYLE_TOTAL);
+    for (const profile of result.profileMetadata) {
+      assert(profile.hasComposition, `${profile.slug} declares a composition recipe`);
+      assert(profile.frozen, `${profile.slug} freezes its nested composition recipe`);
+    }
+    assert.equal(result.minimal.structure.reading, 'minimal');
+    assert.equal(result.minimal.structure.space, 'generous');
+    assert.equal(result.brutal.material.constraints.squareGeometry, true);
+    assert.equal(result.brutal.material.constraints.noDiffuseShadow, true);
+    assert.deepEqual(result.cinetico.motion.modules, ['kinetic-type', 'pointer-inertia', 'marquee']);
+    assert.deepEqual(result.scroll.motion.modules, ['scroll-progress', 'scroll-reveal', 'parallax']);
+    assert.equal(result.cinetico.motion.intensity, 0.85);
+    assert.deepEqual(result.locked, result.lockedRepeat, 'Layer recipes and behavior plans are deterministic');
+    assert.deepEqual(result.locked.layers.structure, {
+      role: 'Base', slug: 'minimalismo', style: 'Minimalismo', provenance: 'selected', recipe: result.minimal.structure,
+    });
+    assert.equal(result.locked.layers.material.role, 'Tom e material');
+    assert.equal(result.locked.layers.material.slug, 'brutalismo-radical');
+    assert.equal(result.locked.layers.material.provenance, 'selected');
+    assert.equal(result.locked.layers.detail.role, 'Detalhe e movimento');
+    assert.equal(result.locked.layers.detail.slug, 'cinetico');
+    assert.equal(result.locked.layers.detail.provenance, 'selected');
+    assert.deepEqual(result.locked.behaviorPlan.allowedModules, ['kinetic-type', 'pointer-inertia', 'marquee']);
+    assert(result.locked.behaviorPlan.suppressedModules.includes('rounded-geometry'));
+    assert(result.locked.behaviorPlan.suppressedModules.includes('diffuse-shadow'));
+    assert.equal(result.locked.behaviorPlan.staticFallback.mode, 'reduced-motion');
+    assert.equal(result.locked.behaviorPlan.motion.source, 'cinetico');
+    assert.equal(result.locked.behaviorPlan.motion.active, true);
+    assert.equal(result.locked.tokens['--ds-radius'], '0px');
+    assert.equal(result.locked.tokens['--ds-radius-small'], '0px');
+    assert.equal(result.locked.tokens['--ds-shadow'], 'none');
+    assert.equal(result.locked.tokens['--ds-motion-easing'], 'cubic-bezier(0.22, 1, 0.36, 1)');
+    assert.equal(result.locked.tokens['--ds-motion-intensity'], '0.85');
+    assert.equal(result.hardShadow.tokens['--ds-shadow'], '5px 5px 0 #111111', 'A no-diffuse material keeps its explicitly hard shadow');
+    assert.deepEqual(result.static.behaviorPlan.allowedModules, []);
+    assert.equal(result.static.behaviorPlan.motion.active, false);
+    assert.equal(result.static.behaviorPlan.staticFallback.mode, 'static');
+    assert.deepEqual(result.oneSelection.layers.material, {
+      role: 'Tom e material', slug: 'cinetico', style: 'Design Cinético', provenance: 'fallback:base', recipe: result.cinetico.material,
+    });
+    assert.deepEqual(result.oneSelection.layers.detail, {
+      role: 'Detalhe e movimento', slug: 'cinetico', style: 'Design Cinético', provenance: 'fallback:base', recipe: result.cinetico.motion,
+    });
+    assert.deepEqual(result.oneSelection.behaviorPlan.allowedModules, ['kinetic-type', 'pointer-inertia', 'marquee']);
+    await page.context().close();
+  });
+
+  await run('behavior plans render one shared accessible control and the same evidence in both previews', async () => {
+    const page = await openPage({
+      reducedMotion: 'no-preference',
+      url: mixerURL(['minimalismo', 'brutalismo-radical', 'cinetico']),
+    });
+    await selected(page, ['minimalismo', 'brutalismo-radical', 'cinetico']);
+    const tokens = await page.locator('#mixer-tokens').textContent();
+    const firstEvidence = await page.locator('#mixer-behavior-summary').textContent();
+    assert.match(firstEvidence, /Minimalismo/);
+    assert.match(firstEvidence, /Brutalismo Radical/);
+    assert.match(firstEvidence, /Design Cinético/);
+    assert.equal(await page.locator('#mixer-behavior-summary [data-provenance="selected"]').count(), 3, 'Each selected layer preserves its provenance');
+    assert.match(await page.locator('#mixer-behavior-meta').textContent(), /cantos retos/);
+    assert.match(await page.locator('#mixer-prompt').textContent(), /Restrições do material.*cantos retos/);
+    assert.match(await page.locator('#mixer-prompt').textContent(), /faixa que acompanha a rolagem/);
+    assert.equal(await page.locator('#mixer-motion-toggle').count(), 1, 'There is only one native motion control');
+    assert.equal(await page.locator('#mixer-motion-toggle').evaluate(button => button.tagName), 'BUTTON');
+    assert.equal(await page.locator('#mixer-motion-toggle').isDisabled(), false);
+    assert.equal(await page.locator('#mixer-runtime-signal').getAttribute('aria-hidden'), 'true');
+    assert.equal(await page.locator('#mixer-motion-status').getAttribute('role'), 'status');
+    assert.deepEqual((await page.locator('#mixer-preview').getAttribute('data-runtime-primitives')).split(' '), ['revealOnView', 'pointerResponse', 'velocityMarquee', 'scrollProgress']);
+    await page.locator('#mixer-motion-toggle').focus();
+    await page.keyboard.press('Space');
+    assert.equal(await page.locator('#mixer-preview').getAttribute('data-runtime-state'), 'paused');
+    assert.match(await page.locator('#mixer-motion-status').textContent(), /pausado/i);
+    const pausedProgress = await page.locator('#mixer-motion-progress').getAttribute('data-value');
+    const pausedPointer = await page.locator('#mixer-components').getAttribute('data-pointer-x');
+    await page.locator('#mixer-components').hover({ position: { x: 40, y: 40 } });
+    await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(120);
+    assert.equal(await page.locator('#mixer-motion-progress').getAttribute('data-value'), pausedProgress, 'Paused motion ignores new scroll work');
+    assert.equal(await page.locator('#mixer-components').getAttribute('data-pointer-x'), pausedPointer, 'Paused motion ignores new pointer work');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.waitForFunction(() => document.getElementById('mixer-preview').dataset.runtimeState === 'static');
+    assert.equal(await page.locator('#mixer-motion-toggle').isDisabled(), true, 'A changed system preference disables the local control');
+    assert.equal(await page.locator('#mixer-components').getAttribute('data-runtime-active'), null, 'A changed system preference tears down the active runtime');
+    const staticProgress = await page.locator('#mixer-motion-progress').getAttribute('data-value');
+    await page.waitForTimeout(120);
+    assert.equal(await page.locator('#mixer-motion-progress').getAttribute('data-value'), staticProgress, 'Changed reduced motion never leaves a frame advancing');
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.waitForFunction(() => document.getElementById('mixer-preview').dataset.runtimeState === 'paused');
+    assert.equal(await page.locator('#mixer-motion-toggle').isDisabled(), false, 'Runtime can resume only after the system preference permits it');
+    assert.match(await page.locator('#mixer-motion-status').textContent(), /pausado/i, 'A paused local choice survives a temporary system reduction');
+    await page.locator('#mixer-motion-toggle').focus();
+    await page.locator('#mixer-motion-toggle').click();
+    assert.equal(await page.locator('#mixer-preview').getAttribute('data-runtime-state'), 'running');
+    assert.match(await page.locator('#mixer-motion-status').textContent(), /ativo/i);
+    assert.equal(await page.locator('#mixer-tokens').textContent(), tokens, 'Pause state never changes exported tokens');
+    await page.locator('[data-preview="landing"]').click();
+    await previewIs(page, 'landing');
+    assert.equal(await page.locator('#mixer-behavior-summary').textContent(), firstEvidence, 'Landing exposes the same layer and behavior evidence');
+    assert.equal(await page.locator('#mixer-tokens').textContent(), tokens, 'Preview switching never changes exported tokens');
+    await page.context().close();
+  });
+
+  await run('no-preference runtime advances safe progress and honors fine versus coarse pointer input', async () => {
+    const fine = await openPage({ reducedMotion: 'no-preference', url: mixerURL(['minimalismo', 'brutalismo-radical', 'cinetico']) });
+    await fine.waitForTimeout(100);
+    const before = await fine.locator('#mixer-motion-progress').getAttribute('data-value');
+    await fine.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await fine.waitForTimeout(120);
+    const after = await fine.locator('#mixer-motion-progress').getAttribute('data-value');
+    assert.notEqual(after, before, 'Authorized marquee/scroll progress visibly responds to time or scroll');
+    const marqueeOffset = () => fine.locator('#mixer-runtime-strip').evaluate(element => parseFloat(element.style.getPropertyValue('--mixer-marquee-offset')));
+    const wrappedDelta = (next, previous) => ((next - previous + 525) % 350) - 175;
+    let phase = await marqueeOffset();
+    await fine.waitForTimeout(100);
+    assert(wrappedDelta(await marqueeOffset(), phase) > 0, 'Marquee follows downward scrolling');
+    await fine.evaluate(() => scrollTo(0, 0));
+    await fine.waitForTimeout(100);
+    phase = await marqueeOffset();
+    await fine.waitForTimeout(100);
+    assert(wrappedDelta(await marqueeOffset(), phase) < 0, 'Marquee reverses after upward scrolling');
+    await fine.locator('#mixer-demo-project').focus();
+    assert.equal(await fine.locator('#mixer-components').getAttribute('data-runtime-focus'), 'true', 'Keyboard focus receives the same safe response as a fine pointer');
+    await fine.locator('#mixer-components').hover({ position: { x: 30, y: 30 } });
+    assert.equal(await fine.locator('#mixer-preview').getAttribute('data-pointer-response'), 'fine');
+    assert.notEqual(await fine.locator('#mixer-components').getAttribute('data-pointer-x'), null, 'Fine pointer input reaches the active preview only');
+    await fine.context().close();
+
+    const coarse = await openPage({ reducedMotion: 'no-preference', coarsePointer: true, url: mixerURL(['minimalismo', 'brutalismo-radical', 'cinetico']) });
+    assert.equal(await coarse.locator('#mixer-preview').getAttribute('data-pointer-response'), 'omitted');
+    const coarseBefore = await coarse.locator('#mixer-motion-progress').getAttribute('data-value');
+    await coarse.evaluate(() => scrollTo(0, document.body.scrollHeight));
+    await coarse.waitForTimeout(120);
+    assert.notEqual(await coarse.locator('#mixer-motion-progress').getAttribute('data-value'), coarseBefore, 'Safe scroll behavior remains available on coarse pointers');
+    await coarse.context().close();
+  });
+
+  await run('reveal-only and pointer-only plans never render or schedule scroll progress', async () => {
+    for (const [slug, primitives] of [['glitch', 'revealOnView'], ['fun', 'pointerResponse']]) {
+      const page = await openPage({ reducedMotion: 'no-preference', url: mixerURL(['minimalismo', 'brutalismo-radical', slug]) });
+      assert.equal(await page.locator('#mixer-preview').getAttribute('data-runtime-primitives'), primitives, `${slug} resolves only its authorized primitive`);
+      assert.equal(await page.locator('#mixer-motion-progress').getAttribute('hidden'), '', `${slug} hides the unauthorized progress marker`);
+      assert.equal(await page.locator('#mixer-runtime-signal').getAttribute('hidden'), '', `${slug} hides the unauthorized marquee signal`);
+      assert.equal(await page.locator('#mixer-motion-progress').evaluate(element => element.style.getPropertyValue('--mixer-runtime-progress')), '', `${slug} has no runtime progress write`);
+      await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
+      await page.waitForTimeout(100);
+      assert.equal(await page.locator('#mixer-motion-progress').getAttribute('data-value'), '0', `${slug} never gains scroll progress after scrolling`);
+      await page.context().close();
+    }
+  });
+
+  await run('paused runtime does not reveal an observer target after it enters view', async () => {
+    const page = await openPage({ height: 420, reducedMotion: 'no-preference', url: mixerURL(['minimalismo', 'brutalismo-radical', 'cinetico']) });
+    const target = page.locator('#mixer-components .mixer-demo-work');
+    await page.locator('#mixer-motion-toggle').scrollIntoViewIfNeeded();
+    await page.waitForTimeout(80);
+    assert.equal(await target.evaluate(element => element.classList.contains('is-runtime-revealed')), false, 'The lower target begins outside the observer viewport');
+    await page.locator('#mixer-motion-toggle').click();
+    await target.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(100);
+    assert.equal(await target.evaluate(element => element.classList.contains('is-runtime-revealed')), false, 'Paused observer callbacks leave unrevealed content at rest');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(() => document.querySelector('#mixer-components .mixer-demo-work').classList.contains('is-runtime-revealed'));
+    assert.equal(await page.locator('#mixer-preview').getAttribute('data-runtime-state'), 'running', 'Explicit resume reconciles visible reveal targets');
+    await page.context().close();
+  });
+
+  await run('reduced motion is complete and static while lifecycle teardown leaves no hidden active runtime', async () => {
+    const reduced = await openPage({ url: mixerURL(['minimalismo', 'brutalismo-radical', 'cinetico']) });
+    const reducedBefore = await reduced.locator('#mixer-motion-progress').getAttribute('data-value');
+    assert.equal(await reduced.locator('#mixer-motion-toggle').isVisible(), true);
+    assert.equal(await reduced.locator('#mixer-motion-toggle').isDisabled(), true);
+    assert.match(await reduced.locator('#mixer-motion-status').textContent(), /preferência.*movimento|movimento.*preferência/i);
+    assert.equal(await reduced.locator('#mixer-preview').getAttribute('data-runtime-state'), 'static');
+    await reduced.waitForTimeout(140);
+    assert.equal(await reduced.locator('#mixer-motion-progress').getAttribute('data-value'), reducedBefore, 'Reduced motion never advances a runtime frame');
+    assert.equal(await reduced.locator('#mixer-components').getAttribute('data-runtime-active'), null);
+    await reduced.context().close();
+
+    const page = await openPage({ reducedMotion: 'no-preference', url: mixerURL(['minimalismo', 'brutalismo-radical', 'cinetico']) });
+    for (let i = 0; i < 4; i += 1) {
+      await page.locator(`[data-preview="${i % 2 ? 'components' : 'landing'}"]`).click();
+      const visible = i % 2 ? 'components' : 'landing';
+      const hidden = visible === 'components' ? 'landing' : 'components';
+      assert.equal(await page.locator(`#mixer-${visible}`).getAttribute('data-runtime-active'), 'true');
+      assert.equal(await page.locator(`#mixer-${hidden}`).getAttribute('data-runtime-active'), null, 'Hidden preview has been torn down');
+    }
+    await page.locator('#mixer-reset').click();
+    await selected(page, []);
+    assert.equal(await page.locator('#mixer-preview').getAttribute('data-runtime-state'), 'inactive');
+    assert.equal(await page.locator('#mixer-components').getAttribute('data-runtime-active'), null);
+    await page.locator('#mixer-options [data-style="minimalismo"]').click();
+    await page.locator('#mixer-options [data-style="brutalismo-radical"]').click();
+    assert.equal(await page.locator('#mixer-motion-toggle').isVisible(), false, 'Static plans do not render a motion control');
+    assert.equal(await page.locator('#mixer-preview').getAttribute('data-runtime-state'), 'inactive');
+    await page.context().close();
+  });
+
   await run('keyboard activation, focus visibility and accessible selection/removal', async () => {
     const page = await openPage();
     const option = page.locator('#mixer-options [data-style="minimalismo"]');
@@ -479,6 +704,115 @@ function contrast(a, b) {
       await page.locator('#mixer-reset').click();
       await selected(page, []);
       await noOverflow(page, `${width}px empty state`);
+      await page.context().close();
+    }
+  });
+
+  await run('structure.layout resolves per group, honors slug overrides and follows the base layer', async () => {
+    const page = await openPage();
+    const result = await page.evaluate(() => {
+      const engine = window.MixerEngine;
+      const byGroup = { A: 'editorial-grid', B: 'product-shelf', C: 'layered-glass', D: 'diagonal-block', E: 'narrative-stack', F: 'poster-centered', G: 'hud-panel', H: 'bento-organic' };
+      const overrides = { minimalismo: 'editorial-grid', 'bento-grid': 'bento-organic', 'dados-densos': 'hud-panel', 'terminal-ascii': 'hud-panel' };
+      return {
+        mismatches: engine.profiles
+          .map(profile => ({ slug: profile.slug, expected: overrides[profile.slug] || byGroup[profile.group], actual: profile.composition.structure.layout }))
+          .filter(entry => entry.expected !== entry.actual),
+        distinct: [...new Set(engine.profiles.map(profile => profile.composition.structure.layout))].sort(),
+        fromBase: engine.compose(['bauhaus', 'minimalismo', 'glitch']).layers.structure.recipe.layout,
+        swapped: engine.compose(['minimalismo', 'bauhaus']).layers.structure.recipe.layout,
+      };
+    });
+    assert.deepEqual(result.mismatches, [], 'Every profile resolves the layout of its group or of its own override');
+    assert.deepEqual(result.distinct, ['bento-organic', 'diagonal-block', 'editorial-grid', 'hud-panel', 'layered-glass', 'narrative-stack', 'poster-centered', 'product-shelf']);
+    assert.equal(result.fromBase, 'poster-centered', 'The base slot decides the archetype, not material or detail');
+    assert.equal(result.swapped, 'editorial-grid', 'Swapping the base swaps the archetype');
+    await page.context().close();
+  });
+
+  await run('landing composition changes structurally between groups, not only in tokens', async () => {
+    const read = async slugs => {
+      const page = await openPage({ url: mixerURL(slugs, 'landing') });
+      await previewIs(page, 'landing');
+      const shape = await page.evaluate(() => {
+        const landing = document.getElementById('mixer-landing');
+        const styles = selector => getComputedStyle(landing.querySelector(selector));
+        return {
+          layout: landing.dataset.layout,
+          hero: styles('.mixer-landing-hero').gridTemplateColumns,
+          features: styles('.mixer-landing-features').gridTemplateColumns,
+          card: styles('.mixer-landing-features .mixer-demo-card').display,
+          reveals: landing.querySelectorAll('.mixer-runtime-reveal').length,
+        };
+      });
+      await page.context().close();
+      return shape;
+    };
+    const editorial = await read(['minimalismo', 'glassmorphism']);
+    const poster = await read(['bauhaus', 'glassmorphism']);
+    const hud = await read(['ciberpunk', 'glassmorphism']);
+    assert.deepEqual([editorial.layout, poster.layout, hud.layout], ['editorial-grid', 'poster-centered', 'hud-panel']);
+    assert.notEqual(editorial.hero, poster.hero, 'The hero grid differs between archetypes');
+    assert.notEqual(editorial.features, hud.features, 'The feature grid differs between archetypes');
+    assert.equal(editorial.card, 'grid', 'The editorial archetype turns features into a numbered list');
+    assert.equal(poster.card, 'block', 'The poster archetype keeps the card surface');
+    assert.equal(hud.features.split(' ').length, 4, 'The instrumental archetype packs four feature columns');
+    for (const shape of [editorial, poster, hud]) assert.equal(shape.reveals, 2, 'Landing keeps exactly two reveal targets');
+  });
+
+  await run('composition depth adds decoration and features for one, two and three styles', async () => {
+    const page = await openPage({ url: mixerURL(['material-you'], 'landing') });
+    const measure = () => page.evaluate(() => {
+      const landing = document.getElementById('mixer-landing');
+      const art = landing.querySelector('.mixer-landing-art');
+      const shown = element => getComputedStyle(element).display !== 'none';
+      const pseudoShown = name => getComputedStyle(art, name).display !== 'none';
+      return {
+        depth: landing.dataset.depth,
+        shapes: [pseudoShown('::before'), pseudoShown('::after'), shown(art.querySelector('span')), shown(art.querySelector('.mixer-landing-art__mark'))].filter(Boolean).length,
+        features: [...landing.querySelectorAll('.mixer-landing-features .mixer-demo-card')].filter(shown).length,
+        reveals: landing.querySelectorAll('.mixer-runtime-reveal').length,
+      };
+    });
+    await previewIs(page, 'landing');
+    assert.deepEqual(await measure(), { depth: '1', shapes: 1, features: 2, reveals: 2 });
+    await choose(page, 'glassmorphism');
+    await selected(page, ['material-you', 'glassmorphism']);
+    assert.deepEqual(await measure(), { depth: '2', shapes: 3, features: 3, reveals: 2 });
+    await choose(page, 'cinetico');
+    await selected(page, ['material-you', 'glassmorphism', 'cinetico']);
+    assert.deepEqual(await measure(), { depth: '3', shapes: 4, features: 4, reveals: 2 });
+    await page.locator('#mixer-reset').click();
+    await selected(page, []);
+    assert.equal(await page.locator('#mixer-landing').getAttribute('data-layout'), null, 'Clearing the combination clears the archetype');
+    await page.context().close();
+  });
+
+  await run('material geometry locks decorative radii and every archetype fits the viewport', async () => {
+    const geometryOf = async slugs => {
+      const page = await openPage({ url: mixerURL(slugs, 'landing') });
+      const shape = await page.evaluate(() => {
+        const landing = document.getElementById('mixer-landing');
+        return { geometry: landing.dataset.geometry, radius: getComputedStyle(landing.querySelector('.mixer-landing-art'), '::before').borderRadius };
+      });
+      await page.context().close();
+      return shape;
+    };
+    const square = await geometryOf(['minimalismo', 'neobrutalismo']);
+    assert.equal(square.geometry, 'square');
+    assert.equal(square.radius, '0px', 'A square material flattens the decorative ring');
+    const organic = await geometryOf(['minimalismo', 'glassmorphism']);
+    assert.equal(organic.geometry, 'organic');
+    assert.notEqual(organic.radius, '0px', 'An unconstrained material keeps the round ring');
+
+    const bases = ['minimalismo', 'material-you', 'glassmorphism', 'neobrutalismo', 'editorial', 'bauhaus', 'ciberpunk', 'cottagecore'];
+    for (const width of [1440, 768, 390]) {
+      const page = await openPage({ width, height: 900, url: mixerURL([bases[0], 'liquid-glass'], 'landing') });
+      for (const base of bases) {
+        await page.goto(mixerURL([base, 'liquid-glass'], 'landing'), { waitUntil: 'load' });
+        await page.waitForFunction(() => document.getElementById('mixer-landing')?.dataset.layout);
+        await noOverflow(page, `${width}px landing ${base}`);
+      }
       await page.context().close();
     }
   });
